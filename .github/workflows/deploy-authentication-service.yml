@@ -1,4 +1,4 @@
-name: deploy-auth-srv
+name: deploy-authentication-service
 
 on:
   push:
