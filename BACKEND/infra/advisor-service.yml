@@ -1,0 +1,37 @@
+# user-deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: advisor-deployment
+  labels:
+    app: advisor
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: advisor
+  template:
+    metadata:
+      labels:
+        app: advisor
+    spec:
+      containers:
+        - name: advisor-service
+          image: officialrashid/advisor-service:latest 
+        
+
+---
+# user-service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: advisor-service
+spec:
+  selector:
+    app: advisor
+  ports:
+    - name: advisor
+      protocol: TCP
+      port: 8002
+      targetPort: 8002
+

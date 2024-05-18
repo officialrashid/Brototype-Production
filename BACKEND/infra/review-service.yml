@@ -1,0 +1,37 @@
+# user-deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: review-deployment
+  labels:
+    app: review
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: review
+  template:
+    metadata:
+      labels:
+        app: review
+    spec:
+      containers:
+        - name: review-service
+          image: officialrashid/review-service:latest 
+        
+
+---
+# user-service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: review-service
+spec:
+  selector:
+    app: review
+  ports:
+    - name: review
+      protocol: TCP
+      port: 6001
+      targetPort: 6001
+

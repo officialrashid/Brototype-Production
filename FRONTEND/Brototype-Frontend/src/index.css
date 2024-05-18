@@ -1,0 +1,105 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+/* In your CSS file or a style block in your component */
+
+@layer components {
+    .all-\[unset\] {
+      all: unset;
+    }
+  }
+  
+  .triangle {
+    width: 0;
+    height: 0;
+    border-left: 30rem solid transparent; /* Change the size by adjusting this value */
+    border-right: 32rem solid transparent; /* Change the size by adjusting this value */
+    border-bottom: 15rem solid rgb(229 231 235);/* Change the size by adjusting this value */
+  }
+  .triangle-rotate{
+    width:0;
+    height:0;
+    border-left: 30rem solid transparent; /* Change the size by adjusting this value */
+    border-right: 32rem solid transparent; /* Change the size by adjusting this value */
+    border-bottom: 15rem solid rgb(229 231 235); /* Change the size by adjusting this value */
+    transform: rotate(180deg);
+
+    
+  }
+  .small-traingle{
+    width:0;
+    height:0;
+    border-left:4rem solid transparent;
+    border-right: 4rem solid transparent;
+    border-bottom:2rem solid white;
+
+
+  }
+  .small-traingle-rotate{
+    width:0;
+    height:0;
+    border-left:4rem solid transparent;
+    border-right: 4rem solid transparent;
+    border-bottom:2rem solid white;
+    transform: rotate(180deg);
+  }
+  .error-message {
+    color: red;
+    font-size: 12px;
+    margin-top: 5px;
+  }
+  .container {
+    width: 90%;
+    max-width: 46rem;
+    height: 12rem; /* Fixed height of 48 units */
+    margin: 3vh auto;
+    padding: 1rem;
+    border: 1px solid #d2d2d2;
+    border-radius: 0.5rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    background-color: #fff;
+    margin-left: 1.5rem;
+    @media (hover: hover) {
+        border: 2px solid #d2d2d2;
+    }
+
+    @media only screen and (max-width: 768px) {
+        width: 90%;
+    }
+}
+
+ /* Add these styles to your global or component stylesheet */
+
+/* Fixed Header */
+thead {
+  position: sticky;
+  top: 0;
+  background-color: #ffffff; /* Add your desired background color */
+  z-index: 1;
+}
+
+/* Fixed Sidebar */
+.fixed-sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: 72px; /* Adjust based on your sidebar width */
+  padding-top: 8px; /* To align with the top of the page */
+  background-color: #ffffff; /* Add your desired background color */
+  z-index: 1;
+}
+
+/* Scrollable Content */
+.overflow-x-auto {
+  overflow-x: auto;
+}
+
+/* Adjust the width of the table container to allow horizontal scrolling */
+.table-container {
+  min-width: 800px; /* Set a minimum width based on your content */
+}
+.text-small {
+  font-size: 0.55rem; /* Adjust the font size as needed */
+  
+}

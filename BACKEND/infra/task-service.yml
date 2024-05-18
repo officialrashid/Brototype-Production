@@ -1,0 +1,37 @@
+# user-deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: task-deployment
+  labels:
+    app: task
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: task
+  template:
+    metadata:
+      labels:
+        app: task
+    spec:
+      containers:
+        - name: task-service
+          image: officialrashid/task-service:latest
+        
+
+---
+# user-service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: task-service
+spec:
+  selector:
+    app: task
+  ports:
+    - name: task
+      protocol: TCP
+      port: 7001
+      targetPort: 7001
+

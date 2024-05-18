@@ -1,0 +1,100 @@
+apiVersion: skaffold/v3
+kind: Config
+build:
+ artifacts:
+  - image: officialrashid/fumigation-service 
+    context: ./BACKEND/fumigation-service
+    sync:
+     manual:
+     - src: ./src/*/.ts
+       dest: .
+    docker:
+      dockerfile: Dockerfile
+  - image: officialrashid/student-service 
+    context: ./BACKEND/student-service
+    sync:
+     manual:
+     - src: ./src/*/.ts
+       dest: .
+    docker:
+      dockerfile: Dockerfile
+  - image: officialrashid/authentication-service 
+    context: ./BACKEND/authentication-service 
+    sync:
+     manual:
+     - src: ./src/*/.ts
+       dest: .
+    docker:
+      dockerfile: Dockerfile
+  - image: officialrashid/reviewer-service  
+    context: ./BACKEND/reviewer-service 
+    sync:
+     manual:
+     - src: ./src/*/.ts
+       dest: .
+    docker:
+      dockerfile: Dockerfile
+  - image: officialrashid/task-service   
+    context: ./BACKEND/task-service  
+    sync:
+     manual:
+     - src: ./src/*/.ts
+       dest: .
+    docker:
+      dockerfile: Dockerfile
+  - image: officialrashid/superlead-service   
+    context: ./BACKEND/superlead-service  
+    sync:
+     manual:
+     - src: ./src/*/.ts
+       dest: .
+    docker:
+      dockerfile: Dockerfile
+  - image: officialrashid/review-service   
+    context: ./BACKEND/review-service  
+    sync:
+     manual:
+     - src: ./src/*/.ts
+       dest: .
+    docker:
+      dockerfile: Dockerfile
+  - image: officialrashid/advisor-service   
+    context: ./BACKEND/advisor-service  
+    sync:
+     manual:
+     - src: ./src/*/.ts
+       dest: .
+    docker:
+      dockerfile: Dockerfile
+  - image: officialrashid/admin-service   
+    context: ./BACKEND/admin-service  
+    sync:
+     manual:
+     - src: ./src/*/.ts
+       dest: .
+    docker:
+      dockerfile: Dockerfile
+      
+  - image: officialrashid/chat-and-video-service   
+    context: ./BACKEND/chat-and-video-service  
+    sync:
+     manual:
+     - src: ./src/*/.ts
+       dest: .
+    docker:
+      dockerfile: Dockerfile
+  - image: officialrashid/client-service    
+    context: ./FRONTEND/Brototype-Frontend  
+    sync:
+     manual:
+     - src: ./src/*/.tsx
+       dest: .
+    docker:
+      dockerfile: Dockerfile
+ local:
+  push: false
+manifests:
+ rawYaml:
+ - ./BACKEND/infra/*
+deploy:
+ kubectl: {}
