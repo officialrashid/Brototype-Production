@@ -58,4 +58,4 @@ jobs:
 
       - run: doctl kubernetes cluster kubeconfig save d2eb1850-298f-4292-849a-e0d45e846033
 
-      - run: kubectl rollout restart deployment authentication-service-deployment
+      - run: kubectl rollout restart deployment authentication-deployment
