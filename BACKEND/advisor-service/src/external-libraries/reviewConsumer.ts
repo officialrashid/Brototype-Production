@@ -11,7 +11,7 @@ const distributeController=new DistributeController(distributeInteractor)
 
 const kafkaClient = new kafkajs.Kafka({
   clientId: 'coordinator-service',
-  brokers: ['localhost:9092']
+  brokers: ['demo-kafka:9092']
 });
 const consumer = kafkaClient.consumer({ groupId: 'coordinator' });
 

@@ -3,7 +3,7 @@ import { consumeStudentEvents,consumeCoordinatorEvents } from '../..';
 import { reviewController } from '../../routes/reviewRouter';
 const kafkaClient = new kafkajs.Kafka({
   clientId: 'review-service',
-  brokers: ['localhost:9092'],
+  brokers: ['demo-kafka:9092'],
   
    // Adjust if Kafka runs on a different port or host
 });

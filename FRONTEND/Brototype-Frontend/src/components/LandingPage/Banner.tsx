@@ -31,7 +31,7 @@ const Banner = () => {
           className="italic text-black text-3xl mb-2"
           variants={sentenceVariants}
         >
-          “if you want something111
+          “if you want something
         </motion.p>
         <motion.p
           className="italic text-black text-3xl ml-3rem mb-2"
