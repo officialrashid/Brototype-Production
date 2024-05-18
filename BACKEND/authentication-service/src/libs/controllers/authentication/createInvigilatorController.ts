@@ -8,8 +8,10 @@ export default (dependencies:any)=>{
         useCase: {createInvigilator_Usecase}
     } = dependencies
  const createInvigilatorController = async (req:Request,res:Response)=>{
+
+
     const response = await createInvigilator_Usecase(dependencies).executeFunction(req.body)
-    console.log(response,"[][][]]");
+
     res.status(201).json(response)
     
  }

@@ -5,7 +5,7 @@ on:
     branches:
       - main
     paths:
-      - "BACKEND/authentication/**"
+      - "BACKEND/authentication-service/**"
 
 jobs:
   build:
@@ -30,20 +30,20 @@ jobs:
           FIREBASE_TOKEN_URI: ${{ secrets.FIREBASE_TOKEN_URI }}
           
         run: |
-          echo "ACCESS_TOKEN_SECRET=${{ secrets.ACCESS_TOKEN_SECRET }}" >> BACKEND/authentication/.env
-          echo "AUTH_MONGO_URL=${{ secrets.AUTH_MONGO_URL }}" >> BACKEND/authentication/.env
-          echo "NODEMAILER_GMAIL=${{ secrets.NODEMAILER_GMAIL }}" >> BACKEND/authentication/.env
-          echo "NODEMAILER_PASS=${{ secrets.NODEMAILER_PASS }}" >> BACKEND/authentication/.env
-          echo "AUTH_SERVER_PORT=${{ secrets.AUTH_SERVER_PORT }}" >> BACKEND/authentication/.env
-          echo "FIREBASE_PROJECT_ID=${{ secrets.FIREBASE_PROJECT_ID }}" >> BACKEND/authentication/.env
-          echo "FIREBASE_PRIVATE_KEY_ID=${{ secrets.FIREBASE_PRIVATE_KEY_ID }}" >> BACKEND/authentication/.env
-          echo "FIREBASE_PRIVATE_KEY=${{ secrets.FIREBASE_PRIVATE_KEY }}" >> BACKEND/authentication/.env
-          echo "FIREBASE_CLIENT_EMAIL=${{ secrets.FIREBASE_CLIENT_EMAIL }}" >> BACKEND/authentication/.env
-          echo "FIREBASE_CLIENT_ID=${{ secrets.FIREBASE_CLIENT_ID }}" >> BACKEND/authentication/.env
-          echo "FIREBASE_AUTH_URI=${{ secrets.FIREBASE_AUTH_URI }}" >> BACKEND/authentication/.env
-          echo "FIREBASE_TOKEN_URI=${{ secrets.FIREBASE_TOKEN_URI }}" >> BACKEND/authentication/.env
+          echo "ACCESS_TOKEN_SECRET=${{ secrets.ACCESS_TOKEN_SECRET }}" >> BACKEND/authentication-service/.env
+          echo "AUTH_MONGO_URL=${{ secrets.AUTH_MONGO_URL }}" >> BACKEND/authentication-service/.env
+          echo "NODEMAILER_GMAIL=${{ secrets.NODEMAILER_GMAIL }}" >> BACKEND/authentication-service/.env
+          echo "NODEMAILER_PASS=${{ secrets.NODEMAILER_PASS }}" >> BACKEND/authentication-service/.env
+          echo "AUTH_SERVER_PORT=${{ secrets.AUTH_SERVER_PORT }}" >> BACKEND/authentication-service/.env
+          echo "FIREBASE_PROJECT_ID=${{ secrets.FIREBASE_PROJECT_ID }}" >> BACKEND/authentication-service/.env
+          echo "FIREBASE_PRIVATE_KEY_ID=${{ secrets.FIREBASE_PRIVATE_KEY_ID }}" >> BACKEND/authentication-service/.env
+          echo "FIREBASE_PRIVATE_KEY=${{ secrets.FIREBASE_PRIVATE_KEY }}" >> BACKEND/authentication-service/.env
+          echo "FIREBASE_CLIENT_EMAIL=${{ secrets.FIREBASE_CLIENT_EMAIL }}" >> BACKEND/authentication-service/.env
+          echo "FIREBASE_CLIENT_ID=${{ secrets.FIREBASE_CLIENT_ID }}" >> BACKEND/authentication-service/.env
+          echo "FIREBASE_AUTH_URI=${{ secrets.FIREBASE_AUTH_URI }}" >> BACKEND/authentication-service/.env
+          echo "FIREBASE_TOKEN_URI=${{ secrets.FIREBASE_TOKEN_URI }}" >> BACKEND/authentication-service/.env
 
-      - run: cd BACKEND/authentication/ && docker build -t officialrashid/authentication-service:latest .
+      - run: cd BACKEND/authentication-service/ && docker build -t officialrashid/authentication-service:latest .
 
       - run: docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
         env:
@@ -58,4 +58,4 @@ jobs:
 
       - run: doctl kubernetes cluster kubeconfig save d2eb1850-298f-4292-849a-e0d45e846033
 
-      - run: kubectl rollout restart deployment authentication-deployment
+      - run: kubectl rollout restart deployment authentication-service-deployment
