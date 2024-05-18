@@ -1,0 +1,41 @@
+name: deploy-review-service
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - "BACKEND/review-service/**"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Set up environment variables for Review Service
+        env:
+          REVIEW_MONGO_URL: ${{ secrets.REVIEW_MONGO_URL }}
+          REVIEW_SERVER_PORT: ${{ secrets.REVIEW_SERVER_PORT }}
+  
+        run: |
+          echo "REVIEW_MONGO_URL=${REVIEW_MONGO_URL}" >> BACKEND/review-service/.env
+          echo "REVIEW_SERVER_PORT=${REVIEW_SERVER_PORT}" >> BACKEND/review-service/.env
+
+      - run: cd BACKEND/review-service/ && docker build -t officialrashid/review-service:latest .
+
+      - run: docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
+        env:
+          DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+          DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+
+      - run: docker push officialrashid/review-service:latest
+
+      - uses: digitalocean/action-doctl@v2
+        with:
+          token: ${{ secrets.DIGITALOCEAN_TOKEN }}
+
+      - run: doctl kubernetes cluster kubeconfig save d2eb1850-298f-4292-849a-e0d45e846033
+
+      - run: kubectl rollout restart deployment review-deployment

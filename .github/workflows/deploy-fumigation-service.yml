@@ -1,0 +1,61 @@
+name: deploy-fumigation-service
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - "BACKEND/fumigation-service/**"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Set up environment variables for Fumigation Service
+        env:
+          ACCESS_TOKEN_SECRET: ${{ secrets.ACCESS_TOKEN_SECRET }}
+          FUMIGATION_MONGO_URL: ${{ secrets.FUMIGATION_MONGO_URL }}
+          FUMIGATION_SERVER_PORT: ${{ secrets.FUMIGATION_SERVER_PORT }}
+          NODEMAILER_GMAIL: ${{ secrets.NODEMAILER_GMAIL }}
+          NODEMAILER_PASS: ${{ secrets.NODEMAILER_PASS }}
+          FIREBASE_PROJECT_ID: ${{ secrets.FIREBASE_PROJECT_ID }}
+          FIREBASE_PRIVATE_KEY_ID: ${{ secrets.FIREBASE_PRIVATE_KEY_ID }}
+          FIREBASE_PRIVATE_KEY: ${{ secrets.FIREBASE_PRIVATE_KEY }}
+          FIREBASE_CLIENT_EMAIL: ${{ secrets.FIREBASE_CLIENT_EMAIL }}
+          FIREBASE_CLIENT_ID: ${{ secrets.FIREBASE_CLIENT_ID }}
+          FIREBASE_AUTH_URI: ${{ secrets.FIREBASE_AUTH_URI }}
+          FIREBASE_TOKEN_URI: ${{ secrets.FIREBASE_TOKEN_URI }}
+
+        run: |
+          echo "ACCESS_TOKEN_SECRET=${ACCESS_TOKEN_SECRET}" >> BACKEND/fumigation-service/.env
+          echo "FUMIGATION_MONGO_URL=${FUMIGATION_MONGO_URL}" >> BACKEND/fumigation-service/.env
+          echo "FUMIGATION_SERVER_PORT=${FUMIGATION_SERVER_PORT}" >> BACKEND/fumigation-service/.env
+          echo "NODEMAILER_GMAIL=${NODEMAILER_GMAIL}" >> BACKEND/fumigation-service/.env
+          echo "NODEMAILER_PASS=${NODEMAILER_PASS}" >> BACKEND/fumigation-service/.env
+          echo "FIREBASE_PROJECT_ID=${FIREBASE_PROJECT_ID}" >> BACKEND/fumigation-service/.env
+          echo "FIREBASE_PRIVATE_KEY_ID=${FIREBASE_PRIVATE_KEY_ID}" >> BACKEND/fumigation-service/.env
+          echo "FIREBASE_PRIVATE_KEY=${FIREBASE_PRIVATE_KEY}" >> BACKEND/fumigation-service/.env
+          echo "FIREBASE_CLIENT_EMAIL=${FIREBASE_CLIENT_EMAIL}" >> BACKEND/fumigation-service/.env
+          echo "FIREBASE_CLIENT_ID=${FIREBASE_CLIENT_ID}" >> BACKEND/fumigation-service/.env
+          echo "FIREBASE_AUTH_URI=${FIREBASE_AUTH_URI}" >> BACKEND/fumigation-service/.env
+          echo "FIREBASE_TOKEN_URI=${FIREBASE_TOKEN_URI}" >> BACKEND/fumigation-service/.env
+
+      - run: cd BACKEND/fumigation-service/ && docker build -t officialrashid/fumigation-service:latest .
+
+      - run: docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
+        env:
+          DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+          DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+
+      - run: docker push officialrashid/fumigation-service:latest
+
+      - uses: digitalocean/action-doctl@v2
+        with:
+          token: ${{ secrets.DIGITALOCEAN_TOKEN }}
+
+      - run: doctl kubernetes cluster kubeconfig save d2eb1850-298f-4292-849a-e0d45e846033
+
+      - run: kubectl rollout restart deployment fumigation-deployment

@@ -17,7 +17,7 @@ export class  CoordinatorController{
     async OnGetCoordinatorData(req:Request,res:Response){
         let id:string=req.params.id
         const response=await this.coordinatorInteractor.getCoordinatorProfile(id)
-        console.log(response);
+      
         
        return  res.json(response)
     }

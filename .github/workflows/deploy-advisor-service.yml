@@ -1,0 +1,49 @@
+name: deploy-advisor-service
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - "BACKEND/advisor-service/**"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Set up environment variables for Advisor Service
+        env:
+          ADVISOR_MONGO_URL: ${{ secrets.ADVISOR_MONGO_URL }}
+          ADVISOR_SERVER_PORT: ${{ secrets.ADVISOR_SERVER_PORT }}
+          AWS_S3_BUCKET_NAME: ${{ secrets.AWS_S3_BUCKET_NAME }}
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_DEFAULT_REGION: ${{ secrets.AWS_DEFAULT_REGION }}
+  
+        run: |
+          echo "ADVISOR_MONGO_URL=${ADVISOR_MONGO_URL}" >> BACKEND/advisor-service/.env
+          echo "ADVISOR_SERVER_PORT=${ADVISOR_SERVER_PORT}" >> BACKEND/advisor-service/.env
+          echo "AWS_S3_BUCKET_NAME=${AWS_S3_BUCKET_NAME}" >> BACKEND/advisor-service/.env
+          echo "AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}" >> BACKEND/advisor-service/.env
+          echo "AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}" >> BACKEND/advisor-service/.env
+          echo "AWS_DEFAULT_REGION=${AWS_DEFAULT_REGION}" >> BACKEND/advisor-service/.env
+
+      - run: cd BACKEND/advisor-service/ && docker build -t officialrashid/advisor-service:latest .
+
+      - run: docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
+        env:
+          DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+          DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+
+      - run: docker push officialrashid/advisor-service:latest
+
+      - uses: digitalocean/action-doctl@v2
+        with:
+          token: ${{ secrets.DIGITALOCEAN_TOKEN }}
+
+      - run: doctl kubernetes cluster kubeconfig save d2eb1850-298f-4292-849a-e0d45e846033
+
+      - run: kubectl rollout restart deployment advisor-deployment

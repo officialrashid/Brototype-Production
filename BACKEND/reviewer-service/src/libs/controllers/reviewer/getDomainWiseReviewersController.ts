@@ -8,7 +8,7 @@ export default (dependencies: any) => {
     } = dependencies
     const getDomainWiseReviewersController= async (req: Request, res: Response) => {
         const {domain} = req.params
-        console.log(domain,"lllllllllllll(*******&&&&&");
+      
         
         const response = await getDomainWiseReviewers_Usecase(dependencies).executeFunction(domain)
         res.status(201).json(response);

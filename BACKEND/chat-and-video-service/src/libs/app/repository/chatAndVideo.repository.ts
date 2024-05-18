@@ -95,8 +95,7 @@ export default {
 
     checkHaveAlreadyChatCreated: async (initiatorId: string, recipientId: string) => {
         try {
-            console.log("initiatorId:", initiatorId);
-            console.log("recipientId:", recipientId);
+        
 
             if (!initiatorId || !recipientId) {
                 return { status: false, message: "Some issue in Chat Create" };

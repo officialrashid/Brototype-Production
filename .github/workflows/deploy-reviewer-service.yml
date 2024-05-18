@@ -1,0 +1,63 @@
+name: deploy-reviewer-service
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - "BACKEND/reviewer-service/**"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Set up environment variables for Reviewer Service
+        env:
+          ACCESS_TOKEN_SECRET: ${{ secrets.ACCESS_TOKEN_SECRET }}
+          REVIEWER_MONGO_URL: ${{ secrets.REVIEWER_MONGO_URL }}
+          REVIEWER_SERVER_PORT: ${{ secrets.REVIEWER_SERVER_PORT }}
+          S3_ACCESS_KEY_ID: ${{ secrets.S3_ACCESS_KEY_ID }}
+          S3_SECRET_ACCESS_KEY: ${{ secrets.S3_SECRET_ACCESS_KEY }}
+          S3_REVIEWER_BUCKET_NAME: ${{ secrets.S3_REVIEWER_BUCKET_NAME }}
+          FIREBASE_PROJECT_ID: ${{ secrets.FIREBASE_PROJECT_ID }}
+          FIREBASE_PRIVATE_KEY_ID: ${{ secrets.FIREBASE_PRIVATE_KEY_ID }}
+          FIREBASE_PRIVATE_KEY: ${{ secrets.FIREBASE_PRIVATE_KEY }}
+          FIREBASE_CLIENT_EMAIL: ${{ secrets.FIREBASE_CLIENT_EMAIL }}
+          FIREBASE_CLIENT_ID: ${{ secrets.FIREBASE_CLIENT_ID }}
+          FIREBASE_AUTH_URI: ${{ secrets.FIREBASE_AUTH_URI }}
+          FIREBASE_TOKEN_URI: ${{ secrets.FIREBASE_TOKEN_URI }}
+
+        run: |
+          echo "ACCESS_TOKEN_SECRET=${ACCESS_TOKEN_SECRET}" >> BACKEND/reviewer-service/.env
+          echo "REVIEWER_MONGO_URL=${REVIEWER_MONGO_URL}" >> BACKEND/reviewer-service/.env
+          echo "REVIEWER_SERVER_PORT=${REVIEWER_SERVER_PORT}" >> BACKEND/reviewer-service/.env
+          echo "S3_ACCESS_KEY_ID=${S3_ACCESS_KEY_ID}" >> BACKEND/reviewer-service/.env
+          echo "S3_SECRET_ACCESS_KEY=${S3_SECRET_ACCESS_KEY}" >> BACKEND/reviewer-service/.env
+          echo "S3_REVIEWER_BUCKET_NAME=${S3_REVIEWER_BUCKET_NAME}" >> BACKEND/reviewer-service/.env
+          echo "FIREBASE_PROJECT_ID=${FIREBASE_PROJECT_ID}" >> BACKEND/reviewer-service/.env
+          echo "FIREBASE_PRIVATE_KEY_ID=${FIREBASE_PRIVATE_KEY_ID}" >> BACKEND/reviewer-service/.env
+          echo "FIREBASE_PRIVATE_KEY=${FIREBASE_PRIVATE_KEY}" >> BACKEND/reviewer-service/.env
+          echo "FIREBASE_CLIENT_EMAIL=${FIREBASE_CLIENT_EMAIL}" >> BACKEND/reviewer-service/.env
+          echo "FIREBASE_CLIENT_ID=${FIREBASE_CLIENT_ID}" >> BACKEND/reviewer-service/.env
+          echo "FIREBASE_AUTH_URI=${FIREBASE_AUTH_URI}" >> BACKEND/reviewer-service/.env
+          echo "FIREBASE_TOKEN_URI=${FIREBASE_TOKEN_URI}" >> BACKEND/reviewer-service/.env
+
+      - run: cd BACKEND/reviewer-service/ && docker build -t officialrashid/reviewer-service:latest .
+
+      - run: docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
+        env:
+          DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+          DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+
+      - run: docker push officialrashid/reviewer-service:latest
+
+      - uses: digitalocean/action-doctl@v2
+        with:
+          token: ${{ secrets.DIGITALOCEAN_TOKEN }}
+
+      - run: doctl kubernetes cluster kubeconfig save d2eb1850-298f-4292-849a-e0d45e846033
+
+      - run: kubectl rollout restart deployment reviewer-deployment

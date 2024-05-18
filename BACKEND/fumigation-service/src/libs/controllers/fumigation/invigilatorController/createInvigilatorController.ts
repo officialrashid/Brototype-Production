@@ -8,7 +8,7 @@ export  default (dependencies: any) => {
 
     const createInvigilatorController = async (req: Request, res: Response) => {
       try{
-        console.log(req.body,"create invigilator contrllerrrr");
+       
         
         const response = await createInvigilator_Usecase(dependencies).executeFunction(req.body); // pass the data to usecase excute function
         res.status(201).json(response); // return response

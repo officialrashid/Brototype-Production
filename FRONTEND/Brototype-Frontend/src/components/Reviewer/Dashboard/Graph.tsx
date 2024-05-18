@@ -12,7 +12,7 @@ const Graph = () => {
       try {
         const response = await getReviewTakeCount(reviewerId);
         if (response.status === true) {
-          console.log(response.sortedCounts,"review count graph fetheddeeeee");
+  
           
           setReviewCount(response.sortedCounts);
         }

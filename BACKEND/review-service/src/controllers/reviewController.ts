@@ -11,7 +11,7 @@ class ReviewController {
      
 
             try{
-            console.log('review controller calleed=======');
+           
             
               
                 const response= await  this.reviewInteractor.scheduler(id,studentsData,coordinatorsData)

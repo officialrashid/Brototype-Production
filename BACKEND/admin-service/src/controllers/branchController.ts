@@ -10,7 +10,7 @@ export class BranchController{
     }
     async onCreateBranch(req:Request,res:Response){
         try{
-        console.log('branchhhhhh');
+
         
             let branchData:branchData={branchLocation:'',id:''}
             branchData=req.body
