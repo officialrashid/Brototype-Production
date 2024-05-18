@@ -1,0 +1,61 @@
+name: deploy-auth-srv
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - "BACKEND/authentication/**"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Set up environment variables
+        env:
+          ACCESS_TOKEN_SECRET: ${{ secrets.ACCESS_TOKEN_SECRET }}
+          AUTH_MONGO_URL: ${{ secrets.AUTH_MONGO_URL }}
+          NODEMAILER_GMAIL: ${{ secrets.NODEMAILER_GMAIL }}
+          NODEMAILER_PASS: ${{ secrets.NODEMAILER_PASS }}
+          AUTH_SERVER_PORT: ${{ secrets.AUTH_SERVER_PORT }}
+          FIREBASE_PROJECT_ID: ${{ secrets.FIREBASE_PROJECT_ID }}
+          FIREBASE_PRIVATE_KEY_ID: ${{ secrets.FIREBASE_PRIVATE_KEY_ID }}
+          FIREBASE_PRIVATE_KEY: ${{ secrets.FIREBASE_PRIVATE_KEY }}
+          FIREBASE_CLIENT_EMAIL: ${{ secrets.FIREBASE_CLIENT_EMAIL }}
+          FIREBASE_CLIENT_ID: ${{ secrets.FIREBASE_CLIENT_ID }}
+          FIREBASE_AUTH_URI: ${{ secrets.FIREBASE_AUTH_URI }}
+          FIREBASE_TOKEN_URI: ${{ secrets.FIREBASE_TOKEN_URI }}
+          
+        run: |
+          echo "ACCESS_TOKEN_SECRET=${{ secrets.ACCESS_TOKEN_SECRET }}" >> BACKEND/authentication/.env
+          echo "AUTH_MONGO_URL=${{ secrets.AUTH_MONGO_URL }}" >> BACKEND/authentication/.env
+          echo "NODEMAILER_GMAIL=${{ secrets.NODEMAILER_GMAIL }}" >> BACKEND/authentication/.env
+          echo "NODEMAILER_PASS=${{ secrets.NODEMAILER_PASS }}" >> BACKEND/authentication/.env
+          echo "AUTH_SERVER_PORT=${{ secrets.AUTH_SERVER_PORT }}" >> BACKEND/authentication/.env
+          echo "FIREBASE_PROJECT_ID=${{ secrets.FIREBASE_PROJECT_ID }}" >> BACKEND/authentication/.env
+          echo "FIREBASE_PRIVATE_KEY_ID=${{ secrets.FIREBASE_PRIVATE_KEY_ID }}" >> BACKEND/authentication/.env
+          echo "FIREBASE_PRIVATE_KEY=${{ secrets.FIREBASE_PRIVATE_KEY }}" >> BACKEND/authentication/.env
+          echo "FIREBASE_CLIENT_EMAIL=${{ secrets.FIREBASE_CLIENT_EMAIL }}" >> BACKEND/authentication/.env
+          echo "FIREBASE_CLIENT_ID=${{ secrets.FIREBASE_CLIENT_ID }}" >> BACKEND/authentication/.env
+          echo "FIREBASE_AUTH_URI=${{ secrets.FIREBASE_AUTH_URI }}" >> BACKEND/authentication/.env
+          echo "FIREBASE_TOKEN_URI=${{ secrets.FIREBASE_TOKEN_URI }}" >> BACKEND/authentication/.env
+
+      - run: cd BACKEND/authentication/ && docker build -t officialrashid/authentication-service:latest .
+
+      - run: docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
+        env:
+          DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+          DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+
+      - run: docker push officialrashid/authentication-service:latest
+
+      - uses: digitalocean/action-doctl@v2
+        with:
+          token: ${{ secrets.DIGITALOCEAN_TOKEN }}
+
+      - run: doctl kubernetes cluster kubeconfig save d2eb1850-298f-4292-849a-e0d45e846033
+
+      - run: kubectl rollout restart deployment authentication-deployment
