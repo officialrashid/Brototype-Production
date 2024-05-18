@@ -4,6 +4,8 @@ import VideoIcon from "../../../public/video project.png";
 import PracticalIcon from "../../../public/coding practocal icon.svg"
 import { motion } from "framer-motion";
 const Banner = () => {
+
+  
   const isSmDevice = window.matchMedia('(max-width: 768px)').matches;
 
   const sentenceVariants = {
