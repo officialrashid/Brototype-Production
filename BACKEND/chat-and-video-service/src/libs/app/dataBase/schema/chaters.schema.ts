@@ -7,7 +7,7 @@ const chatersSchema =new mongoose.Schema(
         firstName: { type: String, required: true },
         lastName: { type: String, required: true },
         phone: { type: Number},
-        imageUrl: { type: String, required: true }, // changed default value to empty string
+        imageUrl: { type: String, required: false }, // changed default value to empty string
         isOnline: {
             type: Boolean,
             default: false

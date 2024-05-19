@@ -36,7 +36,7 @@ const Students = ({socket}:{socket:any}) => {
             dispatch(setchatOppositPersonData(student));
             const chatData = {
                 initiatorId: superleadId,
-                recipientId: student.studentId || student.chaterId || student.reviewerId,
+                recipientId: student.studentId || student.chaterId || student.reviewerId || student._id,
                 chaters: student
             };
             const response = await createChat(chatData);

@@ -3,7 +3,7 @@ import useMutation from "../../../hooks/useMutation";
 import * as Yup from 'yup';
 import { useFormik } from "formik";
 import { useSelector, useDispatch } from 'react-redux';
-import { getAllAdvisors, getAllChatReviewers, getAllReviewers, getAllStudents, getAllSuperleads } from "../../../utils/methods/get";
+import { getAllStudents, getAllSuperleads } from "../../../utils/methods/get";
 import { createGroupChat } from "../../../utils/methods/post";
 import { toast } from "react-toastify";
 import GlobalContext from "../../../context/GlobalContext";
@@ -57,12 +57,9 @@ const CreateGroupChat = ({ isVisible, onClose }: { isVisible: boolean; onClose: 
       try {
         const students = await getAllStudents(superleadUniqueId);
         const superleads = await getAllSuperleads();
-        const advisors = await getAllAdvisors();
-        const reviewers = await  getAllChatReviewers()
-        console.log(advisors,"kkkkhhh");
-        console.log(reviewers,"kkkkrrrhhh");
+
         if (students?.status === true && superleads?.status === true) {
-          const combinedResponses = [...superleads.result, ...students.response,...advisors.response,...reviewers.response];
+          const combinedResponses = [...superleads.result, ...students.response];
           console.log(combinedResponses,"llllll");
           
           setGroupParticipantsDetails(combinedResponses);
@@ -115,8 +112,6 @@ const CreateGroupChat = ({ isVisible, onClose }: { isVisible: boolean; onClose: 
         admins.forEach((adminsId, index) => {
           formData.append(`admins[${index}]`, adminsId);
         });
-        console.log(selectedChatDetails,"jdfnvdsfbjhgfsbdhj");
-        
         const response = await createGroupChat(formData)
         console.log(response,"response in group chateee");
         if(response?.createGroupChat?.status===true){
@@ -135,16 +130,14 @@ const CreateGroupChat = ({ isVisible, onClose }: { isVisible: boolean; onClose: 
   const handleCheckboxChange = (chatDetails:any) => {
     const index = selectedChatDetails.findIndex((item) =>
       (item.studentId && item.studentId === chatDetails.studentId) ||
-      (item.superleadId && item.superleadId === chatDetails.superleadId)||
-      (item.reviewerId && item.reviewerId === chatDetails.reviewerId) ||
-      (item._id && item._id === chatDetails._id)
+      (item.superleadId && item.superleadId === chatDetails.superleadId)
     );
 
     if (index === -1) {
       // If the chatDetails is not already selected, add it to the selectedChatDetails state
       setSelectedChatDetails(prevState => [...prevState, chatDetails]);
       // Also add the corresponding studentId or superleadId to the participants state
-      setParticipants(prevState => [...prevState, chatDetails.studentId || chatDetails.superleadId || chatDetails.reviewerId || chatDetails._id]);
+      setParticipants(prevState => [...prevState, chatDetails.studentId || chatDetails.superleadId]);
     } else {
       // If the chatDetails is already selected, remove it from the selectedChatDetails state
       const updatedSelectedChatDetails = [...selectedChatDetails];
@@ -153,7 +146,7 @@ const CreateGroupChat = ({ isVisible, onClose }: { isVisible: boolean; onClose: 
 
       // Remove the corresponding studentId or superleadId from the participants state if it exists
       const updatedParticipants = participants.filter(id =>
-        id !== chatDetails.studentId && id !== chatDetails.superleadId && id !== chatDetails.reviewerId && id !== chatDetails._id
+        id !== chatDetails.studentId && id !== chatDetails.superleadId
       );
       setParticipants(updatedParticipants);
     }
@@ -268,7 +261,7 @@ const CreateGroupChat = ({ isVisible, onClose }: { isVisible: boolean; onClose: 
                           <tr key={index} className="bg-white  dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
                             <td className="flex items-center px-6 py-4 whitespace-nowrap">
                               <img className="w-8 h-8 rounded-full" src={chatDetails.imageUrl} alt={chatDetails.firstName} />
-                              {chatDetails.superleadId || chatDetails.studentId === superleadId || chatDetails.reviewerId === superleadId || chatDetails._id === superleadId? (
+                              {chatDetails.superleadId || chatDetails.studentId === superleadId ? (
                                 <div className="ps-3">
                                   <div className=" text-sm font-roboto">Your Account</div>
                                 </div>
@@ -287,16 +280,8 @@ const CreateGroupChat = ({ isVisible, onClose }: { isVisible: boolean; onClose: 
                               <td className="px-6 py-4 text-sm font-roboto item text-center">
                                 superlead
                               </td>
-                            ) : chatDetails.reviewerId ? (
-                              <td className="px-6 py-4 text-sm font-roboto item text-center">
-                               reviewer
-                            </td>
-                            ):chatDetails._id ? (
-                              <td className="px-6 py-4 text-sm font-roboto item text-center">
-                              advisor
-                           </td>
-                            ):null }
-                            {chatDetails.superleadId || chatDetails.studentId === superleadId || chatDetails.reviewerId === superleadId || chatDetails._id === superleadId ? (
+                            ) : null}
+                            {chatDetails.superleadId || chatDetails.studentId === superleadId ? (
                               <td className="px- py-4 text-sm font-roboto item text-center" >
                                 <input
                                   type="checkbox"

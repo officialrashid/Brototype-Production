@@ -17,6 +17,7 @@ import { Smile, Image } from 'lucide-react'
 import Emoji from "./emoji/emojis"
 import GlobalContext from "../../../context/GlobalContext";
 import Reviewers from "./Reviewers"
+import Advisor from "./Advisors";
 const Chat = () => {
 
     const socket: Socket<DefaultEventsMap, DefaultEventsMap> | null = useSocket();
@@ -138,7 +139,7 @@ const Chat = () => {
 
                 const messageData = {
                     senderId: superleadId,
-                    receiverId: student.studentId || student.chaterId || student.reviewerId,
+                    receiverId: student.studentId || student.chaterId || student.reviewerId || student._id,
                     content: message,
                     type: chatType
                 };
@@ -194,7 +195,7 @@ const Chat = () => {
             try {
                 const data = {
                     initiatorId: superleadId,
-                    recipientId: student?.chaterId || student.studentId || student.reviewerId
+                    recipientId: student?.chaterId || student.studentId || student.reviewerId || student._id
                 }
               
 
@@ -212,7 +213,7 @@ const Chat = () => {
         }
         fetchMessages();
 
-    }, [student?.studentId, student?.chaterId, superleadId, , reload,student.reviewerId]); // Only trigger when superleadId or student?.chaterId changes
+    }, [student?.studentId, student?.chaterId, superleadId, student._id, reload,student.reviewerId]); // Only trigger when superleadId or student?.chaterId changes
     useEffect(() => {
         const fetchGroupMessages = async () => {
             try {
@@ -312,7 +313,7 @@ const Chat = () => {
               
                 const messageData = {
                     senderId: superleadId,
-                    receiverId: student.studentId || student.chaterId || student.reviewerId,
+                    receiverId: student.studentId || student.chaterId || student.reviewerId || student._id,
                     content: voiceChat,
                     type: "voiceChat"
                 };
@@ -491,7 +492,9 @@ const Chat = () => {
                         <ChatTab socket={socket} />
                     ) : activeTab === "reviewers" ? (
                            <Reviewers socket={socket} />
-                    ) : null }
+                    ) : activeTab === "advisors" ?(
+                           <Advisor socket={socket} />
+                    ): null}
 
 
                 </div>

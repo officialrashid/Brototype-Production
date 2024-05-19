@@ -139,6 +139,8 @@ const Chat = () => {
                     content: message,
                     type: chatType
                 }
+                console.log("group message data", groupMessageData);
+                
                 socket?.emit('groupMessage', groupMessageData);
                 socket?.on('groupMessageResponse', (response: { status: boolean; message: any; }) => {
                     if (response.status === true) {
@@ -163,7 +165,7 @@ const Chat = () => {
             try {
                 const data = {
                     initiatorId: reviewerId,
-                    recipientId: student?.chaterId || student.superleadId || student.studentId
+                    recipientId: student?.chaterId || student.superleadId || student.studentId || student.reviewerId
                 }
                 const response = await getMessages(data)
                 if (response.getMessages.status === true) {

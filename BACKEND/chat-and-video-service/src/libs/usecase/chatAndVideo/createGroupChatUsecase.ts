@@ -26,7 +26,7 @@ export const createGroupChat_Usecase = (dependencies: any) => {
 
 
             const response = await Promise.all(parsedData.map(async (data: any, index: number) => {
-                const groupChatersId = data.superleadId || data.studentId;
+                const groupChatersId = data.superleadId || data.studentId || data.reviewerId || data._id;
 
 
                 const updateChatersExit = await chatAndVideoRepository.updateChatersExit(groupChatersId); // check chat user update or not

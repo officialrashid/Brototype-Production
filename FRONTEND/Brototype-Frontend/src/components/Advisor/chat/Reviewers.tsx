@@ -9,8 +9,7 @@ import { Socket } from "socket.io-client";
 const Students = ({socket}:{socket:any}) => {
     // const socket: Socket<DefaultEventsMap, DefaultEventsMap> | null = useSocket();
     const dispatch = useDispatch();
-    const superleadUniqueId: string = useSelector((state: any) => state?.superlead?.superleadData?.uniqueId) || localStorage.getItem("superleadUniqueId");
-    const superleadId: any = useSelector((state: any) => state?.superlead?.superleadData?.superleadId);
+    const advisorId:any = useSelector((state: RootState) => state?.advisor?.advisorData?.advisorId)
     const [reviewers, setReviewers] = useState([]);
     const [selectedStudentIndex, setSelectedStudentIndex] = useState(null);
 
@@ -37,8 +36,8 @@ const Students = ({socket}:{socket:any}) => {
             setSelectedStudentIndex(index);
             dispatch(setchatOppositPersonData(reviewer));
             const chatData = {
-                initiatorId: superleadId,
-                recipientId: reviewer.studentId || reviewer.chaterId || reviewer.reviewerId || reviewer._id,
+                initiatorId: advisorId,
+                recipientId: reviewer.studentId || reviewer.chaterId || reviewer.reviewerId || reviewer.superleadId,
                 chaters: reviewer
             };
             const response = await createChat(chatData);
