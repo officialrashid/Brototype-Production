@@ -10,7 +10,7 @@ import Account from '../components/Advisor/account/Account'
 import ExtPage from '../components/Advisor/extend-request/ExtPage'
 import Student from '../components/Advisor/students/Student'
 import Reviewer from '../components/Advisor/schedule /Reviewer'
-import Chat from "../components/Advisor/Chat/AdvisorChat"
+import AdvisorChat from "../components/Advisor/Chat/AdvisorChat"
 import Footer from '../components/Advisor/components/Footer'
 import Review from '../components/Advisor/reviews/Review'
 import { useSelector } from 'react-redux'
@@ -61,7 +61,7 @@ user?:   <SignIn/>
    <Route path='/scheduled-review/' element={<Review/>}></Route>
    <Route path='/extend-requests/' element={<ExtPage/>}></Route>
    <Route path='/students/' element={<Student/>}></Route>
-   <Route path='/chat/' element={<Chat/>}></Route>
+   <Route path='/chat' element={<AdvisorChat/>}></Route>
    <Route path='/tasks/' element={<TasksPage/>}></Route>
    <Route path='/start-review/:3213213' element={<JaasMeet roomId={advisorId}/>}></Route>
   
