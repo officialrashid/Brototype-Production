@@ -1,18 +1,18 @@
 
 import { kafka } from "../config/kafkaClient";
-import handleKafkaMessages from "../events/handleKafkaMessages"
-import eventEmitter from '../events/eventEmitter';
+import handleKafkaMessages from "./handleKafkaMessages"
+import eventEmitter from './eventEmitter';
 const consumer = kafka.consumer({
-    groupId: 'authentication-service'
+    groupId: 'superlead-service'
 });
 
-export const consumeAuthentication = async () => {
+export const consumeSuperlead = async () => {
     console.log("Consumer started");
     try {
         await consumer.connect();
         console.log('Consumer connected');
 
-        await consumer.subscribe({ topic: 'authentication', fromBeginning: true });
+        await consumer.subscribe({ topic: 'superlead', fromBeginning: true });
         await consumer.run({
             eachMessage: async ({ message }) => {
                 console.log(message, "ooooooooooooooooooooo");
@@ -30,13 +30,7 @@ export const consumeAuthentication = async () => {
                const response = await handleKafkaMessages(jsonData.data, messageType);
                 
                   console.log(response,"response coming return the consumer");
-                  
-
-                if (response) {
-                    console.log("response il kerriiiiiiiiii++++++++");
-                    
-                    eventEmitter.emit('authDataResponse', response);
-                }
+                
               
             }
 
@@ -47,4 +41,4 @@ export const consumeAuthentication = async () => {
 };
 
 // Call the consumeOrder function to start the consumer
-consumeAuthentication();
+consumeSuperlead();

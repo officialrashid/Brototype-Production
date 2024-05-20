@@ -95,7 +95,7 @@ export default {
 
     checkHaveAlreadyChatCreated: async (initiatorId: string, recipientId: string) => {
         try {
-        
+
 
             if (!initiatorId || !recipientId) {
                 return { status: false, message: "Some issue in Chat Create" };
@@ -228,14 +228,14 @@ export default {
             return { status: false, message: "Error in the update Chaters Exist" }
         }
     },
-     getAllChatRecipients : async (initiatorId: string): Promise<{ status: boolean; recipients?: any[]; message?: string; error?: any }> => {
+    getAllChatRecipients: async (initiatorId: string): Promise<{ status: boolean; recipients?: any[]; message?: string; error?: any }> => {
         try {
             if (!initiatorId) {
                 return { status: false, message: "Initiator ID not provided" };
             }
-    
+
             const initiatorObjectId = new Types.ObjectId(initiatorId);
-    
+
             // Get individual chat recipients
             const individualChats = await schema.Chat.aggregate([
                 {
@@ -276,13 +276,13 @@ export default {
                     }
                 }
             ]);
-  individualChats.map((data,index)=>{
-       console.log(data.participants,"pariticipantssss");
-       
-    });
-    
+            individualChats.map((data, index) => {
+                console.log(data.participants, "pariticipantssss");
+
+            });
+
             const individualRecipients: any[] = [];
-    
+
             for (const chat of individualChats) {
                 for (const participant of chat.participants) {
                     if (
@@ -292,21 +292,21 @@ export default {
                         const details = await schema.Chaters.findOne({
                             chaterId: participant.recipientId.equals(initiatorObjectId) ? participant.initiatorId : participant.recipientId
                         });
-    
+
                         // Check if details and lastMessage exist
                         if (details && chat.lastMessage) {
                             // Combine details and lastMessage into newData
                             const newData = { details, lastMessage: chat.lastMessage };
-    
+
                             // Push newData into individualRecipients
                             individualRecipients.push(newData);
                         }
-    
+
                         break; // Break after adding the first participant
                     }
                 }
             }
-    
+
             // Get group chat recipients where the initiator is a participant
             const groupChats = await schema.GroupChat.aggregate([
                 {
@@ -324,25 +324,25 @@ export default {
                 }
             ]);
 
-            
+
             // Combine individual and group chat recipients
             const allRecipients = [...individualRecipients, ...groupChats];
-         
-         
-            console.log(allRecipients,"all chat recipenetssssssssssssssssssssss");
-            
+
+
+            console.log(allRecipients, "all chat recipenetssssssssssssssssssssss");
+
             // Sort all recipients based on last message's updatedAt timestamp
             allRecipients.sort((a: any, b: any) => {
-               
+
                 // Extract the updatedAt timestamps for comparison
                 const aUpdatedAt = a.lastMessage ? new Date(a?.lastMessage?.updatedAt || a?.updatedAt).getTime() : 0;
                 const bUpdatedAt = b.lastMessage ? new Date(b?.lastMessage.updatedAt || b?.updatedAt).getTime() : 0;
-    
+
                 // Sort by updatedAt timestamp in descending order
                 return bUpdatedAt - aUpdatedAt;
             });
-           
-            
+
+
             return { status: true, recipients: allRecipients };
         } catch (error) {
             return { status: false, message: "Error in getting all chat recipients", error };
@@ -904,6 +904,29 @@ export default {
         } catch (error) {
             return { status: false, message: "Error occurred while updating group memeber unread message count" }
         }
+    },
+    updateChatProfile: async (data: any) => {
+        try {
+            if (!data) {
+                return { status: false, message: "chater image not updated" }
+            }
+            const chaterId = data.superleadId || data.studentId || data.advisorId || data.reviewerId
+            const response = await schema.Chaters.updateOne(
+                { chaterId: chaterId }, // Filter criteria
+                {
+                    $set: {
+                        imageUrl: data.imageUrl
+                    }
+                }, // Update operation
+                { new: true } // Options object
+            );
+            if (response) {
+                return { status: true, message: "update profile image  successfully" }
+            }else{
+                return {status:false,message:"chater image not updated"}
+            }
+        } catch (error) {
+           return {status:false,message:"Error getting from update chat user profile"}
+        }
     }
-
 }

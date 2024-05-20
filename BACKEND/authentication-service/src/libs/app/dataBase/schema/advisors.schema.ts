@@ -15,7 +15,8 @@ const advisorSchema = new mongoose.Schema({
         default: Date.now // Set default value to the current date
     },
     weeklyTask : {type:Number,default:0},
-    weeklyTaskList: []
+    weeklyTaskList: [],
+    profileUrl: {type:String , default:""},
 });
 const Advisors = mongoose.model("Advisors", advisorSchema);
 

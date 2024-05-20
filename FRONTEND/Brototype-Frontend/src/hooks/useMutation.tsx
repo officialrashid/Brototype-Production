@@ -1,7 +1,7 @@
 // useMutation.js
 
 import { useState } from "react";
-import axios from "../utils/baseUrl/studentBaseUrl";
+import axios from "../utils/baseUrl/reviewerBaseUrl";
 
 const useMutation = ({ url, method = 'POST' }) => {
   const [state, setState] = useState({

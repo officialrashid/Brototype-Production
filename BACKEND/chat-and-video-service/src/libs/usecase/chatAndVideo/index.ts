@@ -21,6 +21,7 @@ import {getUnreadMsgCount_Usecase} from "./getUnreadMsgCountUsecase";
 import {addGroupUnreadMessageCount_Usecase} from "./addGroupUnreadMessageCountUsecase";
 import {updateUnreadMsgZero_Usecase} from "./updateUnreadMsgZeroUsecase";
 import {updateGroupUnreadMsgZero_Usecase} from "./updateGroupUnreadMsgZeroUsecase";
+import {updateChatProfile_Usecase} from "./updateChatProfileUsecase"
 export{
 
     createChat_Usecase,
@@ -44,5 +45,6 @@ export{
     getUnreadMsgCount_Usecase,
     addGroupUnreadMessageCount_Usecase,
     updateUnreadMsgZero_Usecase,
-    updateGroupUnreadMsgZero_Usecase
+    updateGroupUnreadMsgZero_Usecase,
+    updateChatProfile_Usecase
 }

@@ -10,6 +10,7 @@ const reviewerSchema = new mongoose.Schema({
         type:String,
         default : 'Active'
     },
+    profileUrl: {type:String , default:""},
     createdDate: {
         type: Date,
         default: Date.now // Set default value to the current date

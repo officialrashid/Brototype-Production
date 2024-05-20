@@ -8,7 +8,7 @@ import expressConfig from "./express";
 import express from 'express';
 import dependencies from "./config/dependencies";
 import dotenv from 'dotenv'
-// import {consumeAuthentication} from "./events/authenticationConsumer"
+import {consumeSuperlead} from "./events/superleadConsumer"
 // Create an Express app instance
 const app = express();
 const router = express.Router()
@@ -27,6 +27,4 @@ app.use("/api", routes(dependencies));
 // Start the server
 serverConfig(server, config).startServer();
 
-// setInterval(async() => {
-//     await consumeAuthentication();
-// }, 10000);
+consumeSuperlead()

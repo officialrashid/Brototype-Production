@@ -10,7 +10,7 @@ import dependencies from "./config/dependencies";
 import socketConnection from "../src/socket.io/socket.io";
 import { Server } from "socket.io";
 import dotenv from "dotenv"
-// import {consumeAuthentication} from "./events/authenticationConsumer"
+import {consumeChat} from "./events/chatConsumer"
 // Create an Express app instance
 const app = express();
 const router = express.Router()
@@ -30,8 +30,8 @@ app.use("/api", routes(dependencies));
 
 const socketServer = serverConfig(server, config).startServer();
 
-// setInterval(async() => {
-//     await consumeAuthentication();
-// }, 10000);
+
+consumeChat()
+
 socketConnection(io);
   

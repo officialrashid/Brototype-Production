@@ -5,6 +5,7 @@ import { format } from 'date-fns'
 import admin from 'firebase-admin';
 import firebaseAccountCredentials from '../../../../brototype-29983-firebase-adminsdk-9qeji-41b48a5487'
 import superlead from "../../controllers/superlead";
+import { superleadProducer } from "../../../events/superleadProducer";
 
 const serviceAccount = firebaseAccountCredentials as admin.ServiceAccount
 admin.initializeApp({
@@ -62,11 +63,25 @@ export default {
           },
           { new: true }
         );
+        const updateData = {
+          imageUrl : data.imageUrl,
+          superleadId : data.superleadId
 
+        }
+        const updateAuthSchema = await superleadProducer(updateData, "authentication", "superleadUpdateProfile")
+        const updateChatSchema = await superleadProducer(updateData, "chat", "UpdateChatProfile")
         return updatedProfile;
+
       } else {
+        const updateData = {
+          imageUrl : data.imageUrl,
+          superleadId : data.superleadId
+
+        }
         // If profile doesn't exist, create a new profile
         const newProfile = await schema.Superlead.create(data);
+        const updateAuthSchema = await superleadProducer(updateData, "authentication", "superleadUpdateProfile")
+        const updateChatSchema = await superleadProducer(updateData, "chat", "UpdateChatProfile")
         return newProfile;
       }
     } catch (err) {
@@ -118,7 +133,13 @@ export default {
           }
         }
       );
+      const updateData = {
+        imageUrl : data.imageUrl,
+        superleadId : data.superleadId
 
+      }
+      const updateAuthSchema = await superleadProducer(updateData, "authentication", "superleadUpdateProfile")
+      const updateChatSchema = await superleadProducer(updateData, "chat", "UpdateChatProfile")
       if (!updatedProfile) {
         return { status: false, message: "Profile not updated" };
       } else {

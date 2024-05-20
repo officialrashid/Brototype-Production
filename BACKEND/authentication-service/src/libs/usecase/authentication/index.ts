@@ -29,7 +29,9 @@ import {advisorTasks_Usecase} from "./advisorTasksUsecase";
 import {advisorGoogleLogin_Usecase} from "./advisorGoogleLoginUsecase";
 import {studentGoogleLogin_Usecase} from "./studentGoogleLoginUsecase";
 import {reviewerGoogleLogin_Usecase} from "./reviewerGoogleLoginUsecase";
-import {superleadGoogleLogin_Usecase} from "./superleadGoogleLoginUsecase"
+import {superleadGoogleLogin_Usecase} from "./superleadGoogleLoginUsecase";
+import { superleadImageUpdate_Usecase } from "./superleadImageUpdateUsecase";
+import {reviewerImageUpdate_Usecase} from "./reviewerImageUpdateUsecase"
 export{
     createInvigilator_Usecase,
     checkStudentUniqueId_Usecase,
@@ -62,5 +64,7 @@ export{
     advisorGoogleLogin_Usecase,
     studentGoogleLogin_Usecase,
     reviewerGoogleLogin_Usecase,
-    superleadGoogleLogin_Usecase
+    superleadGoogleLogin_Usecase,
+    superleadImageUpdate_Usecase,
+    reviewerImageUpdate_Usecase
 }

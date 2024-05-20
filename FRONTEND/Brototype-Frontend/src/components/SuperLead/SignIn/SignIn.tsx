@@ -51,8 +51,10 @@ const SignIn = () => {
             const uniqueId = response?.data?.response?.superlead?.uniqueId
             const otpData = {
               superleadId: response?.data?.response?.superlead?._id,
+              name : response?.data?.response?.superlead?.name,
               accessToken: response?.data?.response?.accessToken,
               customToken: response?.data?.response?.customToken,
+              imageUrl : response?.data?.response?.superlead?.imageUrl ? response?.data?.response?.superlead?.imageUrl : "/defaultPhoto.png",
               phone: phone,
               uniqueId:uniqueId
             }
@@ -117,7 +119,8 @@ const SignIn = () => {
                   phone : response?.data?.response?.superlead.phone,
                   accessToken: response?.data?.response?.accessToken,
                   customToken: response?.data?.response?.customToken,
-                  uniqueId : response?.data?.response?.superlead?.uniqueId
+                  uniqueId : response?.data?.response?.superlead?.uniqueId,
+                  imageUrl : response?.data?.response?.superlead?.imageUrl
               }
               let superlead = "superlead"
               localStorage.setItem('superleadIdToken',idToken)

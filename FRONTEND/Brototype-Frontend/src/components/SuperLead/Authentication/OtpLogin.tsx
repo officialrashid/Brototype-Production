@@ -12,9 +12,11 @@ import 'react-toastify/dist/ReactToastify.css';
 interface OtpData {
     otpData: any;
     superleadId: string;
+    imageUrl :string
     phone: number;
     customToken: string;
     accessToken: string;
+    name : string;
     // ... other properties
 }
 declare global {
@@ -39,6 +41,8 @@ const ReviewerOtpPage: FunctionComponent = () => {
     const otpData: OtpData = useSelector((state: RootState) => state.superlead);
     let phone: React.SetStateAction<string>;
     const superleadIdRef = useRef<string | null>(null);
+    const imageUrlRef = useRef<string | null>(null);
+    const nameRef = useRef<string | null>(null);
     const accessTokenRef = useRef<string | null>(null);
     const customTokenRef = useRef<string | null>(null);
     const uniqueIdRef = useRef<string | null>(null);
@@ -48,6 +52,8 @@ const ReviewerOtpPage: FunctionComponent = () => {
   
         localStorage.removeItem('otpSent')
         superleadIdRef.current = otpData?.superleadData?.superleadId;
+        imageUrlRef.current = otpData?.superleadData?.imageUrl;
+        nameRef.current = otpData?.superleadData?.name;
         phone = otpData.superleadData.phone;
         customTokenRef.current = otpData.superleadData.customToken;
         accessTokenRef.current = otpData.superleadData.accessToken;
@@ -94,6 +100,8 @@ const ReviewerOtpPage: FunctionComponent = () => {
             const confirmationResult = await signInWithPhoneNumber(auth, formatPh, appVerifier);
             window.confirmationResult = confirmationResult;
             superleadIdRef.current = otpData?.superleadData?.superleadId;
+            imageUrlRef.current = otpData?.superleadData?.imageUrl;
+            nameRef.current = otpData?.superleadData?.name;
             customTokenRef.current = otpData?.superleadData?.customToken;
             accessTokenRef.current = otpData?.superleadData?.accessToken;
             uniqueIdRef.current =  otpData?.superleadData?.uniqueId;
@@ -145,7 +153,9 @@ const ReviewerOtpPage: FunctionComponent = () => {
                         superleadId: superleadIdRef.current,
                         accessToken: accessTokenRef.current,
                         customToken: customTokenRef.current,
-                        uniqueId : uniqueIdRef.current
+                        uniqueId : uniqueIdRef.current,
+                        imageUrl : imageUrlRef.current,
+                        name : nameRef.current
                     }
                     console.log(superleadData,"reviewerData comingggg");
                     

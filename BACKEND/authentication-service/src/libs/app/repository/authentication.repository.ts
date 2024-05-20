@@ -904,6 +904,50 @@ superleadGoogleLogin : async  (email:string)=>{
   } catch (error) {
      return {status:false,message:"Error Getting From superlead Google Login"}
   }
+},
+superleadImageUpdate : async (data:any) =>{
+   try {
+     if(!data){
+      return {status:false,message:"superlead image not updated"}
+     }
+     const response = await schema.Superleads.updateOne(
+      { _id: data.superleadId }, // Filter criteria
+      {
+        $set: {
+          profileUrl: data.imageUrl
+        }
+      }, // Update operation
+      { new: true } // Options object
+    );
+    if (response) {
+      return { status: true, message: "update profile image  successfully" }
+    }
+   } catch (error) {
+     return {status:false,message:"Error getting from superlead update image"}
+   }
+},
+reviewerImageUpdate : async (data:any) =>{
+  try {
+    if(!data){
+     return {status:false,message:"superlead image not updated"}
+    }
+    console.log(data,"data coming  in a reviewer image update case section");
+    
+    const response = await schema.Reviewers.updateOne(
+     { _id: data.reviewerId }, // Filter criteria
+     {
+       $set: {
+         profileUrl: data.imageUrl
+       }
+     }, // Update operation
+     { new: true } // Options object
+   );
+   if (response) {
+     return { status: true, message: "update profile image  successfully" }
+   }
+  } catch (error) {
+    return {status:false,message:"Error getting from superlead update image"}
+  }
 }
 
 }

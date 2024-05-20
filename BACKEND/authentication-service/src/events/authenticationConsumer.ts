@@ -34,6 +34,12 @@ export const consumeAuthentication = async () => {
                     const response = await handleKafkaMessages(jsonData.data, messageType);
                 } else if (messageType === "advisors-task") {
                     const response = await handleKafkaMessages(jsonData.data, messageType);
+                } else if(messageType === "superleadUpdateProfile"){
+                    const response = await handleKafkaMessages(jsonData.data, messageType);  
+                } else if (messageType === "reviewerUpdateProfile"){
+                    console.log("consumeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",jsonData.data);
+                    
+                    const response = await handleKafkaMessages(jsonData.data, messageType);   
                 }
                 // Call handleMessage and wait for it to complete
                 const response = await handleKafkaMessages(jsonData.data, messageType);

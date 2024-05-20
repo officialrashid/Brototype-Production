@@ -1,18 +1,18 @@
 
 import { kafka } from "../config/kafkaClient";
-import handleKafkaMessages from "../events/handleKafkaMessages"
-import eventEmitter from '../events/eventEmitter';
+import handleKafkaMessages from "./handleKafkaMessages"
+import eventEmitter from './eventEmitter';
 const consumer = kafka.consumer({
-    groupId: 'authentication-service'
+    groupId: 'chat-service'
 });
 
-export const consumeAuthentication = async () => {
+export const consumeChat = async () => {
     console.log("Consumer started");
     try {
         await consumer.connect();
         console.log('Consumer connected');
 
-        await consumer.subscribe({ topic: 'authentication', fromBeginning: true });
+        await consumer.subscribe({ topic: 'chat', fromBeginning: true });
         await consumer.run({
             eachMessage: async ({ message }) => {
                 console.log(message, "ooooooooooooooooooooo");
@@ -47,4 +47,4 @@ export const consumeAuthentication = async () => {
 };
 
 // Call the consumeOrder function to start the consumer
-consumeAuthentication();
+consumeChat();

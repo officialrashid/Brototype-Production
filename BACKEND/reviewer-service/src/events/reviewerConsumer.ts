@@ -32,11 +32,7 @@ export const consumeReviewer = async () => {
                   console.log(response,"response coming return the consumer");
                   
 
-                if (response) {
-                    console.log("response il kerriiiiiiiiii++++++++");
-                    
-                    eventEmitter.emit('authDataResponse', response);
-                }
+           
               
             }
 

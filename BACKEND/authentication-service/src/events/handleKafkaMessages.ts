@@ -4,6 +4,8 @@ import {getReviewAdvisors_Usecase} from "../libs/usecase"
 import { getReviewStudents_Usecase } from "../libs/usecase";
 import {updateManifestDetails_Usecase} from "../libs/usecase";
 import { advisorTasks_Usecase } from "../libs/usecase";
+import { superleadImageUpdate_Usecase } from "../libs/usecase";
+import { reviewerImageUpdate_Usecase } from "../libs/usecase";
 const handleKafkaMessages = async (data: string, type: string) => {
   console.log(data,type);
   
@@ -51,6 +53,31 @@ const handleKafkaMessages = async (data: string, type: string) => {
   if(type==="advisors-task"){
     const useCaseInstance = advisorTasks_Usecase(dependencies);
     if (useCaseInstance) {
+      const response = await useCaseInstance.executeFunction(data);
+      // return {response,reviewStudentsResponse};
+    }else{
+      // Handle the case when checkStudentUniqueId_Usecase is null
+      console.error("checkStudentUniqueId_Usecase is null");
+      return null; // Or handle the error according to your needs
+    }
+  }
+  if(type==="superleadUpdateProfile"){
+    const useCaseInstance = superleadImageUpdate_Usecase(dependencies);
+    if (useCaseInstance) {
+      const response = await useCaseInstance.executeFunction(data);
+      // return {response,reviewStudentsResponse};
+    }else{
+      // Handle the case when checkStudentUniqueId_Usecase is null
+      console.error("checkStudentUniqueId_Usecase is null");
+      return null; // Or handle the error according to your needs
+    }
+  }
+  if(type==="reviewerUpdateProfile"){
+    console.log(data,"datssssss from typeeee");
+    
+    const useCaseInstance = reviewerImageUpdate_Usecase(dependencies);
+    if (useCaseInstance) {
+      console.log(data,"datssssss from instanceee");
       const response = await useCaseInstance.executeFunction(data);
       // return {response,reviewStudentsResponse};
     }else{

@@ -34,6 +34,7 @@ export default {
         }
         if (updatedProfile) {
           const updateAuthentication = await studentProducer(authUpdateData, "authentication", "updateProfile")
+          const updateChatSchema = await studentProducer(authUpdateData,"chat","UpdateChatProfile")
         }
         return updatedProfile;
       } else {
@@ -44,7 +45,9 @@ export default {
         }
         const newProfile = await schema.Manifest.create(profileData);
         if (newProfile) {
+
           const updateAuthentication = await studentProducer(authUpdateData, "authentication", "updateProfile")
+          const updateChatSchema = await studentProducer(authUpdateData,"chat","UpdateChatProfile")
         }
 
         return newProfile;

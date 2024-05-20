@@ -27,6 +27,4 @@ app.use("/api", routes(dependencies));
 // Start the server
 serverConfig(server, config).startServer();
 
-// setInterval(async() => {
-//     await consumeAuthentication();
-// }, 10000);
+consumeReviewer()

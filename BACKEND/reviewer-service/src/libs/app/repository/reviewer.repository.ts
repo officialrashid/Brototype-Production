@@ -345,11 +345,22 @@ export default {
           },
           { new: true }
         );
-
+        const updateData = {
+          imageUrl : profileData.imageUrl,
+          reviewerId : profileData.reviewerId
+        }
+        const updateAuthSchema = await reviewerProducer(updateData,"authentication","reviewerUpdateProfile")
+        const updateChatSchema = await reviewerProducer(updateData,"chat","UpdateChatProfile")
         return updatedProfile;
       } else {
+        const updateData = {
+          imageUrl : profileData.imageUrl,
+          reviewerId : profileData.reviewerId
+        }
         // If profile doesn't exist, create a new profile
         const newProfile = await schema.Profile.create(profileData);
+        const updateAuthSchema = await reviewerProducer(updateData,"authentication","reviewerUpdateProfile")
+        const updateChatSchema = await reviewerProducer(updateData,"chat","UpdateChatProfile")
         return newProfile;
       }
     } catch (err) {
