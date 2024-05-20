@@ -462,7 +462,7 @@ const Chat = () => {
                 <div className="border-r w-2/6 bg-white ">
                     <div className="m-5 flex gap-3">
                         <div>
-                            <img src="/profile.jpeg" alt="" className="w-10 h-10 rounded-full" />
+                            <img src="/profile.jpeg" alt="" className="w-10 h-10 rounded-full object-cover" />
                         </div>
                         <div className="relative flex gap-3">
                             <div className="absolute m-3 mt-2">
@@ -507,13 +507,13 @@ const Chat = () => {
                                     {student.groupName ? (
                                         <>
                                             <div className="border h-12 w-12 rounded-full  mt-3" onClick={() => handleGroupInfo(student?._id)}>
-                                                <img src={student?.profile} alt="" className="rounded-full" />
+                                                <img src={student?.profile} alt="" className="w-full h-full  rounded-full object-cover" />
                                             </div>
 
                                         </>
                                     ) : (
-                                        <div className="border h-12 w-12 rounded-full  mt-3">
-                                            <img src={student?.imageUrl} alt="" className="rounded-full" />
+                                        <div className="border h-12 w-12 rounded-full  mt-3 ">
+                                            <img src={student?.imageUrl} alt="" className="w-full h-full  rounded-full object-cover" />
                                         </div>
                                     )}
 

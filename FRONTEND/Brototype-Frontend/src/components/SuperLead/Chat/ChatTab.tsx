@@ -186,7 +186,7 @@ const ChatTab = ({ socket }: { socket: any }) => {
                     {user.groupName ? (
                         <div className="flex gap-2 m-2 mt-">
                             <div className="border h-8 w-8 rounded-full mt-2">
-                                <img src={user.profile} alt="" className="rounded-full" />
+                                <img src={user.profile} alt="" className="rounded-full object-cover" />
                             </div>
                             <div className="mt-1 mb-0">
                                 <span className={`text-sm font-medium font-roboto ${selectedStudentIndex === index ? 'text-white' : 'text-dark'}`}>
@@ -204,7 +204,7 @@ const ChatTab = ({ socket }: { socket: any }) => {
                     ) : (
                         <div className="flex gap-2 m-2 mt-">
                             <div className="border h-8 w-8 rounded-full mt-2 relative">
-                                <img src={user.details.imageUrl} alt="" className="rounded-full" />
+                                <img src={user.details.imageUrl} alt="" className="rounded-full object-cover" />
                                 {online.some(onlineUser => onlineUser.chaterId === user?.details?.chaterId && onlineUser.isOnline === true) ? (
                                 <div className="absolute bottom-0 right-0 rounded-full w-3 h-3 bg-green-400 border-2 border-white"></div>
                                 ) : (

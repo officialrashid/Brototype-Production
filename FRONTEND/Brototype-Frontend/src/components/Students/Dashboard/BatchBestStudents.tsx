@@ -35,8 +35,8 @@ const BatchBestStudents = () => {
                 const studentName = studentData[2]?.trim().split(": ")[1];
                 if (imageUrl && studentName) {
                   return (
-                    <div key={index} className="flex items-center">
-                      <img src={imageUrl} alt="" className="w-8 h-8 rounded-full mt-3" />
+                    <div key={index} className="flex items-center ">
+                      <img src={imageUrl} alt="" className="w-8 h-8  object-cover  rounded-full mt-3 " />
                       <p className="text-sm text-gray-400 font-roboto ml-3 mt-3">{studentName}</p>
                     </div>
                   );
@@ -58,7 +58,7 @@ const BatchBestStudents = () => {
               return !imageUrl || !studentName;
             }) && (
               <div className="flex justify-center mb-0">
-                <img src="/noBestStudent.jpg" alt="" className="w-64 h-60 mb-0" />
+                <img src="/noBestStudent.jpg" alt="" className="w-64 h-60 mb-0  object-cover" />
                 <p className="item text-center text-sm font-roboto ">No Best 5 Students In Your Batch </p>
               </div>
             )}

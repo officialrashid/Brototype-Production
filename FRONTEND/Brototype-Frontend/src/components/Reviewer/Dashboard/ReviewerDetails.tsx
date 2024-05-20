@@ -66,7 +66,7 @@ const ReviewerDetails=()=>{
 </div>
   </div>
     <div className=" border-gray-400  h-20 w-20  flex  items-center justify-center"  >
-    <img src={profileInfo.imageUrl} className=" h-20 w-20" alt="" />
+    <img src={profileInfo.imageUrl} className="h-20 w-20 object-cover" alt="" />
   
   </div>
 

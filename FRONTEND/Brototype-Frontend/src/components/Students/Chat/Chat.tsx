@@ -411,11 +411,11 @@ const Chat = () => {
                                 <div className="flex gap-2 m-2">
                                     {student.groupName ? (
                                         <div className="border h-12 w-12 rounded-full  mt-3" onClick={() => handleGroupInfo(student?._id)}>
-                                            <img src={student?.profile} alt="" className="rounded-full" />
+                                            <img src={student?.profile} alt="" className="rounded-full w-full h-full object-cover" />
                                         </div>
                                     ) : (
                                         <div className="border h-12 w-12 rounded-full  mt-3">
-                                            <img src={student?.imageUrl} alt="" className="rounded-full" />
+                                            <img src={student?.imageUrl} alt="" className="rounded-full w-full h-full object-cover" />
                                         </div>
                                     )}
 

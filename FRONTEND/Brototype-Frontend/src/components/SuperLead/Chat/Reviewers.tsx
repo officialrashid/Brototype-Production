@@ -80,7 +80,7 @@ const Students = ({socket}:{socket:any}) => {
                 >
                     <div className="flex gap-2 m-2 mt-">
                         <div className="border h-8 w-8 rounded-full mt-2 ">
-                            <img src={reviewer.imageUrl} alt="" className="rounded-full " />
+                            <img src={reviewer.imageUrl} alt="" className="w-full h-full  rounded-full object-cover " />
                         </div>
                         <div className="mt-1 mb-0">
                             <span className={`text-sm font-medium font-roboto ${selectedStudentIndex === index ? 'text-white' : 'text-dark'}`}>

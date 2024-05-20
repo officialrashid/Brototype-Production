@@ -83,9 +83,9 @@ const handleProfileUpdateSuccess = () =>{
           <div className='ml-10 mt-5 w-62rem h-28 rounded-md border border-gray-300 relative'>
             <div className='flex'>
               {profileInfo?.imageUrl ? (
-                <img src={profileInfo.imageUrl} alt="" className='rounded-full w-16 h-16 ml-5 mt-5' />
+                <img src={profileInfo.imageUrl} alt="" className='rounded-full w-16 h-16 ml-5 mt-5 object-cover' />
               ) : (
-                <img src="" alt="" className='rounded-full w-16 h-16 ml-5 mt-5' />
+                <img src="" alt="" className='rounded-full w-16 h-16 ml-5 mt-5 object-cover' />
               )}
 
               <div className='flex flex-1 flex-col ml-8 mt-5'>
@@ -330,7 +330,7 @@ const handleProfileUpdateSuccess = () =>{
               <div className='flex flex-col'>
                 <p className='text-sm text-gray-400 font-roboto'>Your Id Card</p>
                 {profileInfo?.governmentIdImageUrl ? (
-                <img src={profileInfo?.governmentIdImageUrl} alt="" className='w-72 h-36 mt-3' />
+                <img src={profileInfo?.governmentIdImageUrl} alt="" className='w-72 h-36 mt-3 object-cover rounded-md' />
                 ) : (
                   <img src="https://aadhaarkyc.io/wp-content/uploads/2018/09/aadhaar_cc_926a3223b45c31aa2cfbeca9ea6028d6.png" alt="" className='w-72 h-36 mt-3' />
                 )}

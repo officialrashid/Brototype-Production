@@ -474,7 +474,7 @@ const StudentList = () => {
                                         filteredData.map((student, index) => (
                                             <tr key={index} className="border-b dark:border-gray-700 item text-center">
                                                 <th scope="row" className="flex items-center px-4 py-2 font-medium text-gray-900 whitespace-nowrap dark:text-white text-sm font-roboto">
-                                                    <img src={student?.imageUrl} alt="" className="w-auto h-8 mr-3 rounded-full" />
+                                                    <img src={student?.imageUrl} alt="" className="w-8 h-8 mr-3 rounded-full object-cover" />
                                                     {student?.firstName} {student?.lastName}
                                                 </th>
                                                 <td className="px-4 py-3 text-ms font-roboto">{student?.batch}</td>
@@ -530,7 +530,7 @@ const StudentList = () => {
                                         studentsData.map((student, index) => (
                                             <tr key={index} className="border-b dark:border-gray-700 item text-center">
                                                 <th scope="row" className="flex items-center px-4 py-2 font-medium text-gray-900 whitespace-nowrap dark:text-white text-sm font-roboto">
-                                                    <img src={student?.imageUrl} alt="" className="w-auto h-8 mr-3 rounded-full" />
+                                                    <img src={student?.imageUrl} alt="" className="w-8 h-8 mr-3 rounded-full object-cover" />
                                                     {student?.firstName} {student?.lastName}
                                                 </th>
                                                 <td className="px-4 py-3 text-ms font-roboto">{student?.batch}</td>

@@ -61,7 +61,7 @@ const ReviewerProfile = () => {
 
 </div>
 <div className=" h-24 w-24  border  rounded -mt-12 mx-auto   bg-white relative dark:bg-slate-200  overflow-hidden">
-<img src={profileInfo.imageUrl} alt="" className="h-24 2-24"/>
+<img src={profileInfo.imageUrl} alt="" className="w-full h-full object-cover "/>
 
   
  
