@@ -10,13 +10,13 @@ import Account from '../components/Advisor/account/Account'
 import ExtPage from '../components/Advisor/extend-request/ExtPage'
 import Student from '../components/Advisor/students/Student'
 import Reviewer from '../components/Advisor/schedule /Reviewer'
-import Chat from "../components/Advisor/Chat/Chat"
-import SignIn from '../components/Advisor/components/SignIn'
+import Chat from "../components/Advisor/Chat/Chat.tsx"
 import Footer from '../components/Advisor/components/Footer'
 import Review from '../components/Advisor/reviews/Review'
 import { useSelector } from 'react-redux'
 import JaasMeet from '../components/Advisor/jaasmeet/JaasMeet'
 import TasksPage from '../components/Advisor/task/TasksPage'
+import { RootState } from '../redux-toolkit/store'
 
 
 function App() {
