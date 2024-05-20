@@ -9,7 +9,7 @@ export const invigilatorLogin = async (data:invigilatorLogin): Promise<AxiosResp
    
     try{
   
-      const response = await axios.post('http://localhost:3002/api/fumigation/invigilator-login',data);
+      const response = await axios.post('https://brototypes.com/api/fumigation/invigilator-login',data);
       return response
     } catch(error){
       console.log("Error in the invigilatorLogin",error);
@@ -20,7 +20,7 @@ export const invigilatorLogin = async (data:invigilatorLogin): Promise<AxiosResp
   
   export const invigilatorGoogleLogin = async (email:string)=>{
       try{
-        const response= await axios.post('http://localhost:3002/api/fumigation/invigilator-google-login',email)
+        const response= await axios.post('https://brototypes.com/api/fumigation/invigilator-google-login',email)
         return response
       } catch (err){
         return {status:false,message:"Some issue in Google Sign in"}

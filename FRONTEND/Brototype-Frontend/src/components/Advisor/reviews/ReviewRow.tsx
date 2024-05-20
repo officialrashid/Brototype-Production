@@ -84,7 +84,7 @@ const bookStatus=false
 
 
 const data={reviewId,advisorId,meetLink}
-const response = await axios.patch('http://brototypes.com/review/update-meeting-link',data)
+const response = await axios.patch('https://brototypes.com/review/update-meeting-link',data)
 if(response){
   console.log(response);
   

@@ -283,7 +283,7 @@ const handleCommnField=()=>{
             const endTime = patternEndTime
             let type:string="Pattern"
             let invigilatorId="1234444"
-                  let response= await  axios.patch('http://localhost:3002/api/fumigation/add-students-mark',{startTime,endTime,type,fumigationType,invigilatorId,studentId,batchId})
+                  let response= await  axios.patch('https://brototypes.com/api/fumigation/add-students-mark',{startTime,endTime,type,fumigationType,invigilatorId,studentId,batchId})
                  
                   console.log(response);
             
@@ -366,7 +366,7 @@ const endTime =  arrayEndTime
 
   
      let invigilatorId="1234444"
-        let response= await  axios.patch('http://localhost:3002/api/fumigation/add-students-mark',{type,fumigationType,studentId,startTime,endTime,invigilatorId,batchId})
+        let response= await  axios.patch('https://brototypes.com/api/fumigation/add-students-mark',{type,fumigationType,studentId,startTime,endTime,invigilatorId,batchId})
        
         console.log(response,'arraymark');
   
@@ -440,7 +440,7 @@ try {
 
   
      let invigilatorId="1234444"
-        let response= await  axios.patch('http://localhost:3002/api/fumigation/add-students-mark',{type,fumigationType,studentId,startTime,endTime,invigilatorId,batchId,mark:commnMark})
+        let response= await  axios.patch('https://brototypes.com/api/fumigation/add-students-mark',{type,fumigationType,studentId,startTime,endTime,invigilatorId,batchId,mark:commnMark})
        
         console.log(response);
   
@@ -515,7 +515,7 @@ try {
 
   
      let invigilatorId="1234444"
-        let response= await  axios.patch('http://localhost:3002/api/fumigation/add-students-mark',{type,fumigationType,studentId,startTime,endTime,invigilatorId,batchId,mark:oopsMark})
+        let response= await  axios.patch('https://brototypes.com/api/fumigation/add-students-mark',{type,fumigationType,studentId,startTime,endTime,invigilatorId,batchId,mark:oopsMark})
        
         console.log(response);
   

@@ -52,7 +52,7 @@ const AddForm=({addForm,onClose})=>{
     try {
 console.log(values);
 
-      let response= await  axios.post('http://localhost:3002/api/fumigation/enquery',values)
+      let response= await  axios.post('https://brototypes.com/api/fumigation/enquery',values)
 
       console.log(response);
 

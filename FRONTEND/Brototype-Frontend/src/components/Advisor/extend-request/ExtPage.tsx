@@ -13,8 +13,8 @@ const ExtPage=()=>{
     const dispatch=useDispatch()
     //const  extendReqDatas=useSelector(state=>state?.review?.extendReqData)
     const extendReqDatas=[]
-   // const advisorId:any = useSelector((state: RootState) => state?.advisor?.advisorData?.advisorId);
-    const advisorId="65ed8fc3afcda5149bbf0166"
+   const advisorId:any = useSelector((state: RootState) => state?.advisor?.advisorData?.advisorId);
+    // const advisorId="65ed8fc3afcda5149bbf0166"
     const extendData=useSelector((state)=>state)
     const [filteredData,setFilteredData]=useState(extendReqDatas)
      const searchFn=(searInp:string)=>{

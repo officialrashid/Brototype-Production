@@ -46,7 +46,7 @@ console.log(students);
     
     const fetchStudent= ()=>{
         try{
-            axios.get('http://localhost:3002/api/fumigation/get-enquery').then(res=>{
+            axios.get('https://brototypes.com/api/fumigation/get-enquery').then(res=>{
 
             console.log(res.data.response,'from modal table');
             
@@ -70,7 +70,7 @@ console.log(students);
 
     console.log(batchId,studentId,"adddto batchhhhhhhh");
     
-         let response=await axios.patch('http://localhost:3002/api/fumigation/add-students',{batchId,studentId})
+         let response=await axios.patch('https://brototypes.com/api/fumigation/add-students',{batchId,studentId})
           console.log(batchId,studentId,"heleloo my bacth id,");
 
           if(response.status){

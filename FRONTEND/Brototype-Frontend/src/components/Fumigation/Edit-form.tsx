@@ -61,7 +61,7 @@ const validationSchema=Yup.object({
       
 console.log(values.hubLocation.trim());
 
-      let response= await  axios.post('http://localhost:3002/api/fumigation/create-batch',values)
+      let response= await  axios.post('https://brototypes.com/api/fumigation/create-batch',values)
 
       console.log(response);
 

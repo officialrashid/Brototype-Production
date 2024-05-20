@@ -20,7 +20,7 @@ const Scheduled=()=>{
 const dispatch=useDispatch()
     useEffect(()=>{
    const   getStudentDetails=async ()=>{
-        const studentData=await axios.get(`http://brototypes.com/review/assigned-reviews?coordinatorId=${advisorId}&type=schedule`)
+        const studentData=await axios.get(`https://brototypes.com/review/assigned-reviews?coordinatorId=${advisorId}&type=schedule`)
          console.log(studentData,'studenrntttthbcbhajbcjabjt');
          
        dispatch(getReviewData(studentData.data))
