@@ -10,7 +10,7 @@ import Account from '../components/Advisor/account/Account'
 import ExtPage from '../components/Advisor/extend-request/ExtPage'
 import Student from '../components/Advisor/students/Student'
 import Reviewer from '../components/Advisor/schedule /Reviewer'
-import Chat from '../components/Advisor/Chat/Chat'
+import Chat from "../components/Advisor/Chat/Chat"
 import SignIn from '../components/Advisor/components/SignIn'
 import Footer from '../components/Advisor/components/Footer'
 import Review from '../components/Advisor/reviews/Review'

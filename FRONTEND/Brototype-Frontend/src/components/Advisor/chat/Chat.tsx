@@ -18,6 +18,7 @@ import Emoji from "./emoji/emojis"
 import GlobalContext from "../../../context/GlobalContext";
 import Reviewers from "./Reviewers"
 import Superleads from "./Superleads";
+import { RootState } from "../../../redux-toolkit/store";
 const Chat = () => {
 
     const socket: Socket<DefaultEventsMap, DefaultEventsMap> | null = useSocket();
