@@ -1,10 +1,11 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getAllChatStudents, getAllStudents } from "../../../utils/methods/get";
 import { setchatOppositPersonData } from "../../../redux-toolkit/chatOppositPersonDataReducer";
 import { createChat } from "../../../utils/methods/post";
 import { useSocket } from "../../../hooks/useSocket";
 import { Socket } from "socket.io-client";
+import GlobalContext from "../../../context/GlobalContext";
 
 const Students = ({socket}:{socket:any}) => {
     // const socket: Socket<DefaultEventsMap, DefaultEventsMap> | null = useSocket();
@@ -16,7 +17,7 @@ const Students = ({socket}:{socket:any}) => {
     
     const [students, setStudents] = useState([]);
     const [selectedStudentIndex, setSelectedStudentIndex] = useState(null);
-
+    const { setClicked } = useContext(GlobalContext);
     useEffect(() => {
         const fetchStudents = async () => {
             const response = await getAllChatStudents();
@@ -29,14 +30,16 @@ const Students = ({socket}:{socket:any}) => {
         };
         fetchStudents();
     }, []);
-
+useEffect(()=>{
+  setClicked(false)
+},[])
     const handleStudentClick = async (index: number, student: any) => {
         try {
             if (!socket) {
                 console.error("Socket is null. Connection might not be established.");
                 return;
             }
-
+            setClicked(true)
             setSelectedStudentIndex(index);
             dispatch(setchatOppositPersonData(student));
             const initiatorData:any = {

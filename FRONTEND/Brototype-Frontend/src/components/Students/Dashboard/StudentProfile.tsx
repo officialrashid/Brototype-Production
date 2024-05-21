@@ -75,7 +75,7 @@ const StudentProfile = () => {
               </div>
             </div>
             <div className="border border-2px w-28 h-28 m-8 shadow-xl rounded-md absolute top-3 right-3">
-              <img src={manifestInfo?.imageUrl ?? "/profile.jpeg"} alt="" className="w-full h-full rounded-md object-cover" />
+              <img src={manifestInfo?.imageUrl ?? "/defaultPhoto.png"} alt="" className="w-full h-full rounded-md object-cover" />
             </div>
             </div>
       

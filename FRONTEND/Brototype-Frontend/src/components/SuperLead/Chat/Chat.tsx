@@ -18,6 +18,7 @@ import Emoji from "./emoji/emojis"
 import GlobalContext from "../../../context/GlobalContext";
 import Reviewers from "./Reviewers"
 import Advisor from "./Advisors";
+import { motion } from "framer-motion";
 const Chat = () => {
 
     const socket: Socket<DefaultEventsMap, DefaultEventsMap> | null = useSocket();
@@ -49,7 +50,7 @@ const Chat = () => {
     const [showEmojis, setShowEmojis] = useState(false)
     const [cursorPosition, setCursorPosition] = useState()
     const [online, setOnline] = useState([])
-    const { setUnreadReload } = useContext(GlobalContext);
+    const { setUnreadReload, clicked } = useContext(GlobalContext);
     // const inputRef: any = createRef()
     const inputRef = useRef(null);
     useEffect(() => {
@@ -502,7 +503,7 @@ const Chat = () => {
 
                 </div>
 
-                {student && (
+                {clicked && student ? (
                     <div className="  border-r w-full bg-white h-20 mb-" >
                         <div className="border-b ">
                             <div className="flex justify-between ">
@@ -580,7 +581,7 @@ const Chat = () => {
                                 {allMesage.map((message: any, index: number) => (
                                     message.type === "textChat" ? (
                                         <>
-                                            {message.senderFirstName && message.senderLastName ? (
+                                            {message.senderFirstName || message.senderLastName ? (
                                                 <div
                                                     key={index}
                                                     className={`flex gap-5 m-5  mb-0 mt-3 ${isSender(message) ? 'justify-end ml-48' : 'justify-start mr-48'}`}
@@ -632,7 +633,7 @@ const Chat = () => {
                                         </>
                                     ) : message.type === "voiceChat" ? (
                                         <>
-                                            {message.senderFirstName && message.senderLastName ? (
+                                            {message.senderFirstName || message.senderLastName ? (
                                                 <div
                                                     key={index}
                                                     className={`flex gap-5 m-5 mb-0 mt-10 ${isSender(message) ? 'justify-end' : 'justify-start'}`}
@@ -663,7 +664,7 @@ const Chat = () => {
                                         </>
                                     ) : message.type === "imageChat" ? (
                                         <>
-                                            {message.senderFirstName && message.senderLastName ? (
+                                            {message.senderFirstName || message.senderLastName ? (
                                                 <div
                                                     key={index}
                                                     className={`flex gap-5 m-5 mb-0 mt-10 ${isSender(message) ? 'justify-end' : 'justify-start'}`}
@@ -713,7 +714,7 @@ const Chat = () => {
                                         </div>
                                     ) : message.type === "emojiChat" ? (
                                         <>
-                                            {message.senderFirstName && message.senderLastName ? (
+                                            {message.senderFirstName || message.senderLastName ? (
                                                 <div
                                                     key={index}
                                                     className={`flex gap-5 m-5  mb-0 mt-3 ${isSender(message) ? 'justify-end ml-48' : 'justify-start mr-48'}`}
@@ -896,6 +897,22 @@ const Chat = () => {
 
 
 
+                    </div>
+
+
+
+                ) : (
+
+                    <div className="bg-white w-full flex flex-col items-center justify-center">
+                        <motion.div className="w-48 h-auto flex items-center justify-center"
+                            initial={{ y: 0 }}
+                            animate={{ y: [0, -10, 0] }}
+                            transition={{ duration: 1, repeat: Infinity }}
+                        >
+                            <img src="/NoChat.jpeg" alt="" className="w-full h-full rounded-md object-cover" />
+                        </motion.div>
+                        <p className="font-roboto font-bold text-xl ">Your Messages</p>
+                        <p className="font-roboto  text-sm text-gray-600">Send a message to start a chat.</p>
                     </div>
 
 

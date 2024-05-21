@@ -58,7 +58,7 @@ const StudentList = () => {
                         const studentData = studentDataMap[studentId];
     
                         // If student data exists, use it; otherwise, use default values
-                        const imageUrl = studentData ? studentData.imageUrl : 'https://demos.themeselection.com/sneat-bootstrap-html-admin-template/assets/img/avatars/1.png';
+                        const imageUrl = studentData ? studentData.imageUrl : '/defaultPhoto.png';
                         const currentWeek = studentData ? studentData.currentWeek : 0;
                         const domain = studentData ? studentData.domain : 'Not Update';
     

@@ -14,28 +14,28 @@ export default (dependencies:any)=>{
   
   const {profileUpdateController,getProfileController,updatePersonalDetailsController,updateAddressDetailsController,updateEducationDetailsController,getBacthwiseBestStdController,getWeeklyPerformanceController,getCourseCompletionController,getAllPerformanceController,getExtendDetailsController,requestExtentionController,getExtendRequestController,getReviewDetailsController,secondExtendRequestController,governmentIdUpdateController,getAllStudentsController,getPerPageStudentController,getAllChatStudentsController,addReviewResultController,getReviewStudentsController} = students_controller(dependencies) 
 
-  router.post('/profile-update',upload.single("image"),profileUpdateValidationRules,profileUpdateController)
+  router.post('/profile-update',jwtVerification(secretKey),upload.single("image"),profileUpdateValidationRules,profileUpdateController)
 
   // router.get('/get-profile/:studentId', jwtVerification(secretKey), getProfileController);
-  router.get('/get-profile/:studentId', getProfileController);
-  router.post('/update-personal-details',updatePersonalDetailsController)
-  router.post('/update-address-details',updateAddressDetailsController)
-  router.post('/update-education-details',updateEducationDetailsController)
-  router.get('/get-best-students/:batchId',getBacthwiseBestStdController)
-  router.get('/get-weekly-performance',getWeeklyPerformanceController)
-  router.get('/get-course-completion',getCourseCompletionController)
-  router.get('/get-all-performance',getAllPerformanceController)
-  router.get('/get-extend-details',getExtendDetailsController)
-  router.post('/request-extention',requestExtentionController)
-  router.get('/get-request-extend/:studentId',getExtendRequestController)
-  router.get('/get-review-details',getReviewDetailsController)
-  router.post('/second-extend-request/:extendId',secondExtendRequestController)
-  router.post('/update-governmentId',upload.single("image"),governmentIdUpdateController)
-  router.get('/get-all-students',getAllStudentsController)
-  router.get('/get-per-page-students',getPerPageStudentController)
-  router.get('/get-all-chat-students/:uniqueId',getAllChatStudentsController)
-  router.post('/add-student-review-result',addReviewResultController)
-  router.get('/get-review-students',getReviewStudentsController)
+  router.get('/get-profile/:studentId', jwtVerification(secretKey),getProfileController);
+  router.post('/update-personal-details',jwtVerification(secretKey),updatePersonalDetailsController)
+  router.post('/update-address-details',jwtVerification(secretKey),updateAddressDetailsController)
+  router.post('/update-education-details',jwtVerification(secretKey),updateEducationDetailsController)
+  router.get('/get-best-students/:batchId',jwtVerification(secretKey),getBacthwiseBestStdController)
+  router.get('/get-weekly-performance',jwtVerification(secretKey),getWeeklyPerformanceController)
+  router.get('/get-course-completion',jwtVerification(secretKey),getCourseCompletionController)
+  router.get('/get-all-performance',jwtVerification(secretKey),getAllPerformanceController)
+  router.get('/get-extend-details',jwtVerification(secretKey),getExtendDetailsController)
+  router.post('/request-extention',jwtVerification(secretKey),requestExtentionController)
+  router.get('/get-request-extend/:studentId',jwtVerification(secretKey),getExtendRequestController)
+  router.get('/get-review-details',jwtVerification(secretKey),getReviewDetailsController)
+  router.post('/second-extend-request/:extendId',jwtVerification(secretKey),secondExtendRequestController)
+  router.post('/update-governmentId',jwtVerification(secretKey),upload.single("image"),governmentIdUpdateController)
+  router.get('/get-all-students',jwtVerification(secretKey),getAllStudentsController)
+  router.get('/get-per-page-students',jwtVerification(secretKey),getPerPageStudentController)
+  router.get('/get-all-chat-students/:uniqueId',jwtVerification(secretKey),getAllChatStudentsController)
+  router.post('/add-student-review-result',jwtVerification(secretKey),addReviewResultController)
+  router.get('/get-review-students',jwtVerification(secretKey),getReviewStudentsController)
   return router
 }
 

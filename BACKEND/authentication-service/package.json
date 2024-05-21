@@ -19,6 +19,7 @@
     "helmet": "^7.1.0",
     "http": "^0.0.1-security",
     "jsonwebtoken": "^9.0.2",
+    "jwt-verify-token": "^1.0.22",
     "kafka-node": "^5.0.0",
     "kafkajs": "^2.2.4",
     "modules": "^0.4.0",

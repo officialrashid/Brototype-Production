@@ -135,12 +135,18 @@ const ProfileUpdateModal: React.FC<ProfileUpdateModalProps> = ({ isVisible, onCl
         <div className="flex gap-6  rounded-md">
           <div>
             <div className="border border-2px h-28 w-28 rounded-full m-6 mb-3">
-              {selectedFile && (
+              {selectedFile ? (
                 <img
                   src={URL.createObjectURL(selectedFile)}
                   alt="Uploaded"
                   className="h-full w-full object-cover rounded-full"
                 />
+              ):(
+                <img
+                src="/defaultPhoto.png"
+                alt="Uploaded"
+                className="h-full w-full object-cover rounded-full"
+              />
               )}
             </div>
             <div>

@@ -85,7 +85,7 @@ const handleProfileUpdateSuccess = () =>{
               {profileInfo?.imageUrl ? (
                 <img src={profileInfo.imageUrl} alt="" className='rounded-full w-16 h-16 ml-5 mt-5 object-cover' />
               ) : (
-                <img src="" alt="" className='rounded-full w-16 h-16 ml-5 mt-5 object-cover' />
+                <img src="/defaultPhoto.png" alt="" className='rounded-full w-16 h-16 ml-5 mt-5 object-cover' />
               )}
 
               <div className='flex flex-1 flex-col ml-8 mt-5'>
