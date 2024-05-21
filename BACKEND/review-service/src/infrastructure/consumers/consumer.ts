@@ -1,9 +1,9 @@
-import kafkajs from 'kafkajs';
+import {Kafka} from 'kafkajs';
 import { consumeStudentEvents,consumeCoordinatorEvents } from '../..';
 import { reviewController } from '../../routes/reviewRouter';
-const kafkaClient = new kafkajs.Kafka({
+const kafkaClient = new Kafka({
   clientId: 'review-service',
-  brokers: ['localhost:9092'] 
+  brokers: ['demo-kafka:9092'] 
 });
 
 const consumer = kafkaClient.consumer({ groupId: 'review-service-group' });
@@ -15,7 +15,7 @@ const consumerConnect =async ()=>{
     await consumer.subscribe({topic:'review-status-updation',fromBeginning:true})
     await consumer.subscribe({topic:'meeting-link',fromBeginning:true})
     await consumer.run({
-        eachMessage:async ({topic,partition,message})=>{
+        eachMessage:async ({topic,message})=>{
             try{
                 switch(topic){
                     case 'student-data':
