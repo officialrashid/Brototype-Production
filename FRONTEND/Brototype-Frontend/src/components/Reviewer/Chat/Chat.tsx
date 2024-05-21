@@ -17,14 +17,14 @@ import GlobalContext from "../../../context/GlobalContext";
 
 
 const Chat = () => {
-    const socket: Socket<DefaultEventsMap,DefaultEventsMap> | null = useSocket();
+    const socket: Socket<DefaultEventsMap, DefaultEventsMap> | null = useSocket();
     console.log(socket, 'sockettttt');
-
+    const chaterData: any = useSelector((state: any) => state?.reviewer?.reviewerData);
     const student: any = useSelector((state: any) => state?.chat?.chatOppositPersonData)
     console.log(student, "students stdenst");
     const dispatch = useDispatch()
-    const reviewerId:any = useSelector((state: any) => state?.reviewer?.reviewerData?.reviewerId);
-    const tabs = ['chat', 'all', 'students', 'advisors', 'reviewers', 'leads'];
+    const reviewerId: any = useSelector((state: any) => state?.reviewer?.reviewerData?.reviewerId);
+    const tabs = ['chat', 'all', 'superleads', 'advisors', 'reviewers', 'leads'];
     const [activeTab, setActiveTab] = useState('chat'); // Initial active tab is 'chat'
     const [message, setMessage] = useState("")
     const [allMesage, setAllMessage] = useState([])
@@ -39,7 +39,7 @@ const Chat = () => {
     const [groupInfo, setGroupInfo] = useState(false)
     const [groupId, setGroupId] = useState("")
     // const { isOnline, setIsOnline } = useContext(GlobalContext);
-    const [online,setOnline] = useState([])
+    const [online, setOnline] = useState([])
     const [showEmojis, setShowEmojis] = useState(false)
     const [cursorPosition, setCursorPosition] = useState()
     const inputRef = useRef(null);
@@ -53,7 +53,7 @@ const Chat = () => {
             const currentTime = new Date().toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true });
             socket.emit("getCurrentOnlineUser");
         });
- 
+
         return () => {
             socket.off("getOnlineUser");
         };
@@ -111,7 +111,7 @@ const Chat = () => {
             if (type === "oneToOne") {
                 const messageData = {
                     senderId: reviewerId,
-                    receiverId: student.superleadId || student.chaterId || student.studentId,
+                    receiverId: student.chaterId || student._id || student.studentId,
                     content: message,
                     type: chatType
                 };
@@ -120,10 +120,10 @@ const Chat = () => {
                 setRecordedAudioBlob(null);
                 // Listen for response from the server
                 socket?.on('messageResponse', (response: { status: boolean; message: any; }) => {
-         
+
 
                     if (response.status === true) {
-                  
+
                         console.log("Message sent successfully");
 
                         setMessage(""); // Clear the message input field
@@ -140,7 +140,7 @@ const Chat = () => {
                     type: chatType
                 }
                 console.log("group message data", groupMessageData);
-                
+
                 socket?.emit('groupMessage', groupMessageData);
                 socket?.on('groupMessageResponse', (response: { status: boolean; message: any; }) => {
                     if (response.status === true) {
@@ -165,7 +165,7 @@ const Chat = () => {
             try {
                 const data = {
                     initiatorId: reviewerId,
-                    recipientId: student?.chaterId || student.superleadId || student.studentId || student.reviewerId
+                    recipientId: student?.chaterId || student._id || student.studentId || student.reviewerId
                 }
                 const response = await getMessages(data)
                 if (response.getMessages.status === true) {
@@ -181,8 +181,8 @@ const Chat = () => {
         }
         fetchMessages();
         // Listen for changes to 'reload' state, if 'reload' changes, fetch messages again
-  
-    }, [student?.superleadId, student?.chaterId, reviewerId, reload,student?.studentId]);
+
+    }, [student?._id, student?.chaterId, reviewerId, reload, student?.studentId]);
 
 
     useEffect(() => {
@@ -206,7 +206,7 @@ const Chat = () => {
             }
         }
         fetchGroupMessages();
-    }, [student?.superleadId, student?.chaterId, reviewerId, reload,student?.studentId]);
+    }, [student?._id, student?.chaterId, reviewerId, reload, student?.studentId]);
     // Only trigger when superleadId or student?.chaterId changes
     useEffect(() => {
         if (socket) {
@@ -217,7 +217,7 @@ const Chat = () => {
                     console.log('New state:', newState);
                     return newState;
                 });
-           
+
                 setUnreadReload(true)
             };
 
@@ -270,7 +270,7 @@ const Chat = () => {
                 const voiceChat = response?.chatData?.audioUrl
                 const messageData = {
                     senderId: reviewerId,
-                    receiverId: student.superleadId || student.chaterId || student.studentId,
+                    receiverId: student._id || student.chaterId || student.studentId,
                     content: voiceChat,
                     type: "voiceChat"
                 };
@@ -302,7 +302,7 @@ const Chat = () => {
             formData.append("audio", audioFile);
             formData.append("senderId", reviewerId);
             const response = await storeChatAudio(formData)
-  
+
 
             if (response?.status === true) {
                 const voiceChat = response?.chatData?.audioUrl
@@ -312,7 +312,7 @@ const Chat = () => {
                     content: voiceChat,
                     type: "voiceChat"
                 }
-      
+
 
                 socket?.emit('groupMessage', groupMessageData);
                 setRecordedAudioBlob(null);
@@ -354,7 +354,7 @@ const Chat = () => {
     const pickEmoji = (emojiObject: any) => {
         const { emoji } = emojiObject;
         console.log(emoji, "Selected Emoji");
-    
+
         if (inputRef.current) {
             const ref: any = inputRef.current;
             ref.focus();
@@ -364,9 +364,9 @@ const Chat = () => {
             setMessage(msg);
             setChatType("emojiChat");
             setCursorPosition(start.length + emoji.length);
-    
+
             // Delay focusing on the input to ensure it's rendered
-        
+
         }
     }
     return (
@@ -376,7 +376,12 @@ const Chat = () => {
                 <div className="border-r w-1/2 bg-white ">
                     <div className="m-5 flex gap-3">
                         <div>
-                            <img src="/profile.jpeg" alt="" className="w-10 h-10 rounded-full" />
+                            {chaterData.imageUrl ? (
+                                <img src={chaterData.imageUrl} alt="" className="w-10 h-10 rounded-full object-cover" />
+                            ) : (
+                                <img src="/defaultPhoto.png" alt="" className="w-10 h-10 rounded-full object-cover" />
+                            )}
+
                         </div>
                         <div className="relative">
                             <div className="absolute m-3 mt-2">
@@ -395,12 +400,12 @@ const Chat = () => {
                             <p key={tab} className={`text-sm font-roboto cursor-pointer ${activeTab === tab ? 'underline font-bold text-dark-highBlue' : ''}`} onClick={() => handleTabClick(tab)}>{tab}</p>
                         ))}
                     </div>
-                    {activeTab === "students" ? (
+                    {activeTab === "superleads" ? (
 
                         <Students socket={socket} />
                     ) : activeTab === "chat" ? (
 
-                        <ChatTab socket={socket}  />
+                        <ChatTab socket={socket} />
                     ) : null}
 
 
@@ -417,11 +422,18 @@ const Chat = () => {
                                         </div>
                                     ) : (
                                         <div className="border h-12 w-12 rounded-full  mt-3">
-                                            <img src={student?.imageUrl} alt="" className="rounded-full" />
+                                            {student.profileUrl ? (
+                                                <img src={student?.profileUrl} alt="" className="rounded-full h-full w-full object-cover" />
+                                            ) : student?.imageUrl ? (
+                                                <img src={student?.imageUrl} alt="" className="rounded-full h-full w-full object-cover" />
+                                            ) : (
+                                                <img src="/defaultPhoto.png" alt="" className="rounded-full h-full w-full object-cover" />
+                                            )}
+
                                         </div>
                                     )}
 
-                                    <div className="mt-5"><span className="text-md  font-semibold font-roboto">{student?.firstName} {student?.lastName} {student?.groupName}</span>
+                                    <div className="mt-5"><span className="text-md  font-semibold font-roboto">{student?.firstName} {student?.lastName} {student?.groupName} {student?.name}</span>
 
                                         <div>
                                             {online.some(onlineUser => onlineUser?.chaterId === student.chaterId && onlineUser?.isOnline) ? (
@@ -574,31 +586,31 @@ const Chat = () => {
                                         </div>
                                     ) : message?.type === "emojiChat" ? (
                                         <>
-                                        {message?.senderFirstName && message?.senderLastName ? (
-                                            <div
-                                                key={index}
-                                                className={`flex gap-5 m-5 mb-0 mt-3 ${isSender(message) ? 'justify-end ml-48' : 'justify-start mr-48'}`}
-                                            >
-                                                <div className={`w-fit ${isSender(message) ? 'bg-Average' : "bg-white"} mb-0 h-auto rounded-sm`}>
-                                                    <p className={`text-xs font-roboto m-3 ${isSender(message) ? 'text-white' : 'text-black'}`}>
-                                                        {isSender(message) ? 'You' : `${message?.senderFirstName} ${message?.senderLastName}`}
-                                                    </p>
+                                            {message?.senderFirstName && message?.senderLastName ? (
+                                                <div
+                                                    key={index}
+                                                    className={`flex gap-5 m-5 mb-0 mt-3 ${isSender(message) ? 'justify-end ml-48' : 'justify-start mr-48'}`}
+                                                >
+                                                    <div className={`w-fit ${isSender(message) ? 'bg-Average' : "bg-white"} mb-0 h-auto rounded-sm`}>
+                                                        <p className={`text-xs font-roboto m-3 ${isSender(message) ? 'text-white' : 'text-black'}`}>
+                                                            {isSender(message) ? 'You' : `${message?.senderFirstName} ${message?.senderLastName}`}
+                                                        </p>
 
-                                                    <p className={`text-xl font-roboto m-3 mt-0 ${isSender(message) ? 'text-white' : "text-black"}`}>{message?.content}</p>
+                                                        <p className={`text-xl font-roboto m-3 mt-0 ${isSender(message) ? 'text-white' : "text-black"}`}>{message?.content}</p>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                        ) : (
-                                            <div
-                                                key={index}
-                                                className={`flex gap-5 m-5 mb-0 mt-3 ${isSender(message) ? 'justify-end' : 'justify-start'}`}
-                                            >
-                                                <div className={`w-fit ${isSender(message) ? 'bg-Average' : "bg-white"} mb-0 h-10 rounded-sm`}>
-                                                    <p className={`text-xl font-roboto m-3 ${isSender(message) ? 'text-white' : "text-black"}`}>{message?.content}</p>
+                                            ) : (
+                                                <div
+                                                    key={index}
+                                                    className={`flex gap-5 m-5 mb-0 mt-3 ${isSender(message) ? 'justify-end' : 'justify-start'}`}
+                                                >
+                                                    <div className={`w-fit ${isSender(message) ? 'bg-Average' : "bg-white"} mb-0 h-10 rounded-sm`}>
+                                                        <p className={`text-xl font-roboto m-3 ${isSender(message) ? 'text-white' : "text-black"}`}>{message?.content}</p>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                        )}
+                                            )}
 
-                                    </>
+                                        </>
                                     ) : null
                                 ))}
                                 <div ref={scroll}></div>
@@ -613,7 +625,7 @@ const Chat = () => {
                         <div className=" m-3 mt-0 rounded-md  ">
                             <div className=" flex ">
 
-                            <div className="relative w-full bottom-6">
+                                <div className="relative w-full bottom-6">
                                     {chatType === 'imageChat' ? (
                                         <div className="relative">
                                             <textarea

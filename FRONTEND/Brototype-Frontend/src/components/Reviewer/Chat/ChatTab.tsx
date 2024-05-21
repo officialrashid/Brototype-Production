@@ -13,7 +13,7 @@ const ChatTab = ({ socket }: { socket: any }) => {
 
     const dispatch = useDispatch();
 
-    const reviewerId:any = useSelector((state: any) => state?.reviewer?.reviewerData?.reviewerId);
+    const reviewerId: any = useSelector((state: any) => state?.reviewer?.reviewerData?.reviewerId);
     const [chatUser, setChatUser] = useState<any[]>([]);
     const [selectedStudentIndex, setSelectedStudentIndex] = useState(null);
     const [allMessage, setAllMessage] = useState([]);
@@ -112,7 +112,7 @@ const ChatTab = ({ socket }: { socket: any }) => {
                 setUnreadChaterId(chatUser?.details?.chaterId);
                 const chatData = {
                     initiatorId: reviewerId,
-                    recipientId: chatUser?.details?.superleadId || chatUser?.details?.chaterId || chatUser?.details?.studentId,
+                    recipientId: chatUser?.details?.chaterId || chatUser?.details?._id || chatUser?.details?.studentId,
                     chaters: chatUser.details
                 };
                 // Initialize newChatId variable
@@ -149,7 +149,7 @@ const ChatTab = ({ socket }: { socket: any }) => {
         if (type === "oneToOne") {
             const data = {
                 initiatorId: reviewerId,
-                recipientId: chatUser?.details?.superleadId || chatUser?.details?.chaterId || chatUser?.details?.studentId ,
+                recipientId: chatUser?.details?.chaterId || chatUser?.details?._id || chatUser?.details?.studentId,
                 chatId: chatId,
                 type: type
             };
@@ -189,17 +189,22 @@ const ChatTab = ({ socket }: { socket: any }) => {
                                     {user?.groupName}
                                 </span>
                                 <div>
-                  
-                                        <span className={`text-gray-600 font-roboto text-xs ${selectedStudentIndex === index ? 'text-white' : 'text-black'}`}>
-                                          {user.description}
-                                        </span>
+
+                                    <span className={`text-gray-600 font-roboto text-xs ${selectedStudentIndex === index ? 'text-white' : 'text-black'}`}>
+                                        {user.description}
+                                    </span>
                                 </div>
                             </div>
                         </div>
                     ) : (
                         <div className="flex gap-2 m-2 mt-">
                             <div className="border h-8 w-8 rounded-full mt-2 relative">
-                                <img src={user.details.imageUrl} alt="" className="rounded-full" />
+                                {user.details.imageUrl ? (
+                                    <img src={user.details.imageUrl} alt="" className=" w-full h-full object-cover rounded-full" />
+                                ) : (
+                                    <img src="/defaultPhoto.png" alt="" className=" w-full h-full object-cover rounded-full" />
+                                )}
+
                                 {online.some(onlineUser => onlineUser.chaterId === user?.details?.chaterId && onlineUser.isOnline === true) ? (
                                     <div className="absolute bottom-0 right-0 rounded-full w-3 h-3 bg-green-400 border-2 border-white"></div>
                                 ) : (
@@ -211,7 +216,7 @@ const ChatTab = ({ socket }: { socket: any }) => {
                                     {user.details.firstName} {user.details.lastName}
                                 </span>
                                 <div>
-                                {online.some(onlineUser => onlineUser.chaterId === user?.details?.chaterId && onlineUser.isOnline === true) ? (
+                                    {online.some(onlineUser => onlineUser.chaterId === user?.details?.chaterId && onlineUser.isOnline === true) ? (
                                         <div>
                                             <span className="text-gray-600 text-sm font-roboto">Active Now</span>
                                         </div>

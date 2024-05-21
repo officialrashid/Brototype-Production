@@ -188,10 +188,10 @@ export default {
     try {
       const indexM = uniqueId.indexOf('M');
       const uniqueLetters = indexM !== -1 ? uniqueId.substring(0, indexM) : uniqueId;
-  
+
       const pageSize = 5;
       const skip = (currentPage - 1) * pageSize;
-  
+
       const response = await schema.Students.aggregate([
         {
           $match: {
@@ -202,7 +202,7 @@ export default {
         { $skip: skip },
         { $limit: pageSize }
       ]);
-  
+
       if (response && response.length > 0) {
         return { response };
       } else {
@@ -213,7 +213,7 @@ export default {
       return { error: 'Internal server error' };
     }
   },
-  
+
 
   updateStudentStatus: async (studentId: string, action: string) => {
     console.log("Incoming backend action", studentId, action);
@@ -261,7 +261,7 @@ export default {
   },
   getAllReviewers: async () => {
     try {
-      const response = await schema.Reviewers.find({}).sort({_id: -1});
+      const response = await schema.Reviewers.find({}).sort({ _id: -1 });
       if (response && response.length > 0) {
         return response;
       } else {
@@ -271,7 +271,7 @@ export default {
       return { status: false, message: "Internal Server Error" };
     }
   },
-  
+
   createReviewersUniqueId: async () => {
     try {
       const response = await schema.Reviewers.find().sort({ _id: -1 }).limit(1).exec()
@@ -488,10 +488,10 @@ export default {
       )
       console.log(cleanResponse, "llllllll");
       if (cleanResponse.length > 0) {
- 
-          const response = await authenticationProducer(cleanResponse, 'coordinator-data', 'reviewAdvisors');
 
-      
+        const response = await authenticationProducer(cleanResponse, 'coordinator-data', 'reviewAdvisors');
+
+
       }
 
     } catch (error) {
@@ -601,7 +601,7 @@ export default {
   },
   getAllAdvisors: async () => {
     try {
-      const response = await schema.Advisors.find({}).sort({_id: -1});
+      const response = await schema.Advisors.find({}).sort({ _id: -1 });
       if (response.length > 0) {
         return { status: true, response }
       } else {
@@ -661,7 +661,7 @@ export default {
         return { status: false, message: "Not update review status" };
       }
 
-      if (status===true) {
+      if (status === true) {
         const response = await schema.Students.updateOne(
           { studentId: studentId }, // Filter criteria
           {
@@ -677,7 +677,7 @@ export default {
         } else {
           return { status: false, message: "Failed to update review status" };
         }
-      }else{
+      } else {
         const response = await schema.Students.updateOne(
           { studentId: studentId }, // Filter criteria
           {
@@ -739,216 +739,240 @@ export default {
   },
   advisorTasks: async (data: any) => {
     try {
-        if (!data || !Array.isArray(data) || data.length === 0) {
+      if (!data || !Array.isArray(data) || data.length === 0) {
 
-            return { status: false, message: "Advisor task not updated from student" };
-        }
-        
-        for (const task of data) {
-            const advisor = await schema.Advisors.findById(task.coordinatorId);
-            if (!advisor) {
-                return { status: false, message: "Advisor not found" };
-            }
+        return { status: false, message: "Advisor task not updated from student" };
+      }
 
-            const weeklyTaskCount = task.studentList.length + advisor.weeklyTask;
-            advisor.weeklyTask = weeklyTaskCount;
-            advisor.weeklyTaskList = advisor.weeklyTaskList.concat(task.studentList);
-            await advisor.save();
+      for (const task of data) {
+        const advisor = await schema.Advisors.findById(task.coordinatorId);
+        if (!advisor) {
+          return { status: false, message: "Advisor not found" };
         }
-        
-        return { status: true, message: "Advisor tasks updated successfully" };
-    } catch (error:any) {
-        return { status: false, message: "Error updating advisor tasks: " + error.message };
+
+        const weeklyTaskCount = task.studentList.length + advisor.weeklyTask;
+        advisor.weeklyTask = weeklyTaskCount;
+        advisor.weeklyTaskList = advisor.weeklyTaskList.concat(task.studentList);
+        await advisor.save();
+      }
+
+      return { status: true, message: "Advisor tasks updated successfully" };
+    } catch (error: any) {
+      return { status: false, message: "Error updating advisor tasks: " + error.message };
     }
-},
-advisorGoogleLogin : async  (email:string)=>{
-  try {
-     if(!email){
-      return {status:false,message:"advisor not found"}
-     }
-     const advisor = await schema.Advisors.findOne({email})
-     console.log(advisor,"advisor google login in repositoriessssss");
-     
-     if (advisor) {
-      console.log(advisor);
+  },
+  advisorGoogleLogin: async (email: string) => {
+    try {
+      if (!email) {
+        return { status: false, message: "advisor not found" }
+      }
+      const advisor = await schema.Advisors.findOne({ email })
+      console.log(advisor, "advisor google login in repositoriessssss");
 
-      const advisors = {
-        _id: advisor._id.toString(),
-        name: advisor.firstName?.toString(),
-        email: advisor.email?.toString()
-      };
+      if (advisor) {
+        console.log(advisor);
 
-      const accessToken = await jwt.sign(advisors, config.secretKey, { expiresIn: '1d' });
-      if (accessToken) {
-        const uid = advisors._id.toString();
-        const customToken = await admin.auth().createCustomToken(uid);
-        if (customToken) {
-          return { advisor, accessToken, customToken };
+        const advisors = {
+          _id: advisor._id.toString(),
+          name: advisor.firstName?.toString(),
+          email: advisor.email?.toString()
+        };
+
+        const accessToken = await jwt.sign(advisors, config.secretKey, { expiresIn: '1d' });
+        if (accessToken) {
+          const uid = advisors._id.toString();
+          const customToken = await admin.auth().createCustomToken(uid);
+          if (customToken) {
+            return { advisor, accessToken, customToken };
+          } else {
+            return { status: false, message: "advisor not found" }
+          }
         } else {
-          return { status: false, message: "advisor not found" }
+          return { status: false, message: "your access denied some time wait" }
         }
       } else {
-        return { status: false, message: "your access denied some time wait" }
+        return { status: false, message: "advisor not found" }
       }
-    } else {
-      return { status: false, message: "advisor not found" }
+    } catch (error) {
+      return { status: false, message: "Error Getting From Advisor Google Login" }
     }
-  } catch (error) {
-     return {status:false,message:"Error Getting From Advisor Google Login"}
-  }
-},
-studentGoogleLogin : async  (email:string)=>{
-  try {
-     if(!email){
-      return {status:false,message:"student not found"}
-     }
-     const student = await schema.Students.findOne({email})
-     console.log(student,"student google login in repositoriessssss");
-     
-     if (student) {
-      console.log(student);
+  },
+  studentGoogleLogin: async (email: string) => {
+    try {
+      if (!email) {
+        return { status: false, message: "student not found" }
+      }
+      const student = await schema.Students.findOne({ email })
+      console.log(student, "student google login in repositoriessssss");
 
-      const students = {
-        _id: student._id.toString(),
-        name: student.name?.toString(),
-        email: student.email?.toString()
-      };
+      if (student) {
+        console.log(student);
 
-      const accessToken = await jwt.sign(students, config.secretKey, { expiresIn: '1d' });
-      if (accessToken) {
-        const uid = students._id.toString();
-        const customToken = await admin.auth().createCustomToken(uid);
-        if (customToken) {
-          return { student, accessToken, customToken };
+        const students = {
+          _id: student._id.toString(),
+          name: student.name?.toString(),
+          email: student.email?.toString()
+        };
+
+        const accessToken = await jwt.sign(students, config.secretKey, { expiresIn: '1d' });
+        if (accessToken) {
+          const uid = students._id.toString();
+          const customToken = await admin.auth().createCustomToken(uid);
+          if (customToken) {
+            return { student, accessToken, customToken };
+          } else {
+            return { status: false, message: "student not found" }
+          }
         } else {
-          return { status: false, message: "student not found" }
+          return { status: false, message: "your access denied some time wait" }
         }
       } else {
-        return { status: false, message: "your access denied some time wait" }
+        return { status: false, message: "student not found" }
       }
-    } else {
-      return { status: false, message: "student not found" }
+    } catch (error) {
+      return { status: false, message: "Error Getting From student Google Login" }
     }
-  } catch (error) {
-     return {status:false,message:"Error Getting From student Google Login"}
-  }
-},
-reviewerGoogleLogin : async  (email:string)=>{
-  try {
-     if(!email){
-      return {status:false,message:"student not found"}
-     }
-     const reviewer = await schema.Reviewers.findOne({email})
-     console.log(reviewer,"student google login in repositoriessssss");
-     
-     if (reviewer) {
-      console.log(reviewer);
+  },
+  reviewerGoogleLogin: async (email: string) => {
+    try {
+      if (!email) {
+        return { status: false, message: "student not found" }
+      }
+      const reviewer = await schema.Reviewers.findOne({ email })
+      console.log(reviewer, "student google login in repositoriessssss");
 
-      const reviewers = {
-        _id: reviewer._id.toString(),
-        name: reviewer.firstName?.toString(),
-        email: reviewer.email?.toString()
-      };
+      if (reviewer) {
+        console.log(reviewer);
 
-      const accessToken = await jwt.sign(reviewers, config.secretKey, { expiresIn: '1d' });
-      if (accessToken) {
-        const uid = reviewers._id.toString();
-        const customToken = await admin.auth().createCustomToken(uid);
-        if (customToken) {
-          return { reviewer, accessToken, customToken };
+        const reviewers = {
+          _id: reviewer._id.toString(),
+          name: reviewer.firstName?.toString(),
+          email: reviewer.email?.toString()
+        };
+
+        const accessToken = await jwt.sign(reviewers, config.secretKey, { expiresIn: '1d' });
+        if (accessToken) {
+          const uid = reviewers._id.toString();
+          const customToken = await admin.auth().createCustomToken(uid);
+          if (customToken) {
+            return { reviewer, accessToken, customToken };
+          } else {
+            return { status: false, message: "reviewer not found" }
+          }
         } else {
-          return { status: false, message: "reviewer not found" }
+          return { status: false, message: "your access denied some time wait" }
         }
       } else {
-        return { status: false, message: "your access denied some time wait" }
+        return { status: false, message: "reviewer not found" }
       }
-    } else {
-      return { status: false, message: "reviewer not found" }
+    } catch (error) {
+      return { status: false, message: "Error Getting From reviewer Google Login" }
     }
-  } catch (error) {
-     return {status:false,message:"Error Getting From reviewer Google Login"}
-  }
-},
-superleadGoogleLogin : async  (email:string)=>{
-  try {
-     if(!email){
-      return {status:false,message:"student not found"}
-     }
-     const superlead = await schema.Superleads.findOne({email})
-     console.log(superlead,"student google login in repositoriessssss");
-     
-     if (superlead) {
-      console.log(superlead);
+  },
+  superleadGoogleLogin: async (email: string) => {
+    try {
+      if (!email) {
+        return { status: false, message: "student not found" }
+      }
+      const superlead = await schema.Superleads.findOne({ email })
+      console.log(superlead, "student google login in repositoriessssss");
 
-      const superleads = {
-        _id: superlead._id.toString(),
-        name: superlead.name?.toString(),
-        email: superlead.email?.toString()
-      };
+      if (superlead) {
+        console.log(superlead);
 
-      const accessToken = await jwt.sign(superleads, config.secretKey, { expiresIn: '1d' });
-      if (accessToken) {
-        const uid = superleads._id.toString();
-        const customToken = await admin.auth().createCustomToken(uid);
-        if (customToken) {
-          return { superlead, accessToken, customToken };
+        const superleads = {
+          _id: superlead._id.toString(),
+          name: superlead.name?.toString(),
+          email: superlead.email?.toString()
+        };
+
+        const accessToken = await jwt.sign(superleads, config.secretKey, { expiresIn: '1d' });
+        if (accessToken) {
+          const uid = superleads._id.toString();
+          const customToken = await admin.auth().createCustomToken(uid);
+          if (customToken) {
+            return { superlead, accessToken, customToken };
+          } else {
+            return { status: false, message: "superlead not found" }
+          }
         } else {
-          return { status: false, message: "superlead not found" }
+          return { status: false, message: "your access denied some time wait" }
         }
       } else {
-        return { status: false, message: "your access denied some time wait" }
+        return { status: false, message: "superlead not found" }
       }
-    } else {
-      return { status: false, message: "superlead not found" }
+    } catch (error) {
+      return { status: false, message: "Error Getting From superlead Google Login" }
     }
-  } catch (error) {
-     return {status:false,message:"Error Getting From superlead Google Login"}
-  }
-},
-superleadImageUpdate : async (data:any) =>{
-   try {
-     if(!data){
-      return {status:false,message:"superlead image not updated"}
-     }
-     const response = await schema.Superleads.updateOne(
-      { _id: data.superleadId }, // Filter criteria
-      {
-        $set: {
-          profileUrl: data.imageUrl
-        }
-      }, // Update operation
-      { new: true } // Options object
-    );
-    if (response) {
-      return { status: true, message: "update profile image  successfully" }
+  },
+  superleadImageUpdate: async (data: any) => {
+    try {
+      if (!data) {
+        return { status: false, message: "superlead image not updated" }
+      }
+      const response = await schema.Superleads.updateOne(
+        { _id: data.superleadId }, // Filter criteria
+        {
+          $set: {
+            profileUrl: data.imageUrl
+          }
+        }, // Update operation
+        { new: true } // Options object
+      );
+      if (response) {
+        return { status: true, message: "update profile image  successfully" }
+      }
+    } catch (error) {
+      return { status: false, message: "Error getting from superlead update image" }
     }
-   } catch (error) {
-     return {status:false,message:"Error getting from superlead update image"}
-   }
-},
-reviewerImageUpdate : async (data:any) =>{
-  try {
-    if(!data){
-     return {status:false,message:"superlead image not updated"}
+  },
+  reviewerImageUpdate: async (data: any) => {
+    try {
+      if (!data) {
+        return { status: false, message: "superlead image not updated" }
+      }
+      console.log(data, "data coming  in a reviewer image update case section");
+
+      const response = await schema.Reviewers.updateOne(
+        { _id: data.reviewerId }, // Filter criteria
+        {
+          $set: {
+            profileUrl: data.imageUrl
+          }
+        }, // Update operation
+        { new: true } // Options object
+      );
+      if (response) {
+        return { status: true, message: "update profile image  successfully" }
+      }
+    } catch (error) {
+      return { status: false, message: "Error getting from superlead update image" }
     }
-    console.log(data,"data coming  in a reviewer image update case section");
-    
-    const response = await schema.Reviewers.updateOne(
-     { _id: data.reviewerId }, // Filter criteria
-     {
-       $set: {
-         profileUrl: data.imageUrl
+  },
+  getAllChatStudents: async  () => {
+    try {
+       const response = await schema.Students.find({})
+       if(response.length>0){
+        return {status:true,response}
+       }else{
+        return {status:false,message:"Students not found"}
        }
-     }, // Update operation
-     { new: true } // Options object
-   );
-   if (response) {
-     return { status: true, message: "update profile image  successfully" }
-   }
-  } catch (error) {
-    return {status:false,message:"Error getting from superlead update image"}
+    } catch (error) {
+       return {status:false,message:"Error getting from get all chat students"}
+    }
+  },
+  getAllChatSuperleads: async  () => {
+    try {
+       const response = await schema.Superleads.find({})
+       if(response.length>0){
+        return {status:true,response}
+       }else{
+        return {status:false,message:"Students not found"}
+       }
+    } catch (error) {
+       return {status:false,message:"Error getting from get all chat students"}
+    }
   }
-}
 
 }
 

@@ -54,7 +54,7 @@ const SignIn = () => {
               name : response?.data?.response?.superlead?.name,
               accessToken: response?.data?.response?.accessToken,
               customToken: response?.data?.response?.customToken,
-              imageUrl : response?.data?.response?.superlead?.imageUrl ? response?.data?.response?.superlead?.imageUrl : "/defaultPhoto.png",
+              imageUrl : response?.data?.response?.superlead?.profileUrl ? response?.data?.response?.superlead?.profileUrl : "/defaultPhoto.png",
               phone: phone,
               uniqueId:uniqueId
             }
@@ -120,7 +120,7 @@ const SignIn = () => {
                   accessToken: response?.data?.response?.accessToken,
                   customToken: response?.data?.response?.customToken,
                   uniqueId : response?.data?.response?.superlead?.uniqueId,
-                  imageUrl : response?.data?.response?.superlead?.imageUrl
+                  imageUrl : response?.data?.response?.superlead?.profileUrl
               }
               let superlead = "superlead"
               localStorage.setItem('superleadIdToken',idToken)

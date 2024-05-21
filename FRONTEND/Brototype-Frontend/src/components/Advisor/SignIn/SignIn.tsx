@@ -55,7 +55,8 @@ const SignIn = () => {
               email:response?.data?.response?.advisor?.email,
               accessToken: response?.data?.response?.accessToken,
               customToken: response?.data?.response?.customToken,
-              phone: phone
+              phone: phone,
+              imgaeUrl : response?.data?.response?.advisor?.profileUrl
             }
 
             signInWithCustomToken(auth, otpData?.customToken)
@@ -118,7 +119,8 @@ const SignIn = () => {
                   lastName : response?.data?.response?.advisor.lastName,
                   phone : response?.data?.response?.advisor.phone,
                   accessToken: response?.data?.response?.accessToken,
-                  customToken: response?.data?.response?.customToken
+                  customToken: response?.data?.response?.customToken,
+                  imageUrl : response?.data?.response?.advisor.profileUrl
               }
               let advisor = "advisor"
               localStorage.setItem('advisorIdToken',idToken)

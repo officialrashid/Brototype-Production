@@ -10,7 +10,7 @@ import { RootState } from "../../../redux-toolkit/store";
 
 const ChatTab = ({ socket }: { socket: any }) => {
     const dispatch = useDispatch();
-    const advisorId:any = useSelector((state: RootState) => state?.advisor?.advisorData?.advisorId)
+    const advisorId: any = useSelector((state: RootState) => state?.advisor?.advisorData?.advisorId)
     const [chatUser, setChatUser] = useState<any[]>([]);
     const [selectedStudentIndex, setSelectedStudentIndex] = useState<number | null>(null);
     const [allMessage, setAllMessage] = useState<any[]>([]);
@@ -35,8 +35,8 @@ const ChatTab = ({ socket }: { socket: any }) => {
             }
         };
         fetchChatData();
-    }, [advisorId,unreadReload, socket]);
-    
+    }, [advisorId, unreadReload, socket]);
+
 
 
     useEffect(() => {
@@ -102,7 +102,7 @@ const ChatTab = ({ socket }: { socket: any }) => {
                 setChatType("oneToOne");
                 const chatData = {
                     initiatorId: advisorId,
-                    recipientId: chatUser?.details?.studentId || chatUser?.details?.chaterId ||  chatUser?.details?.reviewerId || chatUser.details.superleadId,
+                    recipientId: chatUser?.details?.studentId || chatUser?.details?.chaterId || chatUser?.details?.reviewerId || chatUser.details._id,
                     chaters: chatUser.details
                 };
                 const response: any = await createChat(chatData);
@@ -136,7 +136,7 @@ const ChatTab = ({ socket }: { socket: any }) => {
         if (type === "oneToOne") {
             const data = {
                 initiatorId: advisorId,
-                recipientId: chatUser?.details?.studentId || chatUser?.details?.chaterId ||  chatUser?.details?.reviewerId || chatUser?.details?.superleadId,
+                recipientId: chatUser?.details?.studentId || chatUser?.details?.chaterId || chatUser?.details?.reviewerId || chatUser?.details?._id,
                 chatId: chatId,
                 type: type
             };
@@ -194,20 +194,25 @@ const ChatTab = ({ socket }: { socket: any }) => {
                                     {user.groupName}
                                 </span>
                                 <div>
-                                    
-                                        <span className={`text-gray-600 font-roboto text-xs ${selectedStudentIndex === index ? 'text-white' : 'text-black'}`}>
-                                            {user.description}
-                                        </span>
-                                  
+
+                                    <span className={`text-gray-600 font-roboto text-xs ${selectedStudentIndex === index ? 'text-white' : 'text-black'}`}>
+                                        {user.description}
+                                    </span>
+
                                 </div>
                             </div>
                         </div>
                     ) : (
                         <div className="flex gap-2 m-2 mt-">
                             <div className="border h-8 w-8 rounded-full mt-2 relative">
-                                <img src={user.details.imageUrl} alt="" className="rounded-full" />
+                                {user.details.imageUrl ? (
+                                    <img src={user.details.imageUrl} alt="" className="rounded-full w-full h-full object-cover" />
+                                ) : (
+                                    <img src="/defaultPhoto.png" alt="" className="rounded-full w-full h-full object-cover" />
+                                )}
+
                                 {online.some(onlineUser => onlineUser?.chaterId === user?.details?.chaterId && onlineUser?.isOnline === true) ? (
-                                <div className="absolute bottom-0 right-0 rounded-full w-3 h-3 bg-green-400 border-2 border-white"></div>
+                                    <div className="absolute bottom-0 right-0 rounded-full w-3 h-3 bg-green-400 border-2 border-white"></div>
                                 ) : (
                                     <div className="absolute bottom-0 right-0 rounded-full w-3 h-3 bg-red-400 border-2 border-white"></div>
                                 )}

@@ -245,6 +245,26 @@ export const getStudentStatus = async (data: { superleadUniqueId: string, curren
   }
 
 }
+export const getAllChatStudents = async () => {
+
+
+  try {
+    const response = await authenticationApi.get(`/api/auth/get-all-chat-students`)
+    return response?.data;
+  } catch (error) {
+
+  }
+
+}
+export const getChatReviewers = async () => {
+  try {
+    const response = await authenticationApi.get(`/api/auth/get-all-reviewers-status`)
+    return response?.data;
+  } catch (error) {
+
+  }
+
+}
 export const getHubWiseStudentsDetails = async (uniqueId: string) => {
   try {
     const response = await authenticationApi.get(`/api/auth/get-hubwise-students-details/${uniqueId}`)
@@ -433,6 +453,16 @@ export const getAllSuperleads = async () => {
 
   try {
     const response = await superleadApi.get(`/api/superlead/get-chat-all-superleads`)
+    return response?.data?.response;
+  } catch (error) {
+
+  }
+
+}
+export const getAllChatSuperleads = async () => {
+
+  try {
+    const response = await authenticationApi.get(`/api/auth/get-all-chat-superleads`)
     return response?.data?.response;
   } catch (error) {
 

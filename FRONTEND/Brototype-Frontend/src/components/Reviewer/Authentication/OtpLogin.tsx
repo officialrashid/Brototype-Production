@@ -15,6 +15,9 @@ interface OtpData {
     phone: number;
     customToken: string;
     accessToken: string;
+    firstName : string;
+    lastName : string;
+    imageUrl : string;
     // ... other properties
 }
 declare global {
@@ -41,13 +44,18 @@ const ReviewerOtpPage: FunctionComponent = () => {
     const reviewerIdRef = useRef<string | null>(null);
     const accessTokenRef = useRef<string | null>(null);
     const customTokenRef = useRef<string | null>(null);
-
+    const firstNameRef = useRef<string | null>(null);
+    const lastNameRef = useRef<string | null>(null);
+    const imageUrlRef = useRef<string | null>(null);
 
     useEffect(() => {
   console.log(otpData,"bfjvhdfgjgdfjghdfjgdfhjhgdhgdfjhgdfj123456789000000000");
   
         localStorage.removeItem('otpSent')
         reviewerIdRef.current = otpData?.reviewerData?.reviewerId;
+        firstNameRef.current = otpData?.reviewerData?.firstName;
+        lastNameRef.current = otpData?.reviewerData?.lastName;
+        imageUrlRef.current = otpData?.reviewerData?.imageUrl;
         phone = otpData.reviewerData.phone;
         customTokenRef.current = otpData.reviewerData.customToken;
         accessTokenRef.current = otpData.reviewerData.accessToken;
@@ -93,6 +101,9 @@ const ReviewerOtpPage: FunctionComponent = () => {
             const confirmationResult = await signInWithPhoneNumber(auth, formatPh, appVerifier);
             window.confirmationResult = confirmationResult;
             reviewerIdRef.current = otpData?.reviewerData?.reviewerId;
+            firstNameRef.current = otpData?.reviewerData?.firstName;
+            lastNameRef.current = otpData?.reviewerData?.lastName;
+            imageUrlRef.current = otpData?.reviewerData?.imageUrl;
             customTokenRef.current = otpData?.reviewerData?.customToken;
             accessTokenRef.current = otpData?.reviewerData?.accessToken;
             localStorage.setItem('otpSent', 'true');
@@ -142,7 +153,11 @@ const ReviewerOtpPage: FunctionComponent = () => {
                     const reviewerData: any = {
                         reviewerId: reviewerIdRef.current,
                         accessToken: accessTokenRef.current,
-                        customToken: customTokenRef.current
+                        customToken: customTokenRef.current,
+                        firstName : firstNameRef.current,
+                        lastName : lastNameRef.current,
+                        imageUrl : imageUrlRef.current,
+                        phone : phone
                     }
                     console.log(reviewerData,"reviewerData comingggg");
                     

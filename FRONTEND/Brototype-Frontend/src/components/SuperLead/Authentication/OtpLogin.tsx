@@ -52,7 +52,7 @@ const ReviewerOtpPage: FunctionComponent = () => {
   
         localStorage.removeItem('otpSent')
         superleadIdRef.current = otpData?.superleadData?.superleadId;
-        imageUrlRef.current = otpData?.superleadData?.imageUrl;
+        imageUrlRef.current = otpData?.superleadData?.profileUrl;
         nameRef.current = otpData?.superleadData?.name;
         phone = otpData.superleadData.phone;
         customTokenRef.current = otpData.superleadData.customToken;
@@ -100,7 +100,7 @@ const ReviewerOtpPage: FunctionComponent = () => {
             const confirmationResult = await signInWithPhoneNumber(auth, formatPh, appVerifier);
             window.confirmationResult = confirmationResult;
             superleadIdRef.current = otpData?.superleadData?.superleadId;
-            imageUrlRef.current = otpData?.superleadData?.imageUrl;
+            imageUrlRef.current = otpData?.superleadData?.profileUrl;
             nameRef.current = otpData?.superleadData?.name;
             customTokenRef.current = otpData?.superleadData?.customToken;
             accessTokenRef.current = otpData?.superleadData?.accessToken;
@@ -155,7 +155,8 @@ const ReviewerOtpPage: FunctionComponent = () => {
                         customToken: customTokenRef.current,
                         uniqueId : uniqueIdRef.current,
                         imageUrl : imageUrlRef.current,
-                        name : nameRef.current
+                        name : nameRef.current,
+                        phone : phone
                     }
                     console.log(superleadData,"reviewerData comingggg");
                     

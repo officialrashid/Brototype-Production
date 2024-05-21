@@ -4,8 +4,8 @@ import mongoose, { Schema } from "mongoose";
 const chatersSchema =new mongoose.Schema(
     {
         chaterId: { type: Schema.Types.ObjectId, required: true },
-        firstName: { type: String, required: true },
-        lastName: { type: String, required: true },
+        firstName: { type: String, required: false },
+        lastName: { type: String, required: false },
         phone: { type: Number},
         imageUrl: { type: String, required: false }, // changed default value to empty string
         isOnline: {

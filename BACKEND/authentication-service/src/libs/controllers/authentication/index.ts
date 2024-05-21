@@ -27,6 +27,8 @@ import advisorGoogleLogin_Controller from "./advisorGoogleLoginController"
 import studentGoogleLogin_Controller from "./studentGoogleLoginController"
 import reviewerGoogleLogin_Controller from "./reviewerGoogleLoginController"
 import superleadGoogleLogin_Controller from "./superleadGoogleLoginController"
+import getAllChatStudents_Controller from "./getAllChatStudentsController"
+import getAllChatSuperleads_Controller from "./getAllChatSuperleadsController"
 export default (dependencies:any)=>{
 
     return{
@@ -58,6 +60,8 @@ export default (dependencies:any)=>{
         studentGoogleLoginController: studentGoogleLogin_Controller(dependencies),
         reviewerGoogleLoginController: reviewerGoogleLogin_Controller(dependencies),
         superleadGoogleLoginController: superleadGoogleLogin_Controller(dependencies),
+        getAllChatStudentsController: getAllChatStudents_Controller(dependencies),
+        getAllChatSuperleadsController: getAllChatSuperleads_Controller(dependencies),
 
     }
 }

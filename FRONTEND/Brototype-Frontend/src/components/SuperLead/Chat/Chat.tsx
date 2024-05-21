@@ -24,6 +24,7 @@ const Chat = () => {
     console.log(socket, 'sockettttt');
 
     const student: any = useSelector((state: any) => state?.chat?.chatOppositPersonData)
+    const chaterData: any = useSelector((state: any) => state?.superlead?.superleadData);
     console.log(student, "students studentsss");
     const dispatch = useDispatch()
     const superleadId: any = useSelector((state: any) => state?.superlead?.superleadData?.superleadId);
@@ -65,10 +66,7 @@ const Chat = () => {
             socket.off("getOnlineUser");
         };
     }, [socket, superleadId]);
-    // socket?.on("currentOnlineUser", (users: any) => {
-    //     console.log(users, "online usersssss comingggc");
-    //     setOnline(users)
-    // });
+
     useEffect(() => {
         scroll.current?.scrollIntoView({ behavior: "smooth" })
     }, [allMesage])
@@ -170,7 +168,7 @@ const Chat = () => {
                 }
                 socket?.emit('groupMessage', groupMessageData);
                 socket?.on('groupMessageResponse', (response: { status: boolean; message: any; }) => {
-              
+
 
                     if (response.status === true) {
                         setUnreadReload(true)
@@ -190,14 +188,14 @@ const Chat = () => {
 
     useEffect(() => {
         const fetchMessages = async () => {
-    
+
 
             try {
                 const data = {
                     initiatorId: superleadId,
                     recipientId: student?.chaterId || student.studentId || student.reviewerId || student._id
                 }
-              
+
 
                 const response = await getMessages(data)
                 if (response.getMessages.status === true) {
@@ -213,7 +211,7 @@ const Chat = () => {
         }
         fetchMessages();
 
-    }, [student?.studentId, student?.chaterId, superleadId, student._id, reload,student.reviewerId]); // Only trigger when superleadId or student?.chaterId changes
+    }, [student?._id, student?.chaterId, student.studentId, superleadId, reload]); // Only trigger when superleadId or student?.chaterId changes
     useEffect(() => {
         const fetchGroupMessages = async () => {
             try {
@@ -222,10 +220,10 @@ const Chat = () => {
                     senderId: superleadId,
                 };
 
-            
+
 
                 const response = await getGroupMessages(data);
-               
+
 
                 if (response?.getMessages?.status === true) {
                     setAllMessage(response?.getMessages?.messages);
@@ -240,11 +238,11 @@ const Chat = () => {
         };
 
         fetchGroupMessages();
-    }, [student?.studentId, student?.chaterId, superleadId, reload,student.reviewerId]);
+    }, [student?.studentId, student?.chaterId, superleadId, reload, student.reviewerId, student._id]);
     useEffect(() => {
         if (socket) {
             const handleReceivedMessage = (data: any) => {
-          
+
                 setAllMessage(prev => {
                     console.log('Previous state:', prev);
                     const newState = [...prev, data.content];
@@ -265,7 +263,7 @@ const Chat = () => {
     useEffect(() => {
         if (socket) {
             const handleDeletedMessage = (data: any) => {
-              
+
                 if (data.status === true && data.message === "message deleted successfullt") {
                     // Filter out the deleted message from the state array
                     setAllMessage(prevMessages => prevMessages.filter(message => message._id !== data.messageId));
@@ -290,7 +288,7 @@ const Chat = () => {
     };
 
     const addAudioElement = async (blob: any, type: string) => {
- 
+
 
         if (type === "oneToOne") {
             setRecordedAudioBlob(blob);
@@ -304,20 +302,20 @@ const Chat = () => {
             formData.append("audio", audioFile);
             formData.append("senderId", superleadId);
             const response = await storeChatAudio(formData)
-   
+
 
             if (response?.status === true) {
-     
+
 
                 const voiceChat = response?.chatData?.audioUrl
-              
+
                 const messageData = {
                     senderId: superleadId,
                     receiverId: student.studentId || student.chaterId || student.reviewerId || student._id,
                     content: voiceChat,
                     type: "voiceChat"
                 };
-     
+
                 socket?.emit('message', messageData);
                 setRecordedAudioBlob(null);
                 // Listen for response from the server
@@ -346,20 +344,20 @@ const Chat = () => {
             formData.append("audio", audioFile);
             formData.append("senderId", superleadId);
             const response = await storeChatAudio(formData)
-      
+
 
             if (response?.status === true) {
- 
+
 
                 const voiceChat = response?.chatData?.audioUrl
-             
+
                 const messageData = {
                     groupId: student?._id,
                     senderId: superleadId,
                     content: voiceChat,
                     type: "voiceChat"
                 };
-               
+
                 socket?.emit('groupMessage', messageData);
                 setRecordedAudioBlob(null);
                 // Listen for response from the server
@@ -409,7 +407,7 @@ const Chat = () => {
     }
     const handleDeleteMessage = (e: any, messageId: string) => {
         e.preventDefault()
-  
+
 
         setMessageId(messageId)
         setDeleteMessage(true)
@@ -440,13 +438,13 @@ const Chat = () => {
     function formatTime(dateString: string | number | Date) {
         const date = new Date(dateString);
         const timeString = date.toLocaleTimeString('en-US', {
-          hour: 'numeric',
-          minute: '2-digit',
-          hour12: true
+            hour: 'numeric',
+            minute: '2-digit',
+            hour12: true
         });
         return timeString;
-      }
-      
+    }
+
 
 
     return (
@@ -456,13 +454,18 @@ const Chat = () => {
 
             <CreateGroupChat isVisible={createGroupChat} onClose={() => { setCreateGroupChat(false) }} />
             <GroupInformationModal isVisible={groupInfo} onClose={() => { setGroupInfo(false) }} changeModalStatus={changeModalStatus} groupId={groupId} groupDetails={student} />
-            <div className="flex border shadow-md  mt-36 w-2/2 m-16  item mb- h-38rem" onClick={(e) => changeModalStatus(e)}>
+            <div className="flex border shadow-md  mt-36 w-2/2 m-16  item mb-0 h-38rem" onClick={(e) => changeModalStatus(e)}>
 
 
                 <div className="border-r w-2/6 bg-white ">
                     <div className="m-5 flex gap-3">
                         <div>
-                            <img src="/profile.jpeg" alt="" className="w-10 h-10 rounded-full object-cover" />
+                            {chaterData?.imageUrl ? (
+                                <img src={chaterData?.imageUrl} alt="" className="w-10 h-10 rounded-full object-cover" />
+                            ) : (
+                                <img src="/defaultPhoto.png" alt="" className="w-10 h-10 rounded-full object-cover" />
+                            )}
+
                         </div>
                         <div className="relative flex gap-3">
                             <div className="absolute m-3 mt-2">
@@ -491,10 +494,10 @@ const Chat = () => {
 
                         <ChatTab socket={socket} />
                     ) : activeTab === "reviewers" ? (
-                           <Reviewers socket={socket} />
-                    ) : activeTab === "advisors" ?(
-                           <Advisor socket={socket} />
-                    ): null}
+                        <Reviewers socket={socket} />
+                    ) : activeTab === "advisors" ? (
+                        <Advisor socket={socket} />
+                    ) : null}
 
 
                 </div>
@@ -513,13 +516,21 @@ const Chat = () => {
                                         </>
                                     ) : (
                                         <div className="border h-12 w-12 rounded-full  mt-3 ">
-                                            <img src={student?.imageUrl} alt="" className="w-full h-full  rounded-full object-cover" />
+                                            {student?.profileUrl ? (
+                                                <img src={student.profileUrl} alt="" className="w-full h-full rounded-full object-cover" />
+                                            ) : student?.imageUrl ? (
+                                                <img src={student.imageUrl} alt="" className="w-full h-full rounded-full object-cover" />
+                                            ) : (
+                                                <img src="/defaultPhoto.png" alt="" className="w-full h-full rounded-full object-cover" />
+                                            )}
+
+
                                         </div>
                                     )}
 
                                     <div className="mt-5">
                                         <span className="text-md font-semibold font-roboto">
-                                            {student?.firstName} {student?.lastName}  {student?.groupName}
+                                            {student?.firstName} {student?.lastName}  {student?.groupName} {student?.name}
                                         </span>
 
 
@@ -583,7 +594,7 @@ const Chat = () => {
                                                         </p>
 
                                                         <p className={`text-sm font-roboto m-3 mt-0 ${isSender(message) ? 'text-white' : "text-black"}`}>{message?.content}
-                                                        <p className="text-small item text-end">
+                                                            <p className="text-small item text-end">
                                                                 {message?.createdAt ? formatTime(message.createdAt) : ''}
                                                             </p>
                                                         </p>

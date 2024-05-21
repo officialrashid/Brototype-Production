@@ -1,36 +1,32 @@
-import { createRef, useCallback, useContext, useEffect, useRef, useState } from "react"
+import { useContext, useEffect, useRef, useState } from "react"
 import { useDispatch, useSelector } from "react-redux";
-import EmojiPicker from 'emoji-picker-react';
 import { getGroupMessages, getMessages } from "../../../utils/methods/get";
-import Students from "./Students";
+import Students from "./Superleads";
 import ChatTab from "./ChatTab";
 import { useSocket } from "../../../hooks/useSocket";
 import { Socket } from "socket.io-client";
 import VoiceRecorder from "../VoiceRecorder/VoiceRecorder";
 import { storeChatAudio } from "../../../utils/methods/post";
+import { RootState } from "../../../redux-toolkit/store";
 import ChatMediaModal from "./ChatMediaModal";
-import PDFViewer from "./PdfViewer";
-import CreateGroupChat from "./CreateGroupChat";
 import GroupInformationModal from "./GroupInformation";
-import DeleteMessageModal from "./DeleteMessageModal";
-import { Smile, Image } from 'lucide-react'
+import { Smile } from "lucide-react";
 import Emoji from "./emoji/emojis"
 import GlobalContext from "../../../context/GlobalContext";
-import Reviewers from "./Reviewers"
-import Superleads from "./Superleads";
-import { RootState } from "../../../redux-toolkit/store";
-const Chat = () => {
 
+
+
+const Chat = () => {
     const socket: Socket<DefaultEventsMap, DefaultEventsMap> | null = useSocket();
     console.log(socket, 'sockettttt');
-
+    const chaterData: any = useSelector((state: RootState) => state?.advisor?.advisorData)
     const student: any = useSelector((state: any) => state?.chat?.chatOppositPersonData)
-    console.log(student, "students studentsss");
+    console.log(student, "students stdenst");
     const dispatch = useDispatch()
-    const advisorId:any = useSelector((state: RootState) => state?.advisor?.advisorData?.advisorId)
-    const tabs = ['chat', 'all', 'students', 'superleads', 'reviewers', 'leads'];
+    const advisorId: any = useSelector((state: RootState) => state?.advisor?.advisorData?.advisorId);
+    const tabs = ['chat', 'all', 'superleads', 'advisors', 'reviewers'];
     const [activeTab, setActiveTab] = useState('chat'); // Initial active tab is 'chat'
-    const [message, setMessage] = useState('')
+    const [message, setMessage] = useState("")
     const [allMesage, setAllMessage] = useState([])
     const [lastMessage, setLastMessage] = useState([])
     const [recordedAudioBlob, setRecordedAudioBlob] = useState<any>(null);
@@ -38,25 +34,21 @@ const Chat = () => {
     const [modalStatus, setModalStatus] = useState(false)
     const [reload, setReload] = useState(false)
     const [chatType, setChatType] = useState("")
-    const [createGroupChat, setCreateGroupChat] = useState(false)
+    const messageRef = useRef<any>(null);
+    const scroll = useRef()
     const [groupInfo, setGroupInfo] = useState(false)
     const [groupId, setGroupId] = useState("")
-    const [deleteMessage, setDeleteMessage] = useState(false)
-    const scroll = useRef()
-    const [messageHoverIndex, setMessageHoverIndex] = useState(-1);
-    const [messageId, setMessageId] = useState("")
-    const messageRef = useRef<any>(null);
+    // const { isOnline, setIsOnline } = useContext(GlobalContext);
+    const [online, setOnline] = useState([])
     const [showEmojis, setShowEmojis] = useState(false)
     const [cursorPosition, setCursorPosition] = useState()
-    const [online, setOnline] = useState([])
-    const { setUnreadReload } = useContext(GlobalContext);
-    // const inputRef: any = createRef()
     const inputRef = useRef(null);
+    const { setUnreadReload } = useContext(GlobalContext);
     useEffect(() => {
         if (!socket || !advisorId) return;
 
         socket.on("getOnlineUser", (users: any) => {
-            // console.log(users, "online usersssss comingggc");
+
             setOnline(users)
             const currentTime = new Date().toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true });
             socket.emit("getCurrentOnlineUser");
@@ -66,10 +58,10 @@ const Chat = () => {
             socket.off("getOnlineUser");
         };
     }, [socket, advisorId]);
-    // socket?.on("currentOnlineUser", (users: any) => {
-    //     console.log(users, "online usersssss comingggc");
-    //     setOnline(users)
-    // });
+    socket?.on("currentOnlineUser", (users: any) => {
+
+        setOnline(users)
+    });
     useEffect(() => {
         scroll.current?.scrollIntoView({ behavior: "smooth" })
     }, [allMesage])
@@ -77,11 +69,9 @@ const Chat = () => {
         messageRef?.current?.scrollIntoView({ behavior: "smooth" });
     }, [allMesage]);
     useEffect(() => {
-        if (inputRef.current) {
-            inputRef.current.selectionEnd = cursorPosition;
-        }
-    }, [cursorPosition]);
+        inputRef.current.selectionEnd = cursorPosition;
 
+    }, [cursorPosition])
     useEffect(() => {
         if (inputRef.current) {
             inputRef.current.focus();
@@ -93,32 +83,14 @@ const Chat = () => {
         setActiveTab(tabs[nextIndex]); // Set the next tab as active
     };
     const handleMessageChange = (event: string, type: string) => {
-
         try {
             if (type === "textChat") {
                 const message = event?.target?.value
                 setChatType("textChat")
                 setMessage(message)
             } else if (type === "imageChat") {
-
-
                 const message = event
-
                 setChatType("imageChat")
-                setMessage(message)
-            } else if (type === "videoChat") {
-
-
-                const message = event
-
-                setChatType("videoChat")
-                setMessage(message)
-            } else if (type === "documentChat") {
-
-
-                const message = event
-
-                setChatType("documentChat")
                 setMessage(message)
             }
 
@@ -127,24 +99,23 @@ const Chat = () => {
         }
     }
 
-    const handleSubmit = async (e: any, type: string) => {
 
+
+    const handleSubmit = async (type: string) => {
         try {
-            e.preventDefault()
             if (!message) {
                 // Handle error: Empty message
                 return;
             }
             setShowEmojis(false)
             if (type === "oneToOne") {
-
                 const messageData = {
                     senderId: advisorId,
-                    receiverId: student.studentId || student.chaterId || student.reviewerId || student.superleadId || student._id,
+                    receiverId: student.chaterId || student._id,
                     content: message,
                     type: chatType
                 };
-                console.log(messageData, "messageData");
+                console.log(messageData, "messageDatataaa");
 
                 // Emit message to the server
                 socket?.emit('message', messageData);
@@ -154,6 +125,7 @@ const Chat = () => {
 
 
                     if (response.status === true) {
+
                         console.log("Message sent successfully");
 
                         setMessage(""); // Clear the message input field
@@ -171,10 +143,7 @@ const Chat = () => {
                 }
                 socket?.emit('groupMessage', groupMessageData);
                 socket?.on('groupMessageResponse', (response: { status: boolean; message: any; }) => {
-              
-
                     if (response.status === true) {
-                        setUnreadReload(true)
                         console.log("Message sent successfully");
 
                         setMessage(""); // Clear the message input field
@@ -191,15 +160,13 @@ const Chat = () => {
 
     useEffect(() => {
         const fetchMessages = async () => {
-    
+
 
             try {
                 const data = {
                     initiatorId: advisorId,
-                    recipientId: student?.chaterId || student.studentId || student.reviewerId || student._id || student.superleadId
+                    recipientId: student?.chaterId || student._id
                 }
-              
-
                 const response = await getMessages(data)
                 if (response.getMessages.status === true) {
                     setAllMessage(response.getMessages.messages)
@@ -213,45 +180,44 @@ const Chat = () => {
             }
         }
         fetchMessages();
+        // Listen for changes to 'reload' state, if 'reload' changes, fetch messages again
 
-    }, [student?.studentId, student?.chaterId, advisorId, student._id, reload,student.reviewerId , student.superleadId]); // Only trigger when superleadId or student?.chaterId changes
+    }, [student?._id, student?.chaterId, advisorId, reload]);
+
+
     useEffect(() => {
         const fetchGroupMessages = async () => {
             try {
                 const data = {
                     groupId: student?._id,
                     senderId: advisorId,
-                };
 
-            
-
-                const response = await getGroupMessages(data);
-               
-
-                if (response?.getMessages?.status === true) {
-                    setAllMessage(response?.getMessages?.messages);
-                    setLastMessage(response?.getMessages?.lastMessage);
+                }
+                const response = await getGroupMessages(data)
+                if (response.getMessages.status === true) {
+                    setAllMessage(response.getMessages.messages)
+                    setLastMessage(response.getMessages.lastMessage)
                 } else {
-                    setAllMessage([]);
-                    setLastMessage([]);
+                    setAllMessage([])
+                    setLastMessage([])
                 }
             } catch (error) {
                 console.error("Error fetching messages:", error);
             }
-        };
-
+        }
         fetchGroupMessages();
-    }, [student?.studentId, student?.chaterId, advisorId, reload,student.reviewerId , student.superleadId]);
+    }, [student?._id, student?.chaterId, advisorId, reload]);
+    // Only trigger when superleadId or student?.chaterId changes
     useEffect(() => {
         if (socket) {
             const handleReceivedMessage = (data: any) => {
-          
                 setAllMessage(prev => {
                     console.log('Previous state:', prev);
                     const newState = [...prev, data.content];
                     console.log('New state:', newState);
                     return newState;
                 });
+
                 setUnreadReload(true)
             };
 
@@ -266,7 +232,6 @@ const Chat = () => {
     useEffect(() => {
         if (socket) {
             const handleDeletedMessage = (data: any) => {
-              
                 if (data.status === true && data.message === "message deleted successfullt") {
                     // Filter out the deleted message from the state array
                     setAllMessage(prevMessages => prevMessages.filter(message => message._id !== data.messageId));
@@ -284,14 +249,10 @@ const Chat = () => {
             };
         }
     }, [socket]);
-
-
     const isSender = (message: any) => {
         return message.senderId === advisorId;
     };
-
     const addAudioElement = async (blob: any, type: string) => {
- 
 
         if (type === "oneToOne") {
             setRecordedAudioBlob(blob);
@@ -305,31 +266,25 @@ const Chat = () => {
             formData.append("audio", audioFile);
             formData.append("senderId", advisorId);
             const response = await storeChatAudio(formData)
-   
-
             if (response?.status === true) {
-     
-
                 const voiceChat = response?.chatData?.audioUrl
-              
                 const messageData = {
                     senderId: advisorId,
-                    receiverId: student.studentId || student.chaterId || student.reviewerId || student._id || student.superleadId,
+                    receiverId: student.chaterId || student._id,
                     content: voiceChat,
                     type: "voiceChat"
                 };
-     
-                socket?.emit('message', messageData);
+                socket.emit('message', messageData);
                 setRecordedAudioBlob(null);
+
                 // Listen for response from the server
-                socket?.on('messageResponse', (response: { status: boolean; message: any; }) => {
+                socket.on('messageResponse', (response: { status: boolean; message: any; }) => {
 
 
                     if (response.status === true) {
                         console.log("Message sent successfully");
 
                         setMessage(""); // Clear the message input field
-
                     } else {
                         console.error("Failed to send message:", response.message);
                     }
@@ -347,22 +302,21 @@ const Chat = () => {
             formData.append("audio", audioFile);
             formData.append("senderId", advisorId);
             const response = await storeChatAudio(formData)
-      
+
 
             if (response?.status === true) {
- 
-
                 const voiceChat = response?.chatData?.audioUrl
-             
-                const messageData = {
+                const groupMessageData = {
                     groupId: student?._id,
                     senderId: advisorId,
                     content: voiceChat,
                     type: "voiceChat"
-                };
-               
-                socket?.emit('groupMessage', messageData);
+                }
+
+
+                socket?.emit('groupMessage', groupMessageData);
                 setRecordedAudioBlob(null);
+
                 // Listen for response from the server
                 socket?.on('groupMessageResponse', (response: { status: boolean; message: any; }) => {
 
@@ -371,23 +325,18 @@ const Chat = () => {
                         console.log("Message sent successfully");
 
                         setMessage(""); // Clear the message input field
-
                     } else {
                         console.error("Failed to send message:", response.message);
                     }
                 });
             }
         }
-
-
     };
-    const changeModalStatus = (e) => {
-
+    const changeModalStatus = () => {
         if (modalStatus) {
             setSelectMedia(false)
             setModalStatus(false)
             setReload((prevState) => !prevState);
-
         } else {
             setModalStatus(true)
             setReload((prevState) => !prevState);
@@ -397,24 +346,6 @@ const Chat = () => {
         setGroupId(groupId)
         setGroupInfo(true)
     }
-
-
-    const handleMouseEnter = (index: number) => {
-
-
-        setMessageHoverIndex(index);
-    }
-
-    const handleMouseLeave = () => {
-        setMessageHoverIndex(-1);
-    }
-    const handleDeleteMessage = (e: any, messageId: string) => {
-        e.preventDefault()
-  
-
-        setMessageId(messageId)
-        setDeleteMessage(true)
-    }
     const handleShowEmojis = () => {
         inputRef.current.focus()
         setShowEmojis(!showEmojis)
@@ -422,7 +353,7 @@ const Chat = () => {
 
     const pickEmoji = (emojiObject: any) => {
         const { emoji } = emojiObject;
-
+        console.log(emoji, "Selected Emoji");
 
         if (inputRef.current) {
             const ref: any = inputRef.current;
@@ -438,34 +369,21 @@ const Chat = () => {
 
         }
     }
-    function formatTime(dateString: string | number | Date) {
-        const date = new Date(dateString);
-        const timeString = date.toLocaleTimeString('en-US', {
-          hour: 'numeric',
-          minute: '2-digit',
-          hour12: true
-        });
-        return timeString;
-      }
-      
-
-
     return (
-
-
         <>
-
-            <CreateGroupChat isVisible={createGroupChat} onClose={() => { setCreateGroupChat(false) }} />
             <GroupInformationModal isVisible={groupInfo} onClose={() => { setGroupInfo(false) }} changeModalStatus={changeModalStatus} groupId={groupId} groupDetails={student} />
-            <div className="flex border shadow-md  mt-0 w-2/2 m-16  item mb- h-38rem" onClick={(e) => changeModalStatus(e)}>
-
-
-                <div className="border-r w-2/6 bg-white ">
+            <div className="flex border shadow-md  mt-10  m-10  mr-4 ml-4 item  h-38rem" onClick={() => changeModalStatus()}>
+                <div className="border-r w-1/2 bg-white ">
                     <div className="m-5 flex gap-3">
                         <div>
-                            <img src="/profile.jpeg" alt="" className="w-10 h-10 rounded-full" />
+                            {chaterData?.imageUrl ? (
+                                <img src={chaterData.imageUrl} alt="" className="w-10 h-10 rounded-full object-cover" />
+                            ) : (
+                                <img src="/defaultPhoto.png" alt="" className="w-10 h-10 rounded-full object-cover" />
+                            )}
+
                         </div>
-                        <div className="relative flex gap-3">
+                        <div className="relative">
                             <div className="absolute m-3 mt-2">
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" className="w-5 h-5 stroke-slate-400">
                                     <path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
@@ -474,58 +392,51 @@ const Chat = () => {
                             <div>
                                 <input type="search" className=" font-roboto   w-full py-1 px-10 rounded-full border border-slate-200 outline-none   dark:focus:ring-black dark:focus:border-black " placeholder="hello search....... " />
                             </div>
-                            <div className="rounded-full bg-Average w-8 h-8 mt-0.5 cursor-pointer hover hover:bg-purple-500" onClick={() => setCreateGroupChat(true)}>
-                                <img src="/plus (2).png" alt="" className="w-8 h-8" />
-                            </div>
                         </div>
                     </div>
 
-                    <div className="flex gap-4 m-10 ml-2 mt-0 mb-0">
+                    <div className="flex gap-4 m-10 mt-0 mb-0">
                         {tabs.map(tab => (
                             <p key={tab} className={`text-sm font-roboto cursor-pointer ${activeTab === tab ? 'underline font-bold text-dark-highBlue' : ''}`} onClick={() => handleTabClick(tab)}>{tab}</p>
                         ))}
                     </div>
-                    {activeTab === "students" ? (
+                    {activeTab === "superleads" ? (
 
                         <Students socket={socket} />
                     ) : activeTab === "chat" ? (
 
                         <ChatTab socket={socket} />
-                    ) : activeTab === "reviewers" ? (
-                           <Reviewers socket={socket} />
-                    ) : activeTab === "superleads" ?(
-                           <Superleads socket={socket} />
-                    ): null}
+                    ) : null}
 
 
                 </div>
 
                 {student && (
-                    <div className="  border-r w-full bg-white h-20 mb-" >
-                        <div className="border-b ">
-                            <div className="flex justify-between ">
-                                <div className="flex gap-2 m-2 ">
+                    <div className="border-r w-full bg-white h-20 mb-0" >
+                        <div className="border-b">
+                            <div className="flex justify-between">
+                                <div className="flex gap-2 m-2">
                                     {student.groupName ? (
-                                        <>
-                                            <div className="border h-12 w-12 rounded-full  mt-3" onClick={() => handleGroupInfo(student?._id)}>
-                                                <img src={student?.profile} alt="" className="rounded-full" />
-                                            </div>
-
-                                        </>
+                                        <div className="border h-12 w-12 rounded-full  mt-3" onClick={() => handleGroupInfo(student?._id)}>
+                                            <img src={student?.profile} alt="" className="rounded-full w-full h-full object-cover" />
+                                        </div>
                                     ) : (
                                         <div className="border h-12 w-12 rounded-full  mt-3">
-                                            <img src={student?.imageUrl} alt="" className="rounded-full" />
+                                            {student?.profileUrl ? (
+                                                <img src={student?.profileUrl} alt="" className="rounded-full w-full h-full object-cover" />
+                                            ) : student?.imageUrl ? (
+                                                <img src={student?.imageUrl} alt="" className="rounded-full w-full h-full object-cover" />
+                                            ) : (
+                                                <img src="/defaultPhoto.png" alt="" className="rounded-full w-full h-full object-cover" />
+                                            )}
+
                                         </div>
                                     )}
 
-                                    <div className="mt-5">
-                                        <span className="text-md font-semibold font-roboto">
-                                            {student?.firstName} {student?.lastName}  {student?.groupName}
-                                        </span>
-
+                                    <div className="mt-5"><span className="text-md  font-semibold font-roboto">{student?.firstName} {student?.lastName} {student?.groupName} {student?.name}</span>
 
                                         <div>
-                                            {online.some(onlineUser => onlineUser.chaterId === student.chaterId && onlineUser.isOnline === true) ? (
+                                            {online.some(onlineUser => onlineUser?.chaterId === student.chaterId && onlineUser?.isOnline) ? (
                                                 <div>
                                                     <span className="text-gray-600 text-sm font-roboto">Active Now</span>
                                                 </div>
@@ -535,7 +446,6 @@ const Chat = () => {
                                                 </div>
                                             )}
                                         </div>
-
 
                                     </div>
 
@@ -562,59 +472,32 @@ const Chat = () => {
 
                         </div>
 
-                        <div className="h-31rem bg-custom-background mt-0 " style={{ maxHeight: "800px", overflowY: "scroll" }}>
+                        <div className="h-31rem bg-custom-background mt-0" style={{ maxHeight: "800px", overflowY: "scroll" }}>
 
-                            <div className="grid grid-cols-1 mb-">
-
-
+                            <div className="grid grid-cols-1 mb- ">
                                 {allMesage.map((message: any, index: number) => (
                                     message.type === "textChat" ? (
                                         <>
                                             {message.senderFirstName && message.senderLastName ? (
                                                 <div
                                                     key={index}
-                                                    className={`flex gap-5 m-5  mb-0 mt-3 ${isSender(message) ? 'justify-end ml-48' : 'justify-start mr-48'}`}
+                                                    className={`flex gap-5 m-5 mb-0 mt-3 ${isSender(message) ? 'justify-end ml-48' : 'justify-start mr-48'}`}
                                                 >
-                                                    <div className={`w-fit h-auto  mb-0 ${isSender(message) ? 'bg-Average' : "bg-white"}  rounded-sm relative`}
-                                                        onMouseEnter={() => handleMouseEnter(index)}
-                                                        onMouseLeave={() => handleMouseLeave(index)}
-                                                    >
+                                                    <div className={`w-fit ${isSender(message) ? 'bg-Average' : "bg-white"} mb-0 h-auto rounded-sm`}>
                                                         <p className={`text-xs font-roboto m-3 ${isSender(message) ? 'text-white' : 'text-black'}`}>
                                                             {isSender(message) ? 'You' : `${message?.senderFirstName} ${message?.senderLastName}`}
                                                         </p>
 
-                                                        <p className={`text-sm font-roboto m-3 mt-0 ${isSender(message) ? 'text-white' : "text-black"}`}>{message?.content}
-                                                        <p className="text-small item text-end">
-                                                                {message?.createdAt ? formatTime(message.createdAt) : ''}
-                                                            </p>
-                                                        </p>
-
-                                                        {isSender(message) && messageHoverIndex === index && (
-                                                            <>
-
-                                                                <div className="absolute right-0 top-0 mt-1 mr-1 cursor-pointer" onMouseEnter={(e) => handleDeleteMessage(e, message._id)}>
-                                                                    <img src="/dropdown.png" alt="" className="w-5 h-auto mb-0" />
-                                                                    <DeleteMessageModal isVisible={deleteMessage} onClose={() => { setDeleteMessage(false) }} socket={socket} messageId={messageId} chatId={student?._id} type={"group"} changeModalStatus={changeModalStatus} />
-                                                                </div>
-
-                                                            </>
-                                                        )}
+                                                        <p className={`text-sm font-roboto m-3 mt-0 ${isSender(message) ? 'text-white' : "text-black"}`}>{message?.content}</p>
                                                     </div>
                                                 </div>
                                             ) : (
                                                 <div
                                                     key={index}
-                                                    className={`flex gap-5 m-5  mb-0 mt-3 ${isSender(message) ? 'justify-end' : 'justify-start'}`}
+                                                    className={`flex gap-5 m-5 mb-0 mt-3 ${isSender(message) ? 'justify-end' : 'justify-start'}`}
                                                 >
-                                                    <img src={message} alt="" />
                                                     <div className={`w-fit ${isSender(message) ? 'bg-Average' : "bg-white"} mb-0 h-10 rounded-sm`}>
-                                                        <p className={`text-sm font-roboto m-3 ml-2  mt-1 ${isSender(message) ? 'text-white' : "text-black"}`}>{message?.content}
-                                                            <p className="text-small item text-end">
-                                                                {message?.createdAt ? formatTime(message.createdAt) : ''}
-                                                            </p>
-
-                                                        </p>
-
+                                                        <p className={`text-sm font-roboto m-3 ${isSender(message) ? 'text-white' : "text-black"}`}>{message?.content}</p>
                                                     </div>
                                                 </div>
                                             )}
@@ -690,44 +573,30 @@ const Chat = () => {
                                                 {/* Add additional <source> elements for other video formats if needed */}
                                             </video>
                                         </div>
-                                    ) : message.type === "documentChat" ? (
+                                    ) : message?.type === "documentChat" ? (
                                         <div
                                             key={index}
                                             className={`flex gap-5 m-5 mb-0 mt-10 ${isSender(message) ? 'justify-end' : 'justify-start'}`}
                                         >
                                             {/* Display PDF */}
-                                            <embed src={message.content} type="application/pdf" width="500" height="600" />
+                                            <embed src={message?.content} type="application/pdf" width="500" height="600" />
 
                                             {/* Or, display DOC */}
                                             {/* <iframe src={`https://view.officeapps.live.com/op/embed.aspx?src=${encodeURIComponent(message.content)}`} width="500" height="600" frameborder="0"></iframe> */}
                                         </div>
-                                    ) : message.type === "emojiChat" ? (
+                                    ) : message?.type === "emojiChat" ? (
                                         <>
-                                            {message.senderFirstName && message.senderLastName ? (
+                                            {message?.senderFirstName && message?.senderLastName ? (
                                                 <div
                                                     key={index}
-                                                    className={`flex gap-5 m-5  mb-0 mt-3 ${isSender(message) ? 'justify-end ml-48' : 'justify-start mr-48'}`}
+                                                    className={`flex gap-5 m-5 mb-0 mt-3 ${isSender(message) ? 'justify-end ml-48' : 'justify-start mr-48'}`}
                                                 >
-                                                    <div className={`w-fit h-auto  mb-0 ${isSender(message) ? 'bg-Average' : "bg-white"}  rounded-sm relative`}
-                                                        onMouseEnter={() => handleMouseEnter(index)}
-                                                        onMouseLeave={() => handleMouseLeave(index)}
-                                                    >
+                                                    <div className={`w-fit ${isSender(message) ? 'bg-Average' : "bg-white"} mb-0 h-auto rounded-sm`}>
                                                         <p className={`text-xs font-roboto m-3 ${isSender(message) ? 'text-white' : 'text-black'}`}>
                                                             {isSender(message) ? 'You' : `${message?.senderFirstName} ${message?.senderLastName}`}
                                                         </p>
 
                                                         <p className={`text-xl font-roboto m-3 mt-0 ${isSender(message) ? 'text-white' : "text-black"}`}>{message?.content}</p>
-
-                                                        {isSender(message) && messageHoverIndex === index && (
-                                                            <>
-
-                                                                <div className="absolute right-0 top-0 mt-1 mr-1 cursor-pointer" onMouseEnter={(e) => handleDeleteMessage(e, message._id)}>
-                                                                    <img src="/dropdown.png" alt="" className="w-5 h-auto mb-0" />
-                                                                    <DeleteMessageModal isVisible={deleteMessage} onClose={() => { setDeleteMessage(false) }} socket={socket} messageId={messageId} chatId={student?._id} type={"group"} changeModalStatus={changeModalStatus} />
-                                                                </div>
-
-                                                            </>
-                                                        )}
                                                     </div>
                                                 </div>
                                             ) : (
@@ -747,13 +616,10 @@ const Chat = () => {
                                 <div ref={scroll}></div>
                                 <p className="text-custom-background ">example chat</p>
                                 <p className="text-custom-background ">example chat</p>
-
                             </div>
-
-                            <div className={`absolute bottom-20 ml-4 emoji-list ${showEmojis ? '' : 'hidden'}`}>
+                            <div className={`absolute bottom-40 ml-4 emoji-list ${showEmojis ? '' : 'hidden'}`}>
                                 <Emoji pickEmoji={pickEmoji} />
                             </div>
-
                         </div>
 
                         <div className=" m-3 mt-0 rounded-md  ">
@@ -776,7 +642,6 @@ const Chat = () => {
                                         </div>
                                     ) : (
                                         <>
-
                                             <div className="relative">
                                                 <textarea
                                                     className="font-roboto border px-10 h-10 py-2 resize-none overflow-hidden outline-none max-h-40 rounded-md w-full"
@@ -792,12 +657,8 @@ const Chat = () => {
                                                 </div>
                                             </div>
                                         </>
-
                                     )}
-
                                 </div>
-
-
                                 {student.groupName ? (
                                     <div className="m-1 mt-0 cursor-pointor  relative  bottom-6">
                                         <div className="flex gap-1">
@@ -820,7 +681,7 @@ const Chat = () => {
                                                 </div>
                                             </div>
                                             {/* <div className="flex rounded-full" > */}
-                                            <div className="border h-10 w-16 cursor-pointer flex items-center justify-center ml-1 rounded-full bg-gray-200 shadow-xl" onClick={(e) => handleSubmit(e, "groupChat")}>
+                                            <div className="border h-10 w-16 cursor-pointer flex items-center justify-center ml-1 rounded-full bg-gray-200 shadow-xl" onClick={() => handleSubmit("groupChat")}>
                                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" className="w-6 h-6 rounded-full">
                                                     <path stroke-linecap="round" stroke-linejoin="round" d="M6 12 3.269 3.125A59.769 59.768 0 0 1 21.485 12 59.768 59.768 0 0 1 3.27 20.875L5.999 12Zm0 0h7.5" />
                                                 </svg>
@@ -852,53 +713,23 @@ const Chat = () => {
                                                 </div>
                                             </div>
                                             {/* <div className="flex rounded-full" > */}
-                                            <div className="border h-10 w-16 cursor-pointer flex items-center justify-center ml-1 rounded-full bg-gray-200 shadow-xl" onClick={(e) => handleSubmit(e, "oneToOne")}>
+                                            <div className="border h-10 w-16 cursor-pointer flex items-center justify-center ml-1 rounded-full bg-gray-200 shadow-xl" onClick={() => handleSubmit("oneToOne")}>
                                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" className="w-6 h-6 rounded-full">
                                                     <path stroke-linecap="round" stroke-linejoin="round" d="M6 12 3.269 3.125A59.769 59.768 0 0 1 21.485 12 59.768 59.768 0 0 1 3.27 20.875L5.999 12Zm0 0h7.5" />
                                                 </svg>
-
                                                 {/* </div> */}
-
                                             </div>
-
                                         </div>
                                     </div>
-
                                 )}
-
-
-
-
-
-
-
                             </div>
-
-
-
-
                         </div>
-
-
-
-
-
-
-
-
                     </div>
-
-
-
                 )}
-
-
-            </div >
+            </div>
             <ChatMediaModal isVisible={selectMedia} onClose={() => { setSelectMedia(false) }} changeModalStatus={changeModalStatus} handleMessageChange={handleMessageChange} />
-
         </>
 
     )
 }
-
-export default Chat;
+export default Chat

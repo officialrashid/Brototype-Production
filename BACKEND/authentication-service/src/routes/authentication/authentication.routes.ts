@@ -5,7 +5,7 @@ export default (dependencies:any)=>{
 
   const router = express.Router();
   
-  const {createInvigilatorController,studentLoginController,reviewerLoginController,superleadLoginController,getAllStudentsStatusController,updateStudentStatusController,getHubwiseStudentsDetailsController,getAllReviewersStatusController,addReviewerController,updateReviewerStatusController,addStudentController,getSuperleadHubController,updateStudentPlacedController,getStudentsAndPlacedStudentsController,addAdvisorController,advisorLoginController,getStdDashboardDetailsController,getAdvisorDetailsController,getAllAdvisorsController,updateAdvisorStatusController,getReviewInitiatorsController,updateReviewStatusController,getStudentProfileController,advisorGoogleLoginController,studentGoogleLoginController,reviewerGoogleLoginController,superleadGoogleLoginController} = authentication_Controller(dependencies) 
+  const {createInvigilatorController,studentLoginController,reviewerLoginController,superleadLoginController,getAllStudentsStatusController,updateStudentStatusController,getHubwiseStudentsDetailsController,getAllReviewersStatusController,addReviewerController,updateReviewerStatusController,addStudentController,getSuperleadHubController,updateStudentPlacedController,getStudentsAndPlacedStudentsController,addAdvisorController,advisorLoginController,getStdDashboardDetailsController,getAdvisorDetailsController,getAllAdvisorsController,updateAdvisorStatusController,getReviewInitiatorsController,updateReviewStatusController,getStudentProfileController,advisorGoogleLoginController,studentGoogleLoginController,reviewerGoogleLoginController,superleadGoogleLoginController,getAllChatStudentsController,getAllChatSuperleadsController} = authentication_Controller(dependencies) 
 
   router.post('/createInvigilator',createInvigilatorController)
   router.post('/student-login',studentLoginController)
@@ -35,5 +35,7 @@ export default (dependencies:any)=>{
   router.post('/student-google-login',studentGoogleLoginController)
   router.post('/reviewer-google-login',reviewerGoogleLoginController)
   router.post('/superlead-google-login',superleadGoogleLoginController)
+  router.get('/get-all-chat-students',getAllChatStudentsController)
+  router.get('/get-all-chat-superleads',getAllChatSuperleadsController)
   return router
 }

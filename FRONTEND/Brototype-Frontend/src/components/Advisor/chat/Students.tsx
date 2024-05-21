@@ -1,24 +1,26 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getAllStudents } from "../../../utils/methods/get";
+import { getAllChatStudents, getAllStudents } from "../../../utils/methods/get";
 import { setchatOppositPersonData } from "../../../redux-toolkit/chatOppositPersonDataReducer";
 import { createChat } from "../../../utils/methods/post";
 import { useSocket } from "../../../hooks/useSocket";
 import { Socket } from "socket.io-client";
 
-const Students = ({socket}:{socket:any}) => {
+const Students = ({ socket }: { socket: any }) => {
     // const socket: Socket<DefaultEventsMap, DefaultEventsMap> | null = useSocket();
     const dispatch = useDispatch();
     const superleadUniqueId: string = useSelector((state: any) => state?.superlead?.superleadData?.uniqueId) || localStorage.getItem("superleadUniqueId");
-    const advisorId:any = useSelector((state: RootState) => state?.advisor?.advisorData?.advisorId)
+    const advisorId: any = useSelector((state: RootState) => state?.advisor?.advisorData?.advisorId)
     const [students, setStudents] = useState([]);
     const [selectedStudentIndex, setSelectedStudentIndex] = useState(null);
 
     useEffect(() => {
         const fetchStudents = async () => {
-            const response = await getAllStudents(superleadUniqueId);
-            if (response.status === true) {
-                setStudents(response.response);
+            const response:any = await getAllChatStudents();
+            console.log(response, "response form get all students");
+
+            if (response.response.status === true) {
+                setStudents(response.response.response);
                 // handleStudentClick(0, response.response[0]);
             }
         };
@@ -36,15 +38,15 @@ const Students = ({socket}:{socket:any}) => {
             dispatch(setchatOppositPersonData(student));
             const chatData = {
                 initiatorId: advisorId,
-                recipientId: student.studentId || student.chaterId || student.reviewerId || student.superleadId,
+                recipientId: student.studentId || student.chaterId || student.reviewerId || student._id,
                 chaters: student
             };
             const response = await createChat(chatData);
-            console.log(response,"response response in hateee");
-            
+            console.log(response, "response response in hateee");
+
             if (response?.response?.data?._id || response?.chatExists?.response?._id) {
                 console.log("emitted join roommmmm");
-                
+
                 socket.emit("joinRoom", response?.response?.data?._id || response?.chatExists?.response?._id);
             }
         } catch (err) {
@@ -70,7 +72,7 @@ const Students = ({socket}:{socket:any}) => {
 
     return (
         <div style={{ maxHeight: "500px", overflowY: "scroll" }}>
-            {students.map((student, index) => (
+            {students.map((student:any, index:number) => (
                 <div
                     key={student.studentId}
                     className={`flex justify-between bg-${selectedStudentIndex === index ? 'dark' : 'light'}-highBlue m-5 rounded-md`}
@@ -78,11 +80,16 @@ const Students = ({socket}:{socket:any}) => {
                 >
                     <div className="flex gap-2 m-2 mt-">
                         <div className="border h-8 w-8 rounded-full mt-2 ">
-                            <img src={student.imageUrl} alt="" className="rounded-full " />
+                            {student.profileUrl ? (
+                                <img src={student.profileUrl} alt="" className="rounded-full h-full w-full object-cover " />
+                            ) : (
+                                <img src="/defaultPhoto.png" alt="" className="rounded-full h-full w-full object-cover " />
+                            )}
+
                         </div>
                         <div className="mt-1 mb-0">
                             <span className={`text-sm font-medium font-roboto ${selectedStudentIndex === index ? 'text-white' : 'text-dark'}`}>
-                                {student.firstName} {student.lastName}
+                                {student.name}
                             </span>
 
                             <div>

@@ -50,6 +50,9 @@ const SignIn = () => {
 
             const otpData = {
               reviewerId: response?.data?.response?.reviewer?._id,
+              firstName : response?.data?.response?.reviewer?.firstName,
+              lastName : response?.data?.response?.reviewer?.lastName,
+              imageUrl: response?.data?.response?.reviewer?.profileUrl,
               accessToken: response?.data?.response?.accessToken,
               customToken: response?.data?.response?.customToken,
               phone: phone
@@ -111,6 +114,7 @@ const SignIn = () => {
               if (user) {
                 const reviewerData: any = {
                   reviewerId: response?.data?.response?.reviewer._id,
+                  imageUrl: response?.data?.response?.reviewer.profileUrl,
                   firstName : response?.data?.response?.reviewer.firstName,
                   lastName : response?.data?.response?.reviewer.lastName,
                   phone : response?.data?.response?.reviewer.phone,

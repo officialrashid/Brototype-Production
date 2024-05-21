@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getAllStudents } from "../../../utils/methods/get";
+import { getAllChatStudents, getAllStudents } from "../../../utils/methods/get";
 import { setchatOppositPersonData } from "../../../redux-toolkit/chatOppositPersonDataReducer";
 import { createChat } from "../../../utils/methods/post";
 import { useSocket } from "../../../hooks/useSocket";
@@ -11,14 +11,19 @@ const Students = ({socket}:{socket:any}) => {
     const dispatch = useDispatch();
     const superleadUniqueId: string = useSelector((state: any) => state?.superlead?.superleadData?.uniqueId) || localStorage.getItem("superleadUniqueId");
     const superleadId: any = useSelector((state: any) => state?.superlead?.superleadData?.superleadId);
+    const chaterData: any = useSelector((state: any) => state?.superlead?.superleadData);
+    console.log(chaterData,"LLLLLL");
+    
     const [students, setStudents] = useState([]);
     const [selectedStudentIndex, setSelectedStudentIndex] = useState(null);
 
     useEffect(() => {
         const fetchStudents = async () => {
-            const response = await getAllStudents(superleadUniqueId);
-            if (response.status === true) {
-                setStudents(response.response);
+            const response = await getAllChatStudents();
+            console.log(response,"response form get all students");
+            
+            if (response.response.status === true) {
+                setStudents(response.response.response);
                 // handleStudentClick(0, response.response[0]);
             }
         };
@@ -34,10 +39,19 @@ const Students = ({socket}:{socket:any}) => {
 
             setSelectedStudentIndex(index);
             dispatch(setchatOppositPersonData(student));
+            const initiatorData:any = {
+                initiatorId : chaterData.superleadId,
+                profileUrl : chaterData.imageUrl,
+                name : chaterData.name,
+                phone : chaterData.phone,
+             
+            }
+      
             const chatData = {
                 initiatorId: superleadId,
                 recipientId: student.studentId || student.chaterId || student.reviewerId || student._id,
-                chaters: student
+                chaters: student,
+                initiatorData : initiatorData
             };
             const response = await createChat(chatData);
             console.log(response,"response response in hateee");
@@ -78,11 +92,17 @@ const Students = ({socket}:{socket:any}) => {
                 >
                     <div className="flex gap-2 m-2 mt-">
                         <div className="border h-8 w-8 rounded-full mt-2 ">
-                            <img src={student.imageUrl} alt="" className="w-full h-full  rounded-full object-cover " />
+                            {student?.profileUrl ? (
+                            <img src={student?.profileUrl ?? "/defaultPhoto.png"} alt="" className="w-full h-full rounded-full object-cover" />
+                            ):(
+                                <img src="/defaultPhoto.png" alt="" className="w-full h-full rounded-full object-cover" />    
+                            )}
+
+
                         </div>
                         <div className="mt-1 mb-0">
                             <span className={`text-sm font-medium font-roboto ${selectedStudentIndex === index ? 'text-white' : 'text-dark'}`}>
-                                {student.firstName} {student.lastName}
+                                {student.name}
                             </span>
 
                             <div>

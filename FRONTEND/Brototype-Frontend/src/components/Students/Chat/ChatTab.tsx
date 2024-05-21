@@ -26,6 +26,7 @@ const ChatTab = ({ socket }: { socket: any }) => {
         const fetchAllChatRecipients = async () => {
             try {
                 const response = await getAllChatRecipients(studentId);
+                console.log(response, "response in get all chat reciprir");
 
                 if (response.status === true) {
                     setChatUser(prevChatUser => [...prevChatUser, ...response.recipients]);
@@ -99,6 +100,8 @@ const ChatTab = ({ socket }: { socket: any }) => {
 
 
     const handleStudentClick = async (index: number, chatUser: any) => {
+        console.log(chatUser,"{}{}{{");
+        
         try {
             if (chatUser?.groupName) {
                 setSelectedStudentIndex(index);
@@ -110,16 +113,22 @@ const ChatTab = ({ socket }: { socket: any }) => {
                 setSelectedStudentIndex(index);
                 dispatch(setchatOppositPersonData(chatUser?.details));
                 setUnreadChaterId(chatUser?.details?.chaterId);
+                console.log(chatUser,"This is Chat USer logs");
+                
                 const chatData = {
                     initiatorId: studentId,
-                    recipientId: chatUser?.details?.superleadId || chatUser?.details?.chaterId,
+                    recipientId: chatUser?.details?.chaterId,
                     chaters: chatUser.details
                 };
                 // Initialize newChatId variable
+                console.log(chatData,"lllll");
+                
                 const response = await createChat(chatData);
                 let newChatId = null;
                 if (response?.response?.data?._id || response?.chatExists?.response?._id) {
                     newChatId = response?.response?.data?._id || response?.chatExists?.response?._id;
+                    console.log(newChatId,"emitteee");
+                    
                     socket.emit("joinRoom", response?.response?.data?._id || response?.chatExists?.response?._id);
                     setUnreadMsgCountZeroFunction(chatUser, newChatId, "oneToOne")
                 }
@@ -149,7 +158,7 @@ const ChatTab = ({ socket }: { socket: any }) => {
         if (type === "oneToOne") {
             const data = {
                 initiatorId: studentId,
-                recipientId: chatUser?.details?.superleadId || chatUser?.details?.chaterId,
+                recipientId: chatUser?.details?._id || chatUser?.details?.chaterId,
                 chatId: chatId,
                 type: type
             };
@@ -189,17 +198,22 @@ const ChatTab = ({ socket }: { socket: any }) => {
                                     {user?.groupName}
                                 </span>
                                 <div>
-                  
-                                        <span className={`text-gray-600 font-roboto text-xs ${selectedStudentIndex === index ? 'text-white' : 'text-black'}`}>
-                                          {user.description}
-                                        </span>
+
+                                    <span className={`text-gray-600 font-roboto text-xs ${selectedStudentIndex === index ? 'text-white' : 'text-black'}`}>
+                                        {user.description}
+                                    </span>
                                 </div>
                             </div>
                         </div>
                     ) : (
                         <div className="flex gap-2 m-2 mt-">
                             <div className="border h-8 w-8 rounded-full mt-2 relative">
-                                <img src={user.details.imageUrl} alt="" className="rounded-full w-full h-full object-cover" />
+                                {user.details.imageUrl ? (
+                                    <img src={user.details.imageUrl} alt="" className="rounded-full w-full h-full object-cover" />
+                                ) : (
+                                    <img src="/defaultPhoto.png" alt="" className="rounded-full w-full h-full object-cover" />
+                                )}
+
                                 {online.some(onlineUser => onlineUser.chaterId === user?.details?.chaterId && onlineUser.isOnline === true) ? (
                                     <div className="absolute bottom-0 right-0 rounded-full w-3 h-3 bg-green-400 border-2 border-white"></div>
                                 ) : (
@@ -211,7 +225,7 @@ const ChatTab = ({ socket }: { socket: any }) => {
                                     {user.details.firstName} {user.details.lastName}
                                 </span>
                                 <div>
-                                {online.some(onlineUser => onlineUser.chaterId === user?.details?.chaterId && onlineUser.isOnline === true) ? (
+                                    {online.some(onlineUser => onlineUser.chaterId === user?.details?.chaterId && onlineUser.isOnline === true) ? (
                                         <div>
                                             <span className="text-gray-600 text-sm font-roboto">Active Now</span>
                                         </div>

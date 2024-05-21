@@ -11,6 +11,7 @@ const Advisors = ({socket}:{socket:any}) => {
     const dispatch = useDispatch();
     const superleadUniqueId: string = useSelector((state: any) => state?.superlead?.superleadData?.uniqueId) || localStorage.getItem("superleadUniqueId");
     const superleadId: any = useSelector((state: any) => state?.superlead?.superleadData?.superleadId);
+    const chaterData: any = useSelector((state: any) => state?.superlead?.superleadData);
     const [advisors, setAdvisors] = useState([]);
     const [selectedStudentIndex, setSelectedStudentIndex] = useState(null);
 
@@ -36,10 +37,18 @@ const Advisors = ({socket}:{socket:any}) => {
 
             setSelectedStudentIndex(index);
             dispatch(setchatOppositPersonData(advisor));
+            const initiatorData:any = {
+                initiatorId : chaterData.superleadId,
+                profileUrl : chaterData.imageUrl,
+                name : chaterData.name,
+                phone : chaterData.phone,
+             
+            }
             const chatData = {
                 initiatorId: superleadId,
                 recipientId: advisor.studentId || advisor.chaterId || advisor.reviewerId || advisor._id ,
-                chaters: advisor
+                chaters: advisor,
+                initiatorData : initiatorData
             };
             const response = await createChat(chatData);
             console.log(response,"response response in hateee");
@@ -80,7 +89,7 @@ const Advisors = ({socket}:{socket:any}) => {
                 >
                     <div className="flex gap-2 m-2 mt-">
                         <div className="border h-8 w-8 rounded-full mt-2 ">
-                            <img src={advisor.imageUrl??"/profile.jpeg"} alt="" className="w-full h-full  rounded-full object-cover " />
+                            <img src={advisor.profileUrl??"/defaultPhoto.png"} alt="" className="w-full h-full  rounded-full object-cover " />
                         </div>
                         <div className="mt-1 mb-0">
                             <span className={`text-sm font-medium font-roboto ${selectedStudentIndex === index ? 'text-white' : 'text-dark'}`}>

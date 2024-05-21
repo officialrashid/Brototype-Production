@@ -182,10 +182,8 @@ export default {
             return { status: false, message: "Error in the message create" }
         }
     },
-    updateChatersDetails: async (chatersDetails: { firstName: string; lastName: string; phone: string; imageUrl: string; }, recipientId: any) => {
-
-
-
+    updateChatersDetails: async (chatersDetails: { firstName: string; lastName: string; phone: string; profileUrl: string; name : string }, recipientId: any) => {
+        
         try {
             if (!chatersDetails) {
                 return { status: false, message: "Chaters details not provided for update." };
@@ -194,10 +192,10 @@ export default {
 
             const chaterData = {
                 chaterId: recipientId,
-                firstName: chatersDetails.firstName,
+                firstName: chatersDetails.name ? chatersDetails.name : chatersDetails.firstName,
                 lastName: chatersDetails.lastName,
                 phone: chatersDetails.phone,
-                imageUrl: chatersDetails.imageUrl
+                imageUrl: chatersDetails.profileUrl
             }
             // If the recipient doesn't exist, create a new document
             const chatersData = await schema.Chaters.create(chaterData);

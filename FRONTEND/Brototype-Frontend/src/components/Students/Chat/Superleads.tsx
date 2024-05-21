@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getAllSuperleads } from "../../../utils/methods/get";
+import { getAllChatSuperleads, getAllSuperleads } from "../../../utils/methods/get";
 import { setchatOppositPersonData } from "../../../redux-toolkit/chatOppositPersonDataReducer";
 import { createChat } from "../../../utils/methods/post";
 import { RootState } from "../../../redux-toolkit/store";
@@ -11,15 +11,19 @@ const Students = ({socket}:{socket:any}) => {
     // const socket: Socket<DefaultEventsMap, DefaultEventsMap> | null = useSocket();
     const dispatch = useDispatch();
     const studentId: string | null = useSelector((state: RootState) => state?.student?.studentData?.studentId);
+    const chaterData: any | null = useSelector((state: RootState) => state?.student?.studentData);
+
     const [superleads, setSuperleads] = useState([]);
     const [selectedStudentIndex, setSelectedStudentIndex] = useState(null);
 
     useEffect(() => {
         const fetchSuperleads = async () => {
             try {
-                const response = await getAllSuperleads();
+                const response = await getAllChatSuperleads();
+                console.log(response,"*******(()))((*******))))");
+                
                 if (response.status === true) {
-                    setSuperleads(response.result);
+                    setSuperleads(response.response);
                     // handleStudentClick(0, response.result[0]);
                 }
             } catch (error) {
@@ -33,10 +37,18 @@ const Students = ({socket}:{socket:any}) => {
         try {
             setSelectedStudentIndex(index);
             dispatch(setchatOppositPersonData(superlead));
+            const initiatorData:any = {
+                initiatorId : chaterData.studentId,
+                profileUrl : chaterData.imageUrl,
+                name : chaterData.name,
+                phone : chaterData.phone,
+             
+            }
             const chatData = {
                 initiatorId: studentId,
-                recipientId: superlead.superleadId || superlead.chaterId,
-                chaters: superlead
+                recipientId: superlead._id || superlead.chaterId,
+                chaters: superlead,
+                initiatorData : initiatorData
             };
             const response = await createChat(chatData);
              console.log(response,"responseresponse");
@@ -71,17 +83,22 @@ const Students = ({socket}:{socket:any}) => {
         <div style={{ maxHeight: "500px", overflowY: "scroll" }}>
             {superleads.map((superlead: any, index: number) => (
                 <div
-                    key={superlead.superleadId}
+                    key={superlead._id}
                     className={`flex justify-between bg-${selectedStudentIndex === index ? 'dark' : 'light'}-highBlue m-5 rounded-md`}
                     onClick={() => handleStudentClick(index, superlead)}
                 >
                     <div className="flex gap-2 m-2 mt-">
                         <div className="border h-8 w-8 rounded-full mt-2 ">
-                            <img src={superlead.imageUrl} alt="" className="rounded-full w-full h-full object-cover" />
+                            {superlead.profileUrl ? (
+                            <img src={superlead.profileUrl} alt="" className="rounded-full w-full h-full object-cover" />
+                            ):(
+                                <img src="/defaultPhoto.png" alt="" className="rounded-full w-full h-full object-cover" />
+                            )}
+
                         </div>
                         <div className="mt-1 mb-0">
                             <span className={`text-sm font-medium font-roboto ${selectedStudentIndex === index ? 'text-white' : 'text-dark'}`}>
-                                {superlead.firstName} {superlead.lastName}
+                                {superlead.name}
                             </span>
                             <div>
                                 <span className={`text-gray-600 font-roboto text-xs ${selectedStudentIndex === index ? 'text-white' : 'text-black'}`}>

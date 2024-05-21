@@ -7,7 +7,7 @@ export const createChat_Usecase = (dependencies: any) => {
         throw new Error("Error: chatAndVideo Repository not found");
     }
 
-    const executeFunction = async (initiatorId: string, recipientId: string, chaters: any) => {
+    const executeFunction = async (initiatorId: string, recipientId: string, chaters: any,initiatorData:any) => {
         try {
             if (!initiatorId || !recipientId) {
                 return { status: false, message: "Chat not created because initiator or recipient not found" };
@@ -17,7 +17,7 @@ export const createChat_Usecase = (dependencies: any) => {
             const chatExists = await chatAndVideoRepository.checkHaveAlreadyChatCreated(initiatorId, recipientId);
 
             console.log(chatExists, "chatExistssssssss");
-
+          
             if (chatExists.response === null) {
 
                 const chat = new Chat(initiatorId, recipientId);
@@ -31,8 +31,16 @@ export const createChat_Usecase = (dependencies: any) => {
                     
                     if (updateChatersExit.status === true && updateChatersExit.message === "chater details not created") {
                         console.log(chaters,"chaters chaters chaters");
-                        
+                        console.log(initiatorData, "chaters chaters chaters chaters");
                         const updateChaters = await chatAndVideoRepository.updateChatersDetails(chaters, recipientId)
+
+                    }
+                    const updateSenderExit = await chatAndVideoRepository.updateChatersExit(initiatorData.initiatorId)
+                    if (updateSenderExit.status === true && updateSenderExit.message === "chater details not created") {
+                        console.log(chaters,"chaters chaters chaters");
+                        console.log(initiatorData, "chaters chaters chaters chaters");
+                        const updateSenderDetails = await chatAndVideoRepository.updateChatersDetails(initiatorData, initiatorData.initiatorId)
+
                     }
 
 
@@ -45,6 +53,13 @@ export const createChat_Usecase = (dependencies: any) => {
                 const updateChatersExit = await chatAndVideoRepository.updateChatersExit(recipientId)
                 if (updateChatersExit.status === true && updateChatersExit.message === "chater details not created") {
                     const updateChaters = await chatAndVideoRepository.updateChatersDetails(chaters, recipientId)
+                }
+                const updateSenderExit = await chatAndVideoRepository.updateChatersExit(initiatorData.initiatorId)
+                if (updateSenderExit.status === true && updateSenderExit.message === "chater details not created") {
+                    console.log(chaters,"chaters chaters chaters");
+                    console.log(initiatorData, "chaters chaters chaters chaters");
+                    const updateSenderDetails = await chatAndVideoRepository.updateChatersDetails(initiatorData, initiatorData.initiatorId)
+
                 }
                 return { status: false, chatExists }; // return response
             }

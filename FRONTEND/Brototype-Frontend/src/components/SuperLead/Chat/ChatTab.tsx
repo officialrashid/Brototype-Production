@@ -101,13 +101,16 @@ const ChatTab = ({ socket }: { socket: any }) => {
                 setChatType("oneToOne");
                 const chatData = {
                     initiatorId: superleadId,
-                    recipientId: chatUser?.details?.studentId || chatUser?.details?.chaterId ||  chatUser?.details?.reviewerId,
+                    recipientId: chatUser?.details?.chaterId,
                     chaters: chatUser.details
                 };
+                console.log(chatData,"logssss");
+                
                 const response: any = await createChat(chatData);
                 let newChatId = null; // Initialize newChatId variable
                 if (response?.response?.data?._id || response?.chatExists?.response?._id) {
                     newChatId = response?.response?.data?._id || response?.chatExists?.response?._id;
+                    console.log(newChatId,"emitteee");
                     socket.emit("joinRoom", newChatId);
                     setChatId(newChatId);
                     setUnreadMsgCountZeroFunction(chatUser, newChatId, "oneToOne")
@@ -204,7 +207,12 @@ const ChatTab = ({ socket }: { socket: any }) => {
                     ) : (
                         <div className="flex gap-2 m-2 mt-">
                             <div className="border h-8 w-8 rounded-full mt-2 relative">
-                                <img src={user.details.imageUrl} alt="" className="rounded-full object-cover" />
+                                {user.details.imageUrl ? (
+        <img src={user.details.imageUrl} alt="" className="rounded-full w-full h-full object-cover" />
+                                ):(
+                                    <img src="/defaultPhoto.png" alt="" className="rounded-full w-full h-full object-cover" />    
+                                )}
+                        
                                 {online.some(onlineUser => onlineUser.chaterId === user?.details?.chaterId && onlineUser.isOnline === true) ? (
                                 <div className="absolute bottom-0 right-0 rounded-full w-3 h-3 bg-green-400 border-2 border-white"></div>
                                 ) : (

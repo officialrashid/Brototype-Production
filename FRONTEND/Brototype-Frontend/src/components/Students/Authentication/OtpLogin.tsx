@@ -16,6 +16,8 @@ interface OtpData {
     phone: number;
     customToken: string;
     accessToken: string;
+    imageUrl : string;
+    name : string;
     // ... other properties
 }
 declare global {
@@ -40,6 +42,8 @@ const StudentOtpPage: FunctionComponent = () => {
     const otpData: OtpData = useSelector((state: RootState) => state.student);
     let phone: React.SetStateAction<string>;
     const studentIdRef = useRef<string | null>(null);
+    const nameRef = useRef<string | null>(null);
+    const imageUrlRef = useRef<string | null>(null);
     const batchIdRef = useRef<string | null>(null);
     const accessTokenRef = useRef<string | null>(null);
     const customTokenRef = useRef<string | null>(null);
@@ -50,6 +54,8 @@ const StudentOtpPage: FunctionComponent = () => {
   
         localStorage.removeItem('otpSent')
         studentIdRef.current = otpData?.studentData?.studentId;
+        nameRef.current = otpData?.studentData?.name;
+        imageUrlRef.current = otpData?.studentData?.imageUrl;
         batchIdRef.current = otpData?.studentData?.batchId;
         phone = otpData.studentData.phone;
         customTokenRef.current = otpData.studentData.customToken;
@@ -98,6 +104,8 @@ const StudentOtpPage: FunctionComponent = () => {
             const confirmationResult = await signInWithPhoneNumber(auth, formatPh, appVerifier);
             window.confirmationResult = confirmationResult;
             studentIdRef.current = otpData?.studentData?.studentId;
+            nameRef.current = otpData?.studentData?.name;
+            imageUrlRef.current = otpData?.studentData?.imageUrl;
             batchIdRef.current = otpData?.studentData?.batchId;
             customTokenRef.current = otpData?.studentData?.customToken;
             accessTokenRef.current = otpData?.studentData?.accessToken;
@@ -152,7 +160,10 @@ const StudentOtpPage: FunctionComponent = () => {
                         studentId: studentIdRef.current,
                         batchId: batchIdRef.current,
                         accessToken: accessTokenRef.current,
-                        customToken: customTokenRef.current
+                        customToken: customTokenRef.current,
+                        imageUrl : imageUrlRef.current,
+                        name : nameRef.current,
+                        phone : phone
                     }
                     console.log(studentData,"studentData comingggg");
                     

@@ -1,23 +1,23 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getAllChatReviewers, getAllStudents } from "../../../utils/methods/get";
+import { getAllChatReviewers, getAllStudents, getChatReviewers } from "../../../utils/methods/get";
 import { setchatOppositPersonData } from "../../../redux-toolkit/chatOppositPersonDataReducer";
 import { createChat } from "../../../utils/methods/post";
 import { useSocket } from "../../../hooks/useSocket";
 import { Socket } from "socket.io-client";
 
-const Students = ({socket}:{socket:any}) => {
+const Students = ({ socket }: { socket: any }) => {
     // const socket: Socket<DefaultEventsMap, DefaultEventsMap> | null = useSocket();
     const dispatch = useDispatch();
-    const advisorId:any = useSelector((state: RootState) => state?.advisor?.advisorData?.advisorId)
+    const advisorId: any = useSelector((state: RootState) => state?.advisor?.advisorData?.advisorId)
     const [reviewers, setReviewers] = useState([]);
     const [selectedStudentIndex, setSelectedStudentIndex] = useState(null);
 
     useEffect(() => {
         const fetchStudents = async () => {
-            const response = await getAllChatReviewers();
-            console.log(response,"response in chateeee in reviewreeeee");
-            
+            const response = await getChatReviewers();
+            console.log(response, "response in chateeee in reviewreeeee");
+
             if (response.status === true) {
                 setReviewers(response.response);
                 // handleStudentClick(0, response.response[0]);
@@ -41,11 +41,11 @@ const Students = ({socket}:{socket:any}) => {
                 chaters: reviewer
             };
             const response = await createChat(chatData);
-            console.log(response,"response response in hateee");
-            
+            console.log(response, "response response in hateee");
+
             if (response?.response?.data?._id || response?.chatExists?.response?._id) {
-                console.log("emitted join roommmmm",response?.response?.data?._id || response?.chatExists?.response?._id);
-                
+                console.log("emitted join roommmmm", response?.response?.data?._id || response?.chatExists?.response?._id);
+
                 socket.emit("joinRoom", response?.response?.data?._id || response?.chatExists?.response?._id);
             }
         } catch (err) {
@@ -71,15 +71,20 @@ const Students = ({socket}:{socket:any}) => {
 
     return (
         <div style={{ maxHeight: "500px", overflowY: "scroll" }}>
-            {reviewers.map((reviewer, index) => (
+            {reviewers.map((reviewer: any, index) => (
                 <div
-                    key={reviewer.reviewerId}
+                    key={reviewer._id}
                     className={`flex justify-between bg-${selectedStudentIndex === index ? 'dark' : 'light'}-highBlue m-5 rounded-md`}
                     onClick={() => handleStudentClick(index, reviewer)}
                 >
                     <div className="flex gap-2 m-2 mt-">
                         <div className="border h-8 w-8 rounded-full mt-2 ">
-                            <img src={reviewer.imageUrl} alt="" className="rounded-full " />
+                            {reviewer.profileUrl ? (
+                                <img src={reviewer.profileUrl} alt="" className="rounded-full w-full h-full object-cover" />
+                            ) : (
+                                <img src="/defaultPhoto.png" alt="" className="rounded-full w-full h-full object-cover" />
+                            )}
+
                         </div>
                         <div className="mt-1 mb-0">
                             <span className={`text-sm font-medium font-roboto ${selectedStudentIndex === index ? 'text-white' : 'text-dark'}`}>

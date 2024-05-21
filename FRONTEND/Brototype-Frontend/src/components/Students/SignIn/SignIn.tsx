@@ -50,6 +50,8 @@ const SignIn = () => {
 
             const otpData = {
               studentId: response?.data?.response?.student?.studentId,
+              name : response?.data?.response?.student?.name,
+              imageUrl: response?.data?.response?.student?.profileUrl,
               batchId : response?.data?.response?.student?.batchId,
               accessToken: response?.data?.response?.accessToken,
               customToken: response?.data?.response?.customToken,
@@ -114,6 +116,7 @@ const SignIn = () => {
               if (user) {
                 const studentData: any = {
                   studentId: response?.data?.response?.student.studentId,
+                  imageUrl: response?.data?.response?.student.profileUrl,
                   batchId : response?.data?.response?.student?.batchId,
                   name : response?.data?.response?.student.name,
                   phone : response?.data?.response?.student.phone,

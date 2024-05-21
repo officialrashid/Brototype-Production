@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getAllChatReviewers, getAllStudents } from "../../../utils/methods/get";
+import { getAllChatReviewers, getAllStudents, getChatReviewers } from "../../../utils/methods/get";
 import { setchatOppositPersonData } from "../../../redux-toolkit/chatOppositPersonDataReducer";
 import { createChat } from "../../../utils/methods/post";
 import { useSocket } from "../../../hooks/useSocket";
@@ -13,10 +13,10 @@ const Students = ({socket}:{socket:any}) => {
     const superleadId: any = useSelector((state: any) => state?.superlead?.superleadData?.superleadId);
     const [reviewers, setReviewers] = useState([]);
     const [selectedStudentIndex, setSelectedStudentIndex] = useState(null);
-
+    const chaterData: any = useSelector((state: any) => state?.superlead?.superleadData);
     useEffect(() => {
         const fetchStudents = async () => {
-            const response = await getAllChatReviewers();
+            const response = await getChatReviewers();
             console.log(response,"response in chateeee in reviewreeeee");
             
             if (response.status === true) {
@@ -36,11 +36,20 @@ const Students = ({socket}:{socket:any}) => {
 
             setSelectedStudentIndex(index);
             dispatch(setchatOppositPersonData(reviewer));
+            const initiatorData:any = {
+                initiatorId : chaterData.superleadId,
+                profileUrl : chaterData.imageUrl,
+                name : chaterData.name,
+                phone : chaterData.phone,
+             
+            }
             const chatData = {
                 initiatorId: superleadId,
                 recipientId: reviewer.studentId || reviewer.chaterId || reviewer.reviewerId || reviewer._id,
-                chaters: reviewer
+                chaters: reviewer,
+                initiatorData : initiatorData
             };
+        
             const response = await createChat(chatData);
             console.log(response,"response response in hateee");
             
@@ -74,13 +83,18 @@ const Students = ({socket}:{socket:any}) => {
         <div style={{ maxHeight: "500px", overflowY: "scroll" }}>
             {reviewers.map((reviewer, index) => (
                 <div
-                    key={reviewer.reviewerId}
+                    key={reviewer?._id}
                     className={`flex justify-between bg-${selectedStudentIndex === index ? 'dark' : 'light'}-highBlue m-5 rounded-md`}
                     onClick={() => handleStudentClick(index, reviewer)}
                 >
                     <div className="flex gap-2 m-2 mt-">
                         <div className="border h-8 w-8 rounded-full mt-2 ">
-                            <img src={reviewer.imageUrl} alt="" className="w-full h-full  rounded-full object-cover " />
+                            {reviewer.profileUrl ? (
+                            <img src={reviewer.profileUrl} alt="" className="w-full h-full  rounded-full object-cover " />
+                            ):(
+                                <img src="/defaultPhoto.png" alt="" className="w-full h-full  rounded-full object-cover " />
+                            )}
+
                         </div>
                         <div className="mt-1 mb-0">
                             <span className={`text-sm font-medium font-roboto ${selectedStudentIndex === index ? 'text-white' : 'text-dark'}`}>

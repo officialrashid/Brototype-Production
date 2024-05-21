@@ -15,6 +15,7 @@ interface OtpData {
     phone: number;
     customToken: string;
     accessToken: string;
+    imageUrl : string
     // ... other properties
 }
 declare global {
@@ -44,6 +45,7 @@ const AdvisorOtpPage: FunctionComponent = () => {
     const firstNameRef = useRef<string | null>(null);
     const lastNameRef = useRef<string | null>(null);
     const emailRef = useRef<string | null>(null);
+    const imageUrlRef = useRef<string | null>(null);
     useEffect(() => {
   console.log(otpData,"bfjvhdfgjgdfjghdfjgdfhjhgdhgdfjhgdfj123456789000000000");
   
@@ -52,6 +54,7 @@ const AdvisorOtpPage: FunctionComponent = () => {
         firstNameRef.current = otpData?.advisorData?.firstName;
         lastNameRef.current = otpData?.advisorData?.lastName;
         emailRef.current = otpData?.advisorData?.email;
+        imageUrlRef.current = otpData?.advisorData?.imageUrl;
         phone = otpData.advisorData.phone;
         customTokenRef.current = otpData.advisorData.customToken;
         accessTokenRef.current = otpData.advisorData.accessToken;
@@ -100,6 +103,7 @@ const AdvisorOtpPage: FunctionComponent = () => {
             firstNameRef.current = otpData?.advisorData?.firstName;
             lastNameRef.current = otpData?.advisorData?.lastName;
             emailRef.current = otpData?.advisorData?.email;
+            imageUrlRef.current = otpData?.advisorData?.imageUrl;
             customTokenRef.current = otpData?.advisorData?.customToken;
             accessTokenRef.current = otpData?.advisorData?.accessToken;
             localStorage.setItem('otpSent', 'true');
@@ -152,7 +156,8 @@ const AdvisorOtpPage: FunctionComponent = () => {
                         lastName : lastNameRef.current,
                         phone : phone,
                         accessToken: accessTokenRef.current,
-                        customToken: customTokenRef.current
+                        customToken: customTokenRef.current,
+                        imageUrl : imageUrlRef.current
                     }
                     console.log(advisorData,"reviewerData comingggg");
                     
