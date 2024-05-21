@@ -3,12 +3,10 @@ import { consumeStudentEvents,consumeCoordinatorEvents } from '../..';
 import { reviewController } from '../../routes/reviewRouter';
 const kafkaClient = new kafkajs.Kafka({
   clientId: 'review-service',
-  brokers: ['demo-kafka:9092'],
-  
-   // Adjust if Kafka runs on a different port or host
+  brokers: ['localhost:9092'] 
 });
 
-const consumer = kafkaClient.consumer({ groupId: 'review-service-group',allowAutoTopicCreation:false });
+const consumer = kafkaClient.consumer({ groupId: 'review-service-group' });
 const consumerConnect =async ()=>{
     await consumer.connect()
     await consumer.subscribe({topic:'student-data',fromBeginning:true})
