@@ -10,9 +10,9 @@ interface ActionModalProps {
     messageId: string;
     chatId:string;
     type:string
-    changeActionModalStatus: any // Adjust the type of changeModalStatus as needed
+    changeModalStatus: any // Adjust the type of changeModalStatus as needed
 }
-const DeleteMessageModal: React.FC<ActionModalProps> = ({ isVisible, onClose,socket, messageId, chatId, type ,changeActionModalStatus }) => {
+const DeleteMessageModal: React.FC<ActionModalProps> = ({ isVisible, onClose,socket, messageId, chatId, type ,changeModalStatus }) => {
 console.log(chatId,"dnckjdncd chat id form dlete emodalll");
 console.log(messageId,"0000000000");
 
@@ -36,7 +36,7 @@ console.log(messageId,"0000000000");
                     }
                     socket.emit('deleteMessage', data);
                 
-                  
+                    changeModalStatus()
 
                     // if(response?.response?.status===true && response?.response?.message==="Admin added successfully"){
                     //     toast.success("admin added successfully")

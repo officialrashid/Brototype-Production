@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
-import { getPerPageStudents, getStudentStatus, getStudents } from '../../../utils/methods/get';
+import { getAllBathes, getAllCourses, getPerPageStudents, getStudentStatus, getStudents } from '../../../utils/methods/get';
 import ActionModal from './ActionModal';
 import { tree } from 'd3';
 import AddStudentsModal from './AddStudentsModal';
@@ -21,6 +21,8 @@ const StudentList = () => {
     const [selectedWeek, setSelectedWeek] = useState('All');
     const [selectedStatus, setSelectedStatus] = useState('All');
     const [isBothFiltersSet, setIsBothFiltersSet] = useState(false);
+    const [courses, setCourses] = useState([])
+    const [batches, setBaches] = useState([])
     const [perPage, setPerPage] = useState(10); // Default per page value
     const totalPages = 1000; // Update with the total number of pages
     const pageRange = 4;
@@ -32,16 +34,16 @@ const StudentList = () => {
                     superleadUniqueId,
                     currentPage
                 };
-    
+
                 const response = await getStudents(data);
                 const studentStatus = await getStudentStatus(data);
-    
+
                 console.log(response, "student response in current page");
                 console.log(studentStatus, "student status response in current page");
-    
+
                 if (response.status === true && studentStatus.status === true) {
                     const combinedData = [];
-    
+
                     // Create a map of student data for quick lookup
                     const studentDataMap = {};
                     response.response.students.forEach((student) => {
@@ -51,17 +53,17 @@ const StudentList = () => {
                             domain: student.domain
                         };
                     });
-    
+
                     // Combine student data with their statuses
                     studentStatus.response.response.forEach((status) => {
                         const studentId = status.studentId;
                         const studentData = studentDataMap[studentId];
-    
+
                         // If student data exists, use it; otherwise, use default values
-                        const imageUrl = studentData ? studentData.imageUrl : 'https://demos.themeselection.com/sneat-bootstrap-html-admin-template/assets/img/avatars/1.png';
+                        const imageUrl = studentData ? studentData.imageUrl : '/defaultPhoto.png';
                         const currentWeek = studentData ? studentData.currentWeek : 0;
                         const domain = studentData ? studentData.domain : 'Not Update';
-    
+
                         combinedData.push({
                             studentId: studentId,
                             imageUrl: imageUrl,
@@ -72,9 +74,9 @@ const StudentList = () => {
                             isStatus: status.isStatus
                         });
                     });
-    
+
                     console.log(combinedData, "This is the combined student data");
-    
+
                     setStudentsData(combinedData);
                 }
             } catch (error) {
@@ -82,11 +84,42 @@ const StudentList = () => {
                 // Handle errors
             }
         };
-    
+
         fetchData();
-    }, [superleadUniqueId, currentPage, getStudents, getStudentStatus,onclose,reload]);
+    }, [superleadUniqueId, currentPage, getStudents, getStudentStatus, onclose, reload]);
 
+    useEffect(() => {
+        const fetchCourses = async () => {
+            try {
+                const response = await getAllCourses()
+                if (response?.status) {
+                    setCourses(response.data)
+                } else {
+                    setCourses([])
+                }
 
+            } catch (error) {
+                setCourses([])
+            }
+        }
+        fetchCourses()
+    }, []);
+    useEffect(() => {
+        const fetchAllBatches = async () => {
+            try {
+                const response = await getAllBathes()
+                console.log(response, "get all batchesss");
+                if (response?.data?.status === true) {
+                    setBaches(response?.data?.response)
+                } else {
+                    setBaches([])
+                }
+            } catch (error) {
+                setBaches([])
+            }
+        }
+        fetchAllBatches()
+    },[])
     const handleActionChange = (studentId: string) => {
 
         try {
@@ -223,7 +256,7 @@ const StudentList = () => {
         try {
             const selectedPerPage = parseInt(event.target.value);
             setPerPage(selectedPerPage);
-    
+
             // You can perform additional actions here, such as making an API call with the selected perPage value
             if (selectedPerPage) {
                 const data = {
@@ -267,7 +300,7 @@ const StudentList = () => {
             // Handle error
         }
     };
-    
+
 
 
     return (
@@ -295,10 +328,14 @@ const StudentList = () => {
                                             onChange={(event) => handleBatchWiseFilter(event?.target?.value)} // Pass selected value to handleBatchWiseFilter
                                         >
                                             <option value="" disabled hidden className="text-sm font-roboto text-gray-500">Select a batch</option>
-                                            <option value="All">All</option>
-                                            <option value="BCE-55">BCE-55</option>
-                                            <option value="BCE-66">BCE-66</option>
-                                            <option value="BCK-88">BCE-88</option>
+                                            <option value="All"onClick={()=>setReload(true)}>All</option>
+                                            {batches.map((batch:any,index:number) => (
+                                                <>
+                                                    <option value={batch?.batchName}>{batch?.batchName}</option>
+
+                                                </>
+                                            ))}
+
                                         </select>
 
                                     </div>
@@ -321,10 +358,11 @@ const StudentList = () => {
                                             onChange={(event) => handleDomainWiseFilter(event?.target?.value)} // Pass selected value to handleBatchWiseFilter
                                         >
                                             <option value="" disabled hidden className="text-sm font-roboto text-gray-500">Select a domain</option>
-                                            <option value="All">All</option>
-                                            <option value="Mern Stack developer">Mern Stack developer</option>
-                                            <option value="BCK-66">BCE-66</option>
-                                            <option value="BCK-88">BCE-88</option>
+                                            <option value="All"onClick={()=>setReload(true)}>All</option>
+                                            {courses.map((data, index) => (
+                                                <><option value={data?.courseName}>{data?.courseName}</option></>
+                                            ))}
+
                                         </select>
 
                                     </div>
@@ -344,13 +382,30 @@ const StudentList = () => {
                                             onChange={(event) => handleWeekWiseFilter(event?.target?.value)} // Pass selected value to handleBatchWiseFilter
                                         >
                                             <option value="" disabled hidden className="text-xs font-roboto font-roboto text-gray-500">Select a week</option>
-                                            <option value="All">All</option>
-                                            <option value="week1">week1</option>
-                                            <option value="week2">week2</option>
-                                            <option value="week3">week3</option>
-                                            <option value="week4">week4</option>
-                                            <option value="week5">week5</option>
-                                            <option value="week6">week6</option>
+                                            <option value="All" onClick={()=>setReload(true)}>All</option>
+                                            <option value="1">1</option>
+                                            <option value="2">2</option>
+                                            <option value="3">3</option>
+                                            <option value="4">4</option>
+                                            <option value="5">5</option>
+                                            <option value="6">6</option>
+                                            <option value="7">7</option>
+                                            <option value="8">8</option>
+                                            <option value="9">9</option>
+                                            <option value="10">10</option>
+                                            <option value="11">11</option>
+                                            <option value="12">12</option>
+                                            <option value="13">13</option>
+                                            <option value="14">14</option>
+                                            <option value="15">15</option>
+                                            <option value="16">16</option>
+                                            <option value="17">17</option>
+                                            <option value="18">18</option>
+                                            <option value="19">19</option>
+                                            <option value="20">20</option>
+                                            <option value="21">21</option>
+                                            <option value="22">22</option>
+                                            <option value="23">23</option>
                                         </select>
 
                                     </div>
@@ -370,7 +425,7 @@ const StudentList = () => {
                                             onChange={(event) => handleStatusWiseFilter(event?.target?.value)} // Pass selected value to handleBatchWiseFilter
                                         >
                                             <option value="" disabled hidden className="text-sm font-roboto text-gray-500">Select a status</option>
-                                            <option value="All">All</option>
+                                            <option value="All"onClick={()=>setReload(true)}>All</option>
                                             <option value="Active">Active</option>
                                             <option value="Placed">Placed</option>
                                             <option value="Terminate">Terminate</option>
@@ -397,7 +452,7 @@ const StudentList = () => {
                                             value={perPage}
                                             onChange={handlePerPageChange}
                                         >
-                                            <option value="All">All</option>
+                                            <option value="All"onClick={()=>setReload(true)}>All</option>
                                             <option value="5">5</option>
                                             <option value="6">6</option>
                                             {/* Add more options as needed */}
@@ -622,3 +677,5 @@ const StudentList = () => {
 }
 
 export default StudentList;
+
+

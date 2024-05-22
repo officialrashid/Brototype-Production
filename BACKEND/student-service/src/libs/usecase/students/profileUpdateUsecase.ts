@@ -1,10 +1,8 @@
 // Define the interface for InvigilatorsData
 interface StudentsData {
   studentId: any;
-  firstName: string;
-  lastName: string;
   domain: string;
-  batch: string;
+  environment: string;
 }
 
 interface ProfileUpdate extends StudentsData {
@@ -38,10 +36,10 @@ export const profileUpdate_Usecase = (dependencies: any) => {
  
     const profileData: ProfileUpdate = {
       studentId,
-      firstName: data.firstName,
-      lastName: data.lastName,
+      // firstName: data.firstName,
+      // lastName: data.lastName,
       domain: data.domain,
-      batch: data.batch,
+      environment: data.environment,
       imageUrl,
       isGovernmentId: false
     };

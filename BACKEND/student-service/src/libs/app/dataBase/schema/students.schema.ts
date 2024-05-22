@@ -8,7 +8,7 @@ const manifestSchema = new mongoose.Schema({
   firstName: String,
   lastName: String,
   domain: String,
-  batch: String,
+  environment: String,
   middleName: String,
   dateOfBirth: String,
   age: Number,

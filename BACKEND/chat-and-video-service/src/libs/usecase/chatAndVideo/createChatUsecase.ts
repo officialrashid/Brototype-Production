@@ -35,11 +35,11 @@ export const createChat_Usecase = (dependencies: any) => {
                         const updateChaters = await chatAndVideoRepository.updateChatersDetails(chaters, recipientId)
 
                     }
-                    const updateSenderExit = await chatAndVideoRepository.updateChatersExit(initiatorData.initiatorId)
+                    const updateSenderExit = await chatAndVideoRepository.updateChatersExit(initiatorData?.initiatorId)
                     if (updateSenderExit.status === true && updateSenderExit.message === "chater details not created") {
                         console.log(chaters,"chaters chaters chaters");
                         console.log(initiatorData, "chaters chaters chaters chaters");
-                        const updateSenderDetails = await chatAndVideoRepository.updateChatersDetails(initiatorData, initiatorData.initiatorId)
+                        const updateSenderDetails = await chatAndVideoRepository.updateChatersDetails(initiatorData, initiatorData?.initiatorId)
 
                     }
 
@@ -54,11 +54,11 @@ export const createChat_Usecase = (dependencies: any) => {
                 if (updateChatersExit.status === true && updateChatersExit.message === "chater details not created") {
                     const updateChaters = await chatAndVideoRepository.updateChatersDetails(chaters, recipientId)
                 }
-                const updateSenderExit = await chatAndVideoRepository.updateChatersExit(initiatorData.initiatorId)
+                const updateSenderExit = await chatAndVideoRepository.updateChatersExit(initiatorData?.initiatorId)
                 if (updateSenderExit.status === true && updateSenderExit.message === "chater details not created") {
                     console.log(chaters,"chaters chaters chaters");
                     console.log(initiatorData, "chaters chaters chaters chaters");
-                    const updateSenderDetails = await chatAndVideoRepository.updateChatersDetails(initiatorData, initiatorData.initiatorId)
+                    const updateSenderDetails = await chatAndVideoRepository.updateChatersDetails(initiatorData, initiatorData?.initiatorId)
 
                 }
                 return { status: false, chatExists }; // return response

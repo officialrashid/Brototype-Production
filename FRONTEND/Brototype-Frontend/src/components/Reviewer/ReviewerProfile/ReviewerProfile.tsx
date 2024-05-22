@@ -55,7 +55,7 @@ console.log(profileData.skills,"fbdvfdvfhdvfdfvgh");
           <h1 className='font-roboto font-sm ml-10 mt-'>Your Profile Details</h1>
           <div className='ml-10 mt-5 w-62rem h-28 rounded-md border border-gray-300 relative'>
             <div className='flex'>
-              <img src={profileInfo.imageUrl} alt="" className='rounded-full w-16 h-16 ml-5 mt-5' />
+              <img src={profileInfo.imageUrl ?? "/defaultPhoto.png"} alt="" className='rounded-full w-16 h-16 ml-5 mt-5' />
               <div className='flex flex-1 flex-col ml-8 mt-5'>
                 <h1 className='text-sm font-semibold font-roboto'>{profileInfo.firstName} {profileInfo.lastName}</h1>
                 <p className='text-sm text-gray-500 font-roboto mt-1 ml-6'>{profileInfo.age} years old </p>

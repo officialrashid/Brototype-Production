@@ -1,10 +1,11 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getAllAdvisors} from "../../../utils/methods/get";
 import { setchatOppositPersonData } from "../../../redux-toolkit/chatOppositPersonDataReducer";
 import { createChat } from "../../../utils/methods/post";
 import { useSocket } from "../../../hooks/useSocket";
 import { Socket } from "socket.io-client";
+import GlobalContext from "../../../context/GlobalContext";
 
 const Advisors = ({socket}:{socket:any}) => {
     // const socket: Socket<DefaultEventsMap, DefaultEventsMap> | null = useSocket();
@@ -14,7 +15,7 @@ const Advisors = ({socket}:{socket:any}) => {
     const chaterData: any = useSelector((state: any) => state?.superlead?.superleadData);
     const [advisors, setAdvisors] = useState([]);
     const [selectedStudentIndex, setSelectedStudentIndex] = useState(null);
-
+    const { setClicked } = useContext(GlobalContext);
     useEffect(() => {
         const fetchStudents = async () => {
             const response = await getAllAdvisors();
@@ -27,14 +28,16 @@ const Advisors = ({socket}:{socket:any}) => {
         };
         fetchStudents();
     }, []);
-
+useEffect(() => {
+    setClicked(false)
+}, []);
     const handleStudentClick = async (index: number, advisor: any) => {
         try {
             if (!socket) {
                 console.error("Socket is null. Connection might not be established.");
                 return;
             }
-
+              setClicked(true)
             setSelectedStudentIndex(index);
             dispatch(setchatOppositPersonData(advisor));
             const initiatorData:any = {
@@ -89,7 +92,12 @@ const Advisors = ({socket}:{socket:any}) => {
                 >
                     <div className="flex gap-2 m-2 mt-">
                         <div className="border h-8 w-8 rounded-full mt-2 ">
-                            <img src={advisor.profileUrl??"/defaultPhoto.png"} alt="" className="w-full h-full  rounded-full object-cover " />
+                            {advisor.profileUrl ? (
+                            <img src={advisor.profileUrl} alt="" className="w-full h-full  rounded-full object-cover " />
+                            ):(
+                                <img src="/defaultPhoto.png" alt="" className="w-full h-full  rounded-full object-cover " />
+                            )}
+
                         </div>
                         <div className="mt-1 mb-0">
                             <span className={`text-sm font-medium font-roboto ${selectedStudentIndex === index ? 'text-white' : 'text-dark'}`}>

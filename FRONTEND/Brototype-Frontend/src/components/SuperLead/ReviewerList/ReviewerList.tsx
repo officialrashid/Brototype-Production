@@ -45,7 +45,7 @@ const ReviewerList = () => {
                         console.log("Reviewer Data:", reviewerData.imageUrl); 
                     
                         // If reviewer data exists, use it; otherwise, use default values
-                        const imageUrl = reviewerData.imageUrl || 'https://demos.themeselection.com/sneat-bootstrap-html-admin-template/assets/img/avatars/1.png';
+                        const imageUrl = reviewerData.imageUrl || '/defaultPhoto.png';
                         const gender = reviewerData.gender || '---';
                     
                         combinedData.push({

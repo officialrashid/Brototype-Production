@@ -43,7 +43,7 @@ const Chat = () => {
     const [showEmojis, setShowEmojis] = useState(false)
     const [cursorPosition, setCursorPosition] = useState()
     const inputRef = useRef(null);
-    const { setUnreadReload } = useContext(GlobalContext);
+    const { setUnreadReload,clicked } = useContext(GlobalContext);
     useEffect(() => {
         if (!socket || !studentId) return;
 
@@ -476,7 +476,7 @@ const Chat = () => {
                                 {allMesage.map((message: any, index: number) => (
                                     message.type === "textChat" ? (
                                         <>
-                                            {message.senderFirstName && message.senderLastName ? (
+                                            {message.senderFirstName || message.senderLastName ? (
                                                 <div
                                                     key={index}
                                                     className={`flex gap-5 m-5 mb-0 mt-3 ${isSender(message) ? 'justify-end ml-48' : 'justify-start mr-48'}`}
@@ -503,7 +503,7 @@ const Chat = () => {
                                         </>
                                     ) : message.type === "voiceChat" ? (
                                         <>
-                                            {message.senderFirstName && message.senderLastName ? (
+                                            {message.senderFirstName || message.senderLastName ? (
                                                 <div
                                                     key={index}
                                                     className={`flex gap-5 m-5 mb-0 mt-10 ${isSender(message) ? 'justify-end' : 'justify-start'}`}
@@ -534,7 +534,7 @@ const Chat = () => {
                                         </>
                                     ) : message.type === "imageChat" ? (
                                         <>
-                                            {message.senderFirstName && message.senderLastName ? (
+                                            {message.senderFirstName || message.senderLastName ? (
                                                 <div
                                                     key={index}
                                                     className={`flex gap-5 m-5 mb-0 mt-10 ${isSender(message) ? 'justify-end' : 'justify-start'}`}
@@ -584,7 +584,7 @@ const Chat = () => {
                                         </div>
                                     ) : message?.type === "emojiChat" ? (
                                         <>
-                                            {message?.senderFirstName && message?.senderLastName ? (
+                                            {message?.senderFirstName || message?.senderLastName ? (
                                                 <div
                                                     key={index}
                                                     className={`flex gap-5 m-5 mb-0 mt-3 ${isSender(message) ? 'justify-end ml-48' : 'justify-start mr-48'}`}
@@ -722,7 +722,7 @@ const Chat = () => {
                                 )}
                             </div>
                         </div>
-                    </div>
+                    </div>   
                 )}
             </div>
             <ChatMediaModal isVisible={selectMedia} onClose={() => { setSelectMedia(false) }} changeModalStatus={changeModalStatus} handleMessageChange={handleMessageChange} />

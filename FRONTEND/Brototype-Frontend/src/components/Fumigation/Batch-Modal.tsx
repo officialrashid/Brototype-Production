@@ -1,5 +1,6 @@
 import axios from "axios"
 import { Formik,Form,Field,ErrorMessage } from "formik"
+import { toast } from "react-toastify"
 import * as Yup from 'yup'
 
 const BatchModal=({isVisible ,onClose,batchRecord})=>{
@@ -61,16 +62,17 @@ const validationSchema=Yup.object({
       
 console.log(values.hubLocation.trim());
 
-      let response= await  axios.post('https://brototypes.com/api/fumigation/create-batch',values)
+      let response= await  axios.post('http://localhost:3002/api/fumigation/create-batch',values)
 
-      console.log(response);
+      console.log(response,"create batch responseeee");
 
-      if(response.status){
+      if(response.data.status===true){
         resetForm();
-        setStatus(' Submitted sucesssssfully!!!!!!')
+        toast.success("Batch Created Successfully")
+        onClose()
       }
       
-    
+      onClose()
 
       //
     } catch (err) {

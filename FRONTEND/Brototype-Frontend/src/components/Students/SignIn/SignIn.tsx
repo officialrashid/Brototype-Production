@@ -53,6 +53,7 @@ const SignIn = () => {
               name : response?.data?.response?.student?.name,
               imageUrl: response?.data?.response?.student?.profileUrl,
               batchId : response?.data?.response?.student?.batchId,
+              batch : response?.data?.response?.student?.batch,
               accessToken: response?.data?.response?.accessToken,
               customToken: response?.data?.response?.customToken,
               phone: phone
@@ -118,6 +119,7 @@ const SignIn = () => {
                   studentId: response?.data?.response?.student.studentId,
                   imageUrl: response?.data?.response?.student.profileUrl,
                   batchId : response?.data?.response?.student?.batchId,
+                  batch : response?.data?.response?.student?.batch,
                   name : response?.data?.response?.student.name,
                   phone : response?.data?.response?.student.phone,
                   accessToken: response?.data?.response?.accessToken,

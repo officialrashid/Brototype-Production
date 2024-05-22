@@ -2,7 +2,8 @@ import express from "express"
 import {fumigation_Controller} from "../../libs/controllers";
 import jwt from "jsonwebtoken"
 import confirmPassedStudents from "../../libs/controllers/fumigation/studentsController/confirmPassedStudents";
-const jwtVerify = require('jwt-verify-token')
+const jwtVerification = require('jwt-verify-token');
+const secretKey = 'secretidofAccessTokenjwt';
 // const = require('../..Middleware.js')
 export default (dependencies:any)=>{
 

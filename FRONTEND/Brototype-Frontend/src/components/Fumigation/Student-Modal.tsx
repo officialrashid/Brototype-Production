@@ -3,6 +3,7 @@ import { useEffect, useState } from "react"
 import axios from "axios";
 import { getEnquiryData } from "../../redux-toolkit/enquirySlice";
 import { useDispatch, useSelector } from "react-redux";
+import { toast } from "react-toastify";
 
 const StudentModal=({isVisible,onClose,students,batchId})=>{
 
@@ -46,7 +47,7 @@ console.log(students);
     
     const fetchStudent= ()=>{
         try{
-            axios.get('https://brototypes.com/api/fumigation/get-enquery').then(res=>{
+            axios.get('http://localhost:3002/api/fumigation/get-enquery').then(res=>{
 
             console.log(res.data.response,'from modal table');
             
@@ -55,7 +56,7 @@ console.log(students);
                 setFilteredStudents(res.data.response)  
                 
                 setStudentList(res.data.response)
-        
+                 setActionStatus(false)
             }).catch(err=>{
                 console.log(err);  
             })
@@ -64,17 +65,18 @@ console.log(students);
         }
     }
     fetchStudent()
-   },[])
+   },[actionStatus])
 
    const addToBatch=async (batchId,studentId)=>{
 
     console.log(batchId,studentId,"adddto batchhhhhhhh");
     
-         let response=await axios.patch('https://brototypes.com/api/fumigation/add-students',{batchId,studentId})
+         let response=await axios.patch('http://localhost:3002/api/fumigation/add-students',{batchId,studentId})
           console.log(batchId,studentId,"heleloo my bacth id,");
 
           if(response.status){
             console.log(response,"{{{{{{ressss}}}}}");
+            toast.success("student added successfully")
               setActionStatus(true)
               setTimeout(()=>{
                 setActionStatus(false)

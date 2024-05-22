@@ -19,7 +19,7 @@ const ChatTab = ({ socket }: { socket: any }) => {
     const [allMessage, setAllMessage] = useState([]);
     const [lastMessage, setLastMessage] = useState({});
     const [unreadMsgCount, setUnreadMsgCount] = useState([])
-    const { chatId, setChatId, unreadReload, setUnreadReload } = useContext(GlobalContext);
+    const { chatId, setChatId, unreadReload, setUnreadReload,setClicked } = useContext(GlobalContext);
     const [unreadChaterId, setUnreadChaterId] = useState<string>("");
     const [online, setOnline] = useState([])
     useEffect(() => {
@@ -39,6 +39,9 @@ const ChatTab = ({ socket }: { socket: any }) => {
         };
         fetchAllChatRecipients();
     }, [studentId]);
+    useEffect(()=>{
+       setClicked(false)
+    },[])
     useEffect(() => {
         if (!socket || !studentId) return;
 
@@ -107,6 +110,7 @@ const ChatTab = ({ socket }: { socket: any }) => {
                 setSelectedStudentIndex(index);
                 dispatch(setchatOppositPersonData(chatUser));
                 setUnreadChaterId(chatUser?._id);
+                setClicked(true)
                 socket.emit("joinRoom", chatUser?._id);
                 setUnreadMsgCountZeroFunction(chatUser, chatUser?._id, "group")
             } else {
@@ -158,7 +162,7 @@ const ChatTab = ({ socket }: { socket: any }) => {
         if (type === "oneToOne") {
             const data = {
                 initiatorId: studentId,
-                recipientId: chatUser?.details?._id || chatUser?.details?.chaterId,
+                recipientId: chatUser?.details?.chaterId,
                 chatId: chatId,
                 type: type
             };

@@ -18,6 +18,7 @@ import Emoji from "./emoji/emojis"
 import GlobalContext from "../../../context/GlobalContext";
 import Reviewers from "./Reviewers"
 import Advisor from "./Advisors";
+import { motion } from "framer-motion";
 const Chat = () => {
 
     const socket: Socket<DefaultEventsMap, DefaultEventsMap> | null = useSocket();
@@ -49,7 +50,7 @@ const Chat = () => {
     const [showEmojis, setShowEmojis] = useState(false)
     const [cursorPosition, setCursorPosition] = useState()
     const [online, setOnline] = useState([])
-    const { setUnreadReload } = useContext(GlobalContext);
+    const { setUnreadReload, clicked } = useContext(GlobalContext);
     // const inputRef: any = createRef()
     const inputRef = useRef(null);
     useEffect(() => {
@@ -154,6 +155,7 @@ const Chat = () => {
                         console.log("Message sent successfully");
 
                         setMessage(""); // Clear the message input field
+                        setChatType("")
                         setUnreadReload(true)
                     } else {
                         console.error("Failed to send message:", response.message);
@@ -175,6 +177,7 @@ const Chat = () => {
                         console.log("Message sent successfully");
 
                         setMessage(""); // Clear the message input field
+                        setChatType("")
                     } else {
                         console.error("Failed to send message:", response.message);
                     }
@@ -404,6 +407,7 @@ const Chat = () => {
 
     const handleMouseLeave = () => {
         setMessageHoverIndex(-1);
+        setDeleteMessage(false)
     }
     const handleDeleteMessage = (e: any, messageId: string) => {
         e.preventDefault()
@@ -502,7 +506,7 @@ const Chat = () => {
 
                 </div>
 
-                {student && (
+                {clicked && student ? (
                     <div className="  border-r w-full bg-white h-20 mb-" >
                         <div className="border-b ">
                             <div className="flex justify-between ">
@@ -580,7 +584,7 @@ const Chat = () => {
                                 {allMesage.map((message: any, index: number) => (
                                     message.type === "textChat" ? (
                                         <>
-                                            {message.senderFirstName && message.senderLastName ? (
+                                            {message.senderFirstName || message.senderLastName ? (
                                                 <div
                                                     key={index}
                                                     className={`flex gap-5 m-5  mb-0 mt-3 ${isSender(message) ? 'justify-end ml-48' : 'justify-start mr-48'}`}
@@ -602,9 +606,12 @@ const Chat = () => {
                                                         {isSender(message) && messageHoverIndex === index && (
                                                             <>
 
-                                                                <div className="absolute right-0 top-0 mt-1 mr-1 cursor-pointer" onMouseEnter={(e) => handleDeleteMessage(e, message._id)}>
-                                                                    <img src="/dropdown.png" alt="" className="w-5 h-auto mb-0" />
-                                                                    <DeleteMessageModal isVisible={deleteMessage} onClose={() => { setDeleteMessage(false) }} socket={socket} messageId={messageId} chatId={student?._id} type={"group"} changeModalStatus={changeModalStatus} />
+                                                                <div className="absolute right-0 top-0 mt-1 mr-1 cursor-pointer" >
+                                                                    <img src="/dropdown.png" alt="" className="w-5 h-auto mb-0" onClick={(e) => handleDeleteMessage(e, message._id)} />
+                                                                    {deleteMessage === true && (
+                                                                        <DeleteMessageModal isVisible={deleteMessage} onClose={() => { setDeleteMessage(false) }} socket={socket} messageId={messageId} chatId={student?._id} type={"group"} changeModalStatus={changeModalStatus} />
+                                                                    )}
+
                                                                 </div>
 
                                                             </>
@@ -614,30 +621,48 @@ const Chat = () => {
                                             ) : (
                                                 <div
                                                     key={index}
-                                                    className={`flex gap-5 m-5  mb-0 mt-3 ${isSender(message) ? 'justify-end' : 'justify-start'}`}
+                                                    className={`flex gap-5 m-5 mb-0 mt-3 ${isSender(message) ? 'justify-end' : 'justify-start'}`}
                                                 >
                                                     <img src={message} alt="" />
-                                                    <div className={`w-fit ${isSender(message) ? 'bg-Average' : "bg-white"} mb-0 h-10 rounded-sm`}>
-                                                        <p className={`text-sm font-roboto m-3 ml-2  mt-1 ${isSender(message) ? 'text-white' : "text-black"}`}>{message?.content}
+                                                    <div
+                                                        className={`w-fit ${isSender(message) ? 'bg-Average' : "bg-white"} mb-0 h-10 rounded-sm relative`}
+                                                        onMouseEnter={() => handleMouseEnter(index)}
+                                                        onMouseLeave={() => handleMouseLeave(index)}
+                                                    >
+                                                        <p className={`text-sm font-roboto m-3 ml-2 mt-1 ${isSender(message) ? 'text-white' : "text-black"}`}>
+                                                            {message?.content}
                                                             <p className="text-small item text-end">
                                                                 {message?.createdAt ? formatTime(message.createdAt) : ''}
                                                             </p>
-
                                                         </p>
 
+                                                        {isSender(message) && messageHoverIndex === index && (
+                                                            <>
+                                                                <div className="absolute right-0 top-0 mt-1 mr-1 cursor-pointer" onClick={(e) => handleDeleteMessage(e, message._id)}>
+                                                                    <img src="/dropdown.png" alt="" className="w-5 h-auto mb-0" />
+                                                                    {deleteMessage === true && (
+                                                                        <DeleteMessageModal isVisible={deleteMessage} onClose={() => { setDeleteMessage(false) }} socket={socket} messageId={messageId} chatId={student?._id} type={"oneToOne"} changeModalStatus={changeModalStatus} />
+                                                                    )}
+
+                                                                </div>
+                                                            </>
+                                                        )}
                                                     </div>
                                                 </div>
                                             )}
-
                                         </>
                                     ) : message.type === "voiceChat" ? (
                                         <>
-                                            {message.senderFirstName && message.senderLastName ? (
+                                            {message.senderFirstName || message.senderLastName ? (
                                                 <div
                                                     key={index}
                                                     className={`flex gap-5 m-5 mb-0 mt-10 ${isSender(message) ? 'justify-end' : 'justify-start'}`}
                                                 >
-                                                    <div className="">
+                                                    <div
+                                                        className="relative"
+                                                        onMouseEnter={() => handleMouseEnter(index)}
+                                                        onMouseLeave={() => handleMouseLeave(index)}
+                                                    >
                                                         <p className={`text-xs font-roboto m-3 ${isSender(message) ? 'text-white' : 'text-black'}`}>
                                                             {isSender(message) ? 'You' : `${message?.senderFirstName} ${message?.senderLastName}`}
                                                         </p>
@@ -645,6 +670,19 @@ const Chat = () => {
                                                         <audio controls className="m-1">
                                                             <source src={message.content} type="audio/mpeg" />
                                                         </audio>
+
+                                                        {isSender(message) && messageHoverIndex === index && (
+                                                            <>
+                                                                <div className="absolute right-0 top-0 mt-1 mr-1 cursor-pointer" onClick={(e) => handleDeleteMessage(e, message._id)}>
+                                                                    <img src="/dropdown.png" alt="" className="w-5 h-auto mb-0" />
+                                                                    {deleteMessage === true && (
+                                                                        <DeleteMessageModal isVisible={deleteMessage} onClose={() => { setDeleteMessage(false) }} socket={socket} messageId={messageId} chatId={student?._id} type={"group"} changeModalStatus={changeModalStatus} />
+                                                                    )}
+
+
+                                                                </div>
+                                                            </>
+                                                        )}
                                                     </div>
                                                 </div>
                                             ) : (
@@ -652,28 +690,59 @@ const Chat = () => {
                                                     key={index}
                                                     className={`flex gap-5 m-5 mb-0 mt-5 ${isSender(message) ? 'justify-end' : 'justify-start'}`}
                                                 >
-                                                    <div className="mb-0 h-16 w-2/1 rounded-full">
+                                                    <div
+                                                        className="relative mb-0 h-16 w-2/1 rounded-full"
+                                                        onMouseEnter={() => handleMouseEnter(index)}
+                                                        onMouseLeave={() => handleMouseLeave(index)}
+                                                    >
                                                         <audio controls className="m-1">
                                                             <source src={message.content} type="audio/mpeg" />
                                                         </audio>
+
+                                                        {isSender(message) && messageHoverIndex === index && (
+                                                            <>
+                                                                <div className="absolute right-0 top-0 mt-1 mr-1 cursor-pointer" onMouseEnter={(e) => handleDeleteMessage(e, message._id)}>
+                                                                    <img src="/dropdown.png" alt="" className="w-5 h-auto mb-0" />
+                                                                    {deleteMessage === true && (
+                                                                        <DeleteMessageModal isVisible={deleteMessage} onClose={() => { setDeleteMessage(false) }} socket={socket} messageId={messageId} chatId={student?._id} type={"oneToOne"} changeModalStatus={changeModalStatus} />
+                                                                    )}
+
+                                                                </div>
+                                                            </>
+                                                        )}
                                                     </div>
                                                 </div>
                                             )}
-
                                         </>
+
                                     ) : message.type === "imageChat" ? (
                                         <>
-                                            {message.senderFirstName && message.senderLastName ? (
+                                            {message.senderFirstName || message.senderLastName ? (
                                                 <div
                                                     key={index}
                                                     className={`flex gap-5 m-5 mb-0 mt-10 ${isSender(message) ? 'justify-end' : 'justify-start'}`}
                                                 >
-                                                    <div className="">
+                                                    <div
+                                                        className="relative"
+                                                        onMouseEnter={() => handleMouseEnter(index)}
+                                                        onMouseLeave={() => handleMouseLeave(index)}
+                                                    >
                                                         <p className={`text-xs font-roboto m-3 ${isSender(message) ? 'text-white' : 'text-black'}`}>
                                                             {isSender(message) ? 'You' : `${message?.senderFirstName} ${message?.senderLastName}`}
                                                         </p>
-                                                        <img src={message?.content} alt="" className="w-72 h-auto font-roboto m-3 text-white  rounded-md" />
+                                                        <img src={message?.content} alt="" className="w-72 h-auto font-roboto m-3 text-white rounded-md" />
 
+                                                        {isSender(message) && messageHoverIndex === index && (
+                                                            <>
+                                                                <div className="absolute right-0 top-0 mt-1 mr-1 cursor-pointer" onClick={(e) => handleDeleteMessage(e, message._id)}>
+                                                                    <img src="/dropdown.png" alt="" className="w-5 h-auto mb-0" />
+                                                                    {deleteMessage == true && (
+                                                                        <DeleteMessageModal isVisible={deleteMessage} onClose={() => { setDeleteMessage(false) }} socket={socket} messageId={messageId} chatId={student?._id} type={"group"} changeModalStatus={changeModalStatus} />
+                                                                    )}
+
+                                                                </div>
+                                                            </>
+                                                        )}
                                                     </div>
                                                 </div>
                                             ) : (
@@ -681,39 +750,157 @@ const Chat = () => {
                                                     key={index}
                                                     className={`flex gap-5 m-5 mb-0 mt-10 ${isSender(message) ? 'justify-end' : 'justify-start'}`}
                                                 >
-                                                    {/* <div className=" mb-0 mt-10 h-10 rounded-sm"> */}
+                                                    <div
+                                                        className="relative"
+                                                        onMouseEnter={() => handleMouseEnter(index)}
+                                                        onMouseLeave={() => handleMouseLeave(index)}
+                                                    >
+                                                        <img src={message?.content} alt="" className="w-72 h-auto font-roboto m-3 text-white rounded-md" />
 
-                                                    <img src={message?.content} alt="" className="w-72 h-auto font-roboto m-3 text-white  rounded-md" />
+                                                        {isSender(message) && messageHoverIndex === index && (
+                                                            <>
+                                                                <div className="absolute right-0 top-0 mt-1 mr-1 cursor-pointer" onClick={(e) => handleDeleteMessage(e, message._id)}>
+                                                                    <img src="/dropdown.png" alt="" className="w-5 h-auto mb-0" />
+                                                                    {deleteMessage === true && (
+                                                                        <DeleteMessageModal isVisible={deleteMessage} onClose={() => { setDeleteMessage(false) }} socket={socket} messageId={messageId} chatId={student?._id} type={"oneToOne"} changeModalStatus={changeModalStatus} />
+                                                                    )}
 
-                                                    {/* </div> */}
+                                                                </div>
+                                                            </>
+                                                        )}
+                                                    </div>
                                                 </div>
                                             )}
-
                                         </>
-                                    ) : message.type === "videoChat" ? (
-                                        <div
-                                            key={index}
-                                            className={`flex gap-5 m-5 mb-0 mt-10 ${isSender(message) ? 'justify-end' : 'justify-start'}`}
-                                        >
-                                            <video controls className="w-fit h-60 object-contain ">
-                                                <source src={message.content} type="video/mp4" />
-                                                {/* Add additional <source> elements for other video formats if needed */}
-                                            </video>
-                                        </div>
-                                    ) : message.type === "documentChat" ? (
-                                        <div
-                                            key={index}
-                                            className={`flex gap-5 m-5 mb-0 mt-10 ${isSender(message) ? 'justify-end' : 'justify-start'}`}
-                                        >
-                                            {/* Display PDF */}
-                                            <embed src={message.content} type="application/pdf" width="500" height="600" />
 
-                                            {/* Or, display DOC */}
-                                            {/* <iframe src={`https://view.officeapps.live.com/op/embed.aspx?src=${encodeURIComponent(message.content)}`} width="500" height="600" frameborder="0"></iframe> */}
-                                        </div>
+                                    ) : message.type === "videoChat" ? (
+                                        <>
+                                            {message.senderFirstName || message.senderLastName ? (
+                                                <div
+                                                    key={index}
+                                                    className={`flex gap-5 m-5 mb-0 mt-10 ${isSender(message) ? 'justify-end' : 'justify-start'}`}
+                                                >
+                                                    <div
+                                                        className="relative"
+                                                        onMouseEnter={() => handleMouseEnter(index)}
+                                                        onMouseLeave={() => handleMouseLeave(index)}
+                                                    >
+                                                        <p className={`text-xs font-roboto m-3 ${isSender(message) ? 'text-white' : 'text-black'}`}>
+                                                            {isSender(message) ? 'You' : `${message?.senderFirstName} ${message?.senderLastName}`}
+                                                        </p>
+                                                        <video controls className="w-fit h-60 object-contain m-3 rounded-md">
+                                                            <source src={message.content} type="video/mp4" />
+                                                        </video>
+
+                                                        {isSender(message) && messageHoverIndex === index && (
+                                                            <>
+                                                                <div className="absolute right-0 top-0 mt-1 mr-1 cursor-pointer" onClick={(e) => handleDeleteMessage(e, message._id)}>
+                                                                    <img src="/dropdown.png" alt="" className="w-5 h-auto mb-0" />
+                                                                    {deleteMessage == true && (
+                                                                        <DeleteMessageModal isVisible={deleteMessage} onClose={() => { setDeleteMessage(false) }} socket={socket} messageId={messageId} chatId={student?._id} type={"group"} changeModalStatus={changeModalStatus} />
+                                                                    )}
+
+                                                                </div>
+                                                            </>
+                                                        )}
+                                                    </div>
+                                                </div>
+                                            ) : (
+                                                <div
+                                                    key={index}
+                                                    className={`flex gap-5 m-5 mb-0 mt-10 ${isSender(message) ? 'justify-end' : 'justify-start'}`}
+                                                >
+                                                    <div
+                                                        className="relative"
+                                                        onMouseEnter={() => handleMouseEnter(index)}
+                                                        onMouseLeave={() => handleMouseLeave(index)}
+                                                    >
+                                                        <video controls className="w-fit h-60 object-contain m-3 rounded-md">
+                                                            <source src={message.content} type="video/mp4" />
+                                                        </video>
+
+                                                        {isSender(message) && messageHoverIndex === index && (
+                                                            <>
+                                                                <div className="absolute right-0 top-0 mt-1 mr-1 cursor-pointer" onMouseEnter={(e) => handleDeleteMessage(e, message._id)}>
+                                                                    <img src="/dropdown.png" alt="" className="w-5 h-auto mb-0" />
+                                                                    {deleteMessage === true && (
+                                                                        <DeleteMessageModal isVisible={deleteMessage} onClose={() => { setDeleteMessage(false) }} socket={socket} messageId={messageId} chatId={student?._id} type={"oneToOne"} changeModalStatus={changeModalStatus} />
+                                                                    )}
+
+                                                                </div>
+                                                            </>
+                                                        )}
+                                                    </div>
+                                                </div>
+                                            )}
+                                        </>
+
+
+                                    ) : message.type === "documentChat" ? (
+                                        <>
+                                            {message.senderFirstName || message.senderLastName ? (
+                                                <div>
+                                                    <div
+                                                        key={index}
+                                                        className={`flex gap-5 m-5 mb-0 mt-10 ${isSender(message) ? 'justify-end' : 'justify-start'}`}
+                                                    >
+                                                        <div
+                                                            className="relative"
+                                                            onMouseEnter={() => handleMouseEnter(index)}
+                                                            onMouseLeave={() => handleMouseLeave(index)}
+                                                        >
+                                                            <p className={`text-xs font-roboto m-3 ${isSender(message) ? 'text-white' : 'text-black'}`}>
+                                                                {isSender(message) ? 'You' : `${message?.senderFirstName} ${message?.senderLastName}`}
+                                                            </p>
+                                                            <embed src={message.content} type="application/pdf" width="500" height="600" />
+
+                                                            {isSender(message) && messageHoverIndex === index && (
+                                                                <>
+                                                                    <div className="absolute right-0 top-0 mt-1 mr-1 cursor-pointer" onClick={(e) => handleDeleteMessage(e, message._id)}>
+                                                                        <img src="/dropdown.png" alt="" className="w-5 h-auto mb-0" />
+                                                                        {deleteMessage === true && (
+                                                                            <DeleteMessageModal isVisible={deleteMessage} onClose={() => { setDeleteMessage(false) }} socket={socket} messageId={messageId} chatId={student?._id} type={"group"} changeModalStatus={changeModalStatus} />
+                                                                        )}
+
+                                                                    </div>
+                                                                </>
+                                                            )}
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            ) : (
+                                                <div>
+                                                    <div
+                                                        key={index}
+                                                        className={`flex gap-5 m-5 mb-0 mt-10 ${isSender(message) ? 'justify-end' : 'justify-start'}`}
+                                                    >
+                                                        <div
+                                                            className="relative"
+                                                            onMouseEnter={() => handleMouseEnter(index)}
+                                                            onMouseLeave={() => handleMouseLeave(index)}
+                                                        >
+                                                            <embed src={message.content} type="application/pdf" width="500" height="600" />
+
+                                                            {isSender(message) && messageHoverIndex === index && (
+                                                                <>
+                                                                    <div className="absolute right-0 top-0 mt-1 mr-1 cursor-pointer" onClick={(e) => handleDeleteMessage(e, message._id)}>
+                                                                        <img src="/dropdown.png" alt="" className="w-5 h-auto mb-0" />
+                                                                        {deleteMessage === true && (
+                                                                            <DeleteMessageModal isVisible={deleteMessage} onClose={() => { setDeleteMessage(false) }} socket={socket} messageId={messageId} chatId={student?._id} type={"oneToOne"} changeModalStatus={changeModalStatus} />
+                                                                        )}
+
+                                                                    </div>
+                                                                </>
+                                                            )}
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            )}
+                                        </>
+
                                     ) : message.type === "emojiChat" ? (
                                         <>
-                                            {message.senderFirstName && message.senderLastName ? (
+                                            {message.senderFirstName || message.senderLastName ? (
                                                 <div
                                                     key={index}
                                                     className={`flex gap-5 m-5  mb-0 mt-3 ${isSender(message) ? 'justify-end ml-48' : 'justify-start mr-48'}`}
@@ -731,9 +918,12 @@ const Chat = () => {
                                                         {isSender(message) && messageHoverIndex === index && (
                                                             <>
 
-                                                                <div className="absolute right-0 top-0 mt-1 mr-1 cursor-pointer" onMouseEnter={(e) => handleDeleteMessage(e, message._id)}>
+                                                                <div className="absolute right-0 top-0 mt-1 mr-1 cursor-pointer" onClick={(e) => handleDeleteMessage(e, message._id)}>
                                                                     <img src="/dropdown.png" alt="" className="w-5 h-auto mb-0" />
-                                                                    <DeleteMessageModal isVisible={deleteMessage} onClose={() => { setDeleteMessage(false) }} socket={socket} messageId={messageId} chatId={student?._id} type={"group"} changeModalStatus={changeModalStatus} />
+                                                                    {deleteMessage == true && (
+                                                                        <DeleteMessageModal isVisible={deleteMessage} onClose={() => { setDeleteMessage(false) }} socket={socket} messageId={messageId} chatId={student?._id} type={"group"} changeModalStatus={changeModalStatus} />
+                                                                    )}
+
                                                                 </div>
 
                                                             </>
@@ -745,8 +935,29 @@ const Chat = () => {
                                                     key={index}
                                                     className={`flex gap-5 m-5 mb-0 mt-3 ${isSender(message) ? 'justify-end' : 'justify-start'}`}
                                                 >
-                                                    <div className={`w-fit ${isSender(message) ? 'bg-Average' : "bg-white"} mb-0 h-10 rounded-sm`}>
-                                                        <p className={`text-xl font-roboto m-3 ${isSender(message) ? 'text-white' : "text-black"}`}>{message?.content}</p>
+                                                    <div
+                                                        className={`w-fit ${isSender(message) ? 'bg-Average' : "bg-white"} mb-0 h-10 rounded-sm relative`}
+                                                        onMouseEnter={() => handleMouseEnter(index)}
+                                                        onMouseLeave={() => handleMouseLeave(index)}
+                                                    >
+                                                        <p className={`text-sm font-roboto m-3 ml-2 mt-1 ${isSender(message) ? 'text-white' : "text-black"}`}>
+                                                            {message?.content}
+                                                            <p className="text-small item text-end">
+                                                                {message?.createdAt ? formatTime(message.createdAt) : ''}
+                                                            </p>
+                                                        </p>
+
+                                                        {isSender(message) && messageHoverIndex === index && (
+                                                            <>
+                                                                <div className="absolute right-0 top-0 mt-1 mr-1 cursor-pointer" onClick={(e) => handleDeleteMessage(e, message._id)}>
+                                                                    <img src="/dropdown.png" alt="" className="w-5 h-auto mb-0" />
+                                                                    {deleteMessage === true && (
+                                                                        <DeleteMessageModal isVisible={deleteMessage} onClose={() => { setDeleteMessage(false) }} socket={socket} messageId={messageId} chatId={student?._id} type={"oneToOne"} changeModalStatus={changeModalStatus} />
+                                                                    )}
+
+                                                                </div>
+                                                            </>
+                                                        )}
                                                     </div>
                                                 </div>
                                             )}
@@ -773,16 +984,33 @@ const Chat = () => {
                                     {chatType === 'imageChat' ? (
                                         <div className="relative">
                                             <textarea
-                                                className="font-roboto border  px-2 h-auto py-2 resize-none overflow-hidden outline-none max-h-40 absolute rounded-md w-full"
-                                                placeholder="Type a message.."
-                                                onChange={(e) => handleMessageChange(e, "textChat")}
+                                                className="font-roboto border  px-2 h-10 py-2 resize-none overflow-hidden outline-none max-h-40 absolute rounded-md w-full"
+                                                placeholder=""
+                                                onChange={(e) => handleMessageChange(e, "imageChat")}
                                             />
-                                            <img
-                                                src={message}
-                                                alt="Chat Image"
-                                                className="absolute w-auto max-h-24"
-                                                style={{ width: 'auto', height: 'auto' }}
+                                            <div className="w-16 h-16 ">
+                                                <img
+                                                    src={message??""}
+                                                    
+                                                    className="absolute w-10 object-cover max-h-full"
+
+                                                />
+                                            </div>
+
+                                        </div>
+                                    ) : chatType === "videoChat" ? (
+                                        <div className="relative">
+                                            <textarea
+                                                className="font-roboto border  px-2 h-10 py-2 resize-none overflow-hidden outline-none max-h-40 absolute rounded-md w-full"
+                                                placeholder=""
+                                                onChange={(e) => handleMessageChange(e, "vdeoChat")}
                                             />
+                                            <div className="w-16 h-16 ">
+                                            <video controls className="object-contain m-3 rounded-md">
+                                                            <source src={message.content} type="video/mp4" />
+                                                        </video>
+                                            </div>
+
                                         </div>
                                     ) : (
                                         <>
@@ -896,6 +1124,22 @@ const Chat = () => {
 
 
 
+                    </div>
+
+
+
+                ) : (
+
+                    <div className="bg-white w-full flex flex-col items-center justify-center">
+                        <motion.div className="w-48 h-auto flex items-center justify-center"
+                            initial={{ y: 0 }}
+                            animate={{ y: [0, -10, 0] }}
+                            transition={{ duration: 1, repeat: Infinity }}
+                        >
+                            <img src="/NoChat.jpeg" alt="" className="w-full h-full rounded-md object-cover" />
+                        </motion.div>
+                        <p className="font-roboto font-bold text-xl ">Your Messages</p>
+                        <p className="font-roboto  text-sm text-gray-600">Send a message to start a chat.</p>
                     </div>
 
 

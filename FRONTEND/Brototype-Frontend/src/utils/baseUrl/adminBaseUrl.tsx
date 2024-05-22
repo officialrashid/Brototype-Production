@@ -1,21 +1,18 @@
 import axios, { AxiosInstance } from "axios";
 import TokenValidCheck from "../../tokenValidCheck/tokenValidCheck";
-axios.defaults.withCredentials = true;
 
+axios.defaults.withCredentials = true;
 const Api: AxiosInstance = axios.create({
-  baseURL: "http://localhost:9001",
+  baseURL: "http://localhost:3000", 
 });
 
-
-
-let userRole: string | null; // V6riable to store user role globally
+let userRole: string | null; // Variable to store user role globally
 
 // Add a request interceptor
 Api.interceptors.request.use(
   function (config) {
     // Retrieve the user role from local storage
     userRole = localStorage.getItem('role');
-
     if (userRole === 'student') {
       const studentJwtToken = localStorage.getItem("studentAccessToken");
       const studentCustomToken = localStorage.getItem("studentIdToken");
@@ -65,18 +62,12 @@ Api.interceptors.response.use(
     return response;
   },
   function (error) {
-    console.log(error,"errorororr");
-    
     if (error.response && error.response.status === 401) {
       // Redirect to the login page or handle as needed
-      console.log("error keriii");
-      TokenValidCheck(userRole)
-   
+      TokenValidCheck(userRole);
     }
     return Promise.reject(error);
   }
 );
 
 export default Api;
-
-

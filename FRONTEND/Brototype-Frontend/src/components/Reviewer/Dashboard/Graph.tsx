@@ -11,6 +11,8 @@ const Graph = () => {
     const fetchReviewCount = async () => {
       try {
         const response = await getReviewTakeCount(reviewerId);
+        console.log(response,"reviewer review countssss");
+        
         if (response.status === true) {
   
           
@@ -27,7 +29,7 @@ const Graph = () => {
     series: [
       {
         name: 'Review Count',
-        data: [10,25,35,15,45,30,75,95], // Use reviewCount here
+        data: reviewCount, // Use reviewCount here
       },
     ],
     options: {
