@@ -17,7 +17,14 @@ const app: Application = express();
 const port:number|undefined|string = process.env.ADMIN_SERVER_PORT ;
 const mongodbUri:string|undefined= process.env.ADMIN_MONGO_URL
 app.use(bodyParser.json())
-app.use(cors())
+    
+app.use(cors({
+  origin: [
+      'http://localhost:5173',
+  ], // Update with your client's origin
+  methods: ["GET", "POST", "PUT", "DELETE","PATCH"],
+  credentials: true, // Allow credentials (cookies, etc.)
+}));
 console.log(process.env.MONGODB_URI);
 
 console.log(process.env.PORT,'rwrwrew' );

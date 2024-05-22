@@ -25,7 +25,7 @@ console.log(invigilators,"data printed inv");
           
 
      
-          const response = await axios.get("https://brototypes.com/api/fumigation/get-all-invigilators")
+          const response = await axios.get("http://localhost:3002/api/fumigation/get-all-invigilators")
           console.log(response?.data?.response,"{}{}{}{}{}{");
           
             dispatch(getInvigilatorData(response?.data?.response))
@@ -47,7 +47,7 @@ const removeInv=(invigilatorId:string)=>{
      
   try {
     
-    axios.delete(`https://brototypes.com/api/fumigation/remove-invigilators/${invigilatorId}`).then(res=>{
+    axios.delete(`http://localhost:3002/api/fumigation/remove-invigilators/${invigilatorId}`).then(res=>{
         console.log('hhuhhuh');
    
       })

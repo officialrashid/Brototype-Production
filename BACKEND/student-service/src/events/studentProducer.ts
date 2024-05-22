@@ -18,7 +18,7 @@ export const studentProducer = async (sendData: any, topic: any, type: any) => {
             data: sendData // Your actual hjhdata here
         };
         console.log(messagePayload.data, "message payload cming to the producer");
-        if (type === "updateProfile") {
+        if (type === "updateProfile" || type==="UpdateChatProfile") {
             const result: any = await producer.send({
                 topic: topic,
                 messages: [{ value: JSON.stringify(messagePayload) }]
@@ -27,7 +27,8 @@ export const studentProducer = async (sendData: any, topic: any, type: any) => {
             if (result && result[0] && result[0]?.error) {
                 throw new Error('Message production failed')
             }
-        }else{
+        }
+        else{
             const result: any = await producer.send({
                 topic: topic,
                 messages: [{ value: JSON.stringify(sendData) }]

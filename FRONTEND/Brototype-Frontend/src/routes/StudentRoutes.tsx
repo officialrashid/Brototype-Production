@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { Routes, Route } from 'react-router-dom'; // Import Routes and Route
+import { Routes, Route, Navigate } from 'react-router-dom'; // Import Routes and Route
 import Sidebar from "../components/Students/Sidebar/Sidebar";
 import StudentManifest from '../components/Students/StudentManifest/StudentManifest';
 import Dashboard from '../pages/Students/Dashboard';
@@ -30,100 +30,103 @@ interface Socket {
 
 interface RootState {
   student: {
-      studentData: {
-          studentId: string;
-          // Define other properties if needed
-      }
+    studentData: {
+      studentId: string;
+      // Define other properties if needed
+    }
   }
 }
 
 function StudentRoutes() {
-  const changeScreen = useSelector((state)=>state?.review?.changeScreen)
+  const changeScreen = useSelector((state) => state?.review?.changeScreen)
   const studentId: any = useSelector((state: RootState) => state?.student?.studentData?.studentId);
-    const [studentAccessToken,setStudentAccessToken] = useState("")
-    useEffect(()=>{
-      const studentJwt = localStorage.getItem("studentAccessToken")
-      setStudentAccessToken(studentJwt)
-    },[])
-
-    const socket = useSocket();
-    useEffect(() => {
-      if (!socket || !studentId) return;
-
-      // Emit online status when the tab is open
-      socket.emit("addOnlineUser", studentId);
-
-      const handleGetOnlineUser = (users: any[]) => {
-          console.log(users, "online usersssss");
-
-          // Dispatch action to update Redux with new online users
-        
-      };
-
-      socket.on("getOnlineUser", handleGetOnlineUser);
-
-      // Clean up socket event listener on component unmount
-      return () => {
-          socket.off("getOnlineUser", handleGetOnlineUser);
-      };
-  }, [ studentId, socket]);
-  
+  const [studentAccessToken, setStudentAccessToken] = useState<any>("")
   useEffect(() => {
-      const handleBeforeUnload = () => {
-          if (socket && studentId) {
-              // Emit offline status to the server when the tab is closed
-              socket.emit("setOfflineUser", studentId); 
-          }
-      };
-  
-      window.addEventListener('beforeunload', handleBeforeUnload);
-  
-      return () => {
-          window.removeEventListener('beforeunload', handleBeforeUnload);
-      };
+    const studentJwt = localStorage.getItem("studentAccessToken")
+    setStudentAccessToken(studentJwt)
+  }, [])
+
+  const socket = useSocket();
+  useEffect(() => {
+    if (!socket || !studentId) return;
+
+    // Emit online status when the tab is open
+    socket.emit("addOnlineUser", studentId);
+
+    const handleGetOnlineUser = (users: any[]) => {
+      console.log(users, "online usersssss");
+
+      // Dispatch action to update Redux with new online users
+
+    };
+
+    socket.on("getOnlineUser", handleGetOnlineUser);
+
+    // Clean up socket event listener on component unmount
+    return () => {
+      socket.off("getOnlineUser", handleGetOnlineUser);
+    };
   }, [studentId, socket]);
-  
+
   useEffect(() => {
-      const handleWindowFocus = () => {
-          if (socket && studentId) {
-              // Emit online status to the server when the tab is focused
-              socket.emit("addOnlineUser", studentId);
-          }
-      };
+    const handleBeforeUnload = () => {
+      if (socket && studentId) {
+        // Emit offline status to the server when the tab is closed
+        socket.emit("setOfflineUser", studentId);
+      }
+    };
 
-      window.addEventListener('focus', handleWindowFocus);
+    window.addEventListener('beforeunload', handleBeforeUnload);
 
-      return () => {
-          window.removeEventListener('focus', handleWindowFocus);
-      };
-  }, [studentId,socket]);
+    return () => {
+      window.removeEventListener('beforeunload', handleBeforeUnload);
+    };
+  }, [studentId, socket]);
+
+  useEffect(() => {
+    const handleWindowFocus = () => {
+      if (socket && studentId) {
+        // Emit online status to the server when the tab is focused
+        socket.emit("addOnlineUser", studentId);
+      }
+    };
+
+    window.addEventListener('focus', handleWindowFocus);
+
+    return () => {
+      window.removeEventListener('focus', handleWindowFocus);
+    };
+  }, [studentId, socket]);
 
   return (
     <>
-     {changeScreen?<JaasMeet roomId={studentId}/>:
-    <>
-    <Navigationbar/>
-    <div className="bg-custom-background">
-      <div className="bg-white">
-        <div className="flex">  
-          <Sidebar />
-         
-          <Routes>
-         
-            <Route path="/" element={studentAccessToken ? <Dashboard />:<StudentSignIn/>} />
-            <Route path="/profile" element={studentAccessToken ?<StudentManifest />:<StudentSignIn/>} />
-            <Route path="/task" element={studentAccessToken ?<WeeklyTask />:<StudentSignIn/>} />
-            <Route path="/viewTask" element={studentAccessToken ?<ViewTask />:<StudentSignIn/>} />
-            <Route path="/todolist" element={studentAccessToken ?<TodoList />:<StudentSignIn/>} />
-            <Route path="/extendDetails" element={studentAccessToken ?<ExtendDetails />:<StudentSignIn/>} />
-            <Route path="/review" element={studentAccessToken ?<ReviewResult />:<StudentSignIn/>} />
-            <Route path="/chat" element={studentAccessToken ?<Chat />:<StudentSignIn/>} />
-          </Routes>
-        </div>
-      </div>
-    </div>
-   </>
-}
+      {changeScreen ? <JaasMeet roomId={studentId} /> :
+        <>
+          <Navigationbar />
+          <div className="bg-custom-background">
+            <div className="bg-white">
+              <div className="flex">
+                <Sidebar />
+
+                <Routes>
+
+                  <Route path="/" element={studentAccessToken ? <Dashboard /> : <StudentSignIn />} />
+                  <Route
+                    path="/profile"
+                    element={studentAccessToken ? <StudentManifest /> : <StudentSignIn />}
+                  />
+                  <Route path="/task" element={studentAccessToken ? <WeeklyTask /> : <StudentSignIn />} />
+                  <Route path="/viewTask" element={studentAccessToken ? <ViewTask /> : <StudentSignIn />} />
+                  <Route path="/todolist" element={studentAccessToken ? <TodoList /> : <StudentSignIn />} />
+                  <Route path="/extendDetails" element={studentAccessToken ? <ExtendDetails /> : <StudentSignIn />} />
+                  <Route path="/review" element={studentAccessToken ? <ReviewResult /> : <StudentSignIn />} />
+                  <Route path="/chat" element={studentAccessToken ? <Chat /> : <StudentSignIn />} />
+                </Routes>
+              </div>
+            </div>
+          </div>
+        </>
+      }
     </>
   );
 }

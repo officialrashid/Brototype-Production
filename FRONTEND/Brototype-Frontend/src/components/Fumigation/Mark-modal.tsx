@@ -4,6 +4,7 @@ import { Formik,ErrorMessage,Form,Field} from "formik"
 import * as Yup from 'yup'
 import axios from "axios"
 import { useSelector } from "react-redux"
+import { toast } from "react-toastify"
 
 
 
@@ -283,15 +284,19 @@ const handleCommnField=()=>{
             const endTime = patternEndTime
             let type:string="Pattern"
             let invigilatorId="1234444"
-                  let response= await  axios.patch('https://brototypes.com/api/fumigation/add-students-mark',{startTime,endTime,type,fumigationType,invigilatorId,studentId,batchId})
+                  let response= await  axios.patch('http://localhost:3002/api/fumigation/add-students-mark',{startTime,endTime,type,fumigationType,invigilatorId,studentId,batchId})
                  
-                  console.log(response);
+                  console.log(response,"response i pattern mark updatedww");
             
-                  if(response.status){
+                  if(response.data.status===true && response.data.message==="mark update successfully"){
                     resetForm();
-                  setStatus('staus updated sucessfully')
-               
+                    toast.success("Mark Updated Successfully")
+                  }else{
+                    toast.error("some issue mark not updated")
                   }
+                  resetForm()
+               
+                  
                   
                 
             
@@ -366,17 +371,17 @@ const endTime =  arrayEndTime
 
   
      let invigilatorId="1234444"
-        let response= await  axios.patch('https://brototypes.com/api/fumigation/add-students-mark',{type,fumigationType,studentId,startTime,endTime,invigilatorId,batchId})
+        let response= await  axios.patch('http://localhost:3002/api/fumigation/add-students-mark',{type,fumigationType,studentId,startTime,endTime,invigilatorId,batchId})
        
         console.log(response,'arraymark');
   
-        if(response.status){
+        if(response.data.status===true && response.data.message==="mark update successfully"){
           resetForm();
-          setStatus('staus updated sucessfully')
+          toast.success("Mark Updated Successfully")
+        }else{
+          toast.error("some issue mark not updated")
         }
-        
-      
-  
+        resetForm()
         //
       } catch (err) {
         // Handle any errors here
@@ -440,14 +445,17 @@ try {
 
   
      let invigilatorId="1234444"
-        let response= await  axios.patch('https://brototypes.com/api/fumigation/add-students-mark',{type,fumigationType,studentId,startTime,endTime,invigilatorId,batchId,mark:commnMark})
+        let response= await  axios.patch('http://localhost:3002/api/fumigation/add-students-mark',{type,fumigationType,studentId,startTime,endTime,invigilatorId,batchId,mark:commnMark})
        
         console.log(response);
   
-        if(response.status){
+        if(response.data.status===true && response.data.message==="mark update successfully"){
           resetForm();
-          setStatus('Communication Mark added successfully!!!!!!')
+          toast.success("Mark Updated Successfully")
+        }else{
+          toast.error("some issue mark not updated")
         }
+        resetForm()
         
       
   
@@ -515,15 +523,17 @@ try {
 
   
      let invigilatorId="1234444"
-        let response= await  axios.patch('https://brototypes.com/api/fumigation/add-students-mark',{type,fumigationType,studentId,startTime,endTime,invigilatorId,batchId,mark:oopsMark})
+        let response= await  axios.patch('http://localhost:3002/api/fumigation/add-students-mark',{type,fumigationType,studentId,startTime,endTime,invigilatorId,batchId,mark:oopsMark})
        
         console.log(response);
   
-        if(response.status){
+        if(response.data.status===true && response.data.message==="mark update successfully"){
           resetForm();
-          setStatus('OOPs  Mark added successfully!!!!!!')
+          toast.success("Mark Updated Successfully")
+        }else{
+          toast.error("some issue mark not updated")
         }
-        
+        resetForm()
       
   
         //

@@ -7,6 +7,7 @@ import superleadApi from "../baseUrl/superleadBaseUrl"
 import taskApi from "../baseUrl/taskBaseUrl"
 import chatApi from "../baseUrl/baseUrl"
 import reviewApi from "../baseUrl/reviewBaseUrl"
+import adminApi from "../baseUrl/adminBaseUrl"
 import axios from "axios";
 ////********   get enquirie methods  *****////
 
@@ -577,6 +578,30 @@ export const getInitiatorsDetails = async (advisorId: string, reviewerId: string
     }
     const response = await authenticationApi.get(`/api/auth/get-initiator-details`, { params: data })
     return response?.data?.response;
+  } catch (error) {
+
+  }
+
+}
+
+//// **** Admin AServcie Api Section ///
+
+export const getAllCourses = async () => {
+
+  try {
+    const response = await adminApi.get(`/admin/course/get-all-courses`)
+    return response;
+  } catch (error) {
+
+  }
+
+}
+
+export const getAllBathes = async () => {
+
+  try {
+    const response = await fumigationApi.get(`/api/fumigation/get-all-batches`)
+    return response;
   } catch (error) {
 
   }

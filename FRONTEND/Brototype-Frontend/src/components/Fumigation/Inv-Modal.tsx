@@ -1,5 +1,6 @@
 import axios from "axios"
 import { Formik,ErrorMessage,Field,Form } from "formik"
+import { toast } from "react-toastify"
 import * as Yup from 'yup'
 
 const Modal=({isVisible,onClose})=>{
@@ -50,14 +51,14 @@ initialValues={initialValues}
     try {
 console.log(values);
 
-      let response= await axios.post('https://brototypes.com/api/fumigation/create-invigilator',values)
+      let response= await axios.post('http://localhost:3002/api/fumigation/create-invigilator',values)
 
-      console.log(response);
+      console.log(response,"create invigilator responseeee");
 
-      if(response.status){
+      if(response.data.status===true){
         resetForm();
-        setStatus('Sucessfully submitted!!!!!!')
-
+        toast.success("invigilator added successfully")
+         onClose()
       }
       
     

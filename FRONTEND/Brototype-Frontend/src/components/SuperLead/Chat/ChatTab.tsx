@@ -103,6 +103,9 @@ const ChatTab = ({ socket }: { socket: any }) => {
                 setUnreadChaterId(chatUser?.details?.chaterId);
                 
                 setChatType("oneToOne");
+                
+                console.log(chatUser,"chatUserrrrrr");
+                
                 const chatData = {
                     initiatorId: superleadId,
                     recipientId: chatUser?.details?.chaterId,
@@ -111,6 +114,8 @@ const ChatTab = ({ socket }: { socket: any }) => {
                 console.log(chatData, "logssss");
 
                 const response: any = await createChat(chatData);
+                console.log(response,"create chatresponseeeeeeeeeeeeeeeeeeeeeeeeeeee");
+                
                 let newChatId = null; // Initialize newChatId variable
                 if (response?.response?.data?._id || response?.chatExists?.response?._id) {
                     newChatId = response?.response?.data?._id || response?.chatExists?.response?._id;
@@ -139,6 +144,8 @@ const ChatTab = ({ socket }: { socket: any }) => {
         };
     }, [socket, superleadId]);
     const setUnreadMsgCountZeroFunction = async (chatUser: any, chatId: string, type: string) => {
+        console.log("function il ethiittaaaa");
+        
         if (type === "oneToOne") {
             const data = {
                 initiatorId: superleadId,
@@ -146,7 +153,11 @@ const ChatTab = ({ socket }: { socket: any }) => {
                 chatId: chatId,
                 type: type
             };
+            console.log(data,"dataaaaa in unreadzeorssss");
+            
             const res = await setUnreadMsgCountZero(data);
+            console.log(res,";;;;;;");
+            
             if (res.response.status === true && res.response.message === "Unread message count zero updated successfully") {
                 setUnreadReload(true)
             }

@@ -14,7 +14,7 @@ export default (dependencies:any)=>{
   
   const {profileUpdateController,getProfileController,updatePersonalDetailsController,updateAddressDetailsController,updateEducationDetailsController,getBacthwiseBestStdController,getWeeklyPerformanceController,getCourseCompletionController,getAllPerformanceController,getExtendDetailsController,requestExtentionController,getExtendRequestController,getReviewDetailsController,secondExtendRequestController,governmentIdUpdateController,getAllStudentsController,getPerPageStudentController,getAllChatStudentsController,addReviewResultController,getReviewStudentsController} = students_controller(dependencies) 
 
-  router.post('/profile-update',jwtVerification(secretKey),upload.single("image"),profileUpdateValidationRules,profileUpdateController)
+  router.post('/profile-update',upload.single("image"),profileUpdateValidationRules,profileUpdateController)
 
   // router.get('/get-profile/:studentId', jwtVerification(secretKey), getProfileController);
   router.get('/get-profile/:studentId', jwtVerification(secretKey),getProfileController);

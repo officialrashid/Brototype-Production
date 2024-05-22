@@ -70,8 +70,8 @@ const StudentProfile = () => {
               <h1 className="item text-center text-xl font-semibold mt-10 font-roboto">{profileInfo?.name ?? "Muhammed Rashid"}</h1>
               <h4 className="item text-center mt-1 text-gray-500 mt-2 text-sm font-roboto">{`${manifestInfo?.domain} developer`?? "eg:-Mernstack developer"}</h4>
               <div className="item text-center gap-3 mt-3">
-                <span className="inline-flex items-center rounded-md bg-pink-50 px-2 py-1 text-xs font-medium text-pink-700 ring-1 ring-inset ring-pink-700/10 cursor-pointer">{profileInfo?.batch ?? "BCE55"}</span>
-                <span className="inline-flex items-center rounded-md bg-pink-50 px-2 py-1 text-xs font-medium text-pink-700 ring-1 ring-inset ring-pink-700/10 cursor-pointer ml-2">Remote</span>
+                <span className="inline-flex items-center rounded-md bg-pink-50 px-2 py-1 text-xs font-medium text-pink-700 ring-1 ring-inset ring-pink-700/10 cursor-pointer font-roboto">{profileInfo?.batch ?? "BCE55"}</span>
+                <span className="inline-flex items-center rounded-md bg-pink-50 px-2 py-1 text-xs font-medium text-pink-700 ring-1 ring-inset ring-pink-700/10 cursor-pointer ml-2 font-roboto">{manifestInfo?.environment}</span>
               </div>
             </div>
             <div className="border border-2px w-28 h-28 m-8 shadow-xl rounded-md absolute top-3 right-3">

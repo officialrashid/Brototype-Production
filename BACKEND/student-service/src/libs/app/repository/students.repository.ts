@@ -4,7 +4,7 @@ import { studentProducer } from "../../../events/studentProducer";
 
 export default {
 
-  profileUpdate: async (profileData: { studentId: any; imageUrl: any; firstName: any; lastName: any; domain: any; batch: any; }) => {
+  profileUpdate: async (profileData: { studentId: any; imageUrl: any; firstName: any; lastName: any; domain: any; environment: any; }) => {
     try {
       // Check if the profile with the given studentId exists
       const existingProfile = await schema.Manifest.findOne({
@@ -18,10 +18,10 @@ export default {
           {
             $set: {
               imageUrl: profileData.imageUrl || existingProfile.imageUrl,
-              firstName: profileData.firstName || existingProfile.firstName,
-              lastName: profileData.lastName || existingProfile.lastName,
+              // firstName: profileData.firstName || existingProfile.firstName,
+              // lastName: profileData.lastName || existingProfile.lastName,
               domain: profileData.domain || existingProfile.domain,
-              batch: profileData.batch || existingProfile.batch,
+              batch: profileData.environment || existingProfile.environment,
               // Add other fields here if needed
             }
           },

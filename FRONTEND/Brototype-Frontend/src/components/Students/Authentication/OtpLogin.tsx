@@ -18,6 +18,7 @@ interface OtpData {
     accessToken: string;
     imageUrl : string;
     name : string;
+    batch : string
     // ... other properties
 }
 declare global {
@@ -42,6 +43,7 @@ const StudentOtpPage: FunctionComponent = () => {
     const otpData: OtpData = useSelector((state: RootState) => state.student);
     let phone: React.SetStateAction<string>;
     const studentIdRef = useRef<string | null>(null);
+    const batchRef = useRef<string | null>(null);
     const nameRef = useRef<string | null>(null);
     const imageUrlRef = useRef<string | null>(null);
     const batchIdRef = useRef<string | null>(null);
@@ -54,6 +56,8 @@ const StudentOtpPage: FunctionComponent = () => {
   
         localStorage.removeItem('otpSent')
         studentIdRef.current = otpData?.studentData?.studentId;
+        nameRef.current = otpData?.studentData?.name;
+        batchRef.current = otpData?.studentData?.batch;
         nameRef.current = otpData?.studentData?.name;
         imageUrlRef.current = otpData?.studentData?.imageUrl;
         batchIdRef.current = otpData?.studentData?.batchId;
@@ -105,6 +109,7 @@ const StudentOtpPage: FunctionComponent = () => {
             window.confirmationResult = confirmationResult;
             studentIdRef.current = otpData?.studentData?.studentId;
             nameRef.current = otpData?.studentData?.name;
+            batchRef.current = otpData?.studentData?.batch;
             imageUrlRef.current = otpData?.studentData?.imageUrl;
             batchIdRef.current = otpData?.studentData?.batchId;
             customTokenRef.current = otpData?.studentData?.customToken;
@@ -163,6 +168,7 @@ const StudentOtpPage: FunctionComponent = () => {
                         customToken: customTokenRef.current,
                         imageUrl : imageUrlRef.current,
                         name : nameRef.current,
+                        batch : batchRef.current,
                         phone : phone
                     }
                     console.log(studentData,"studentData comingggg");

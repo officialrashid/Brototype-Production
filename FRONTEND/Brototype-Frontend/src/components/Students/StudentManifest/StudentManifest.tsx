@@ -19,7 +19,7 @@ const StudentManifest = () => {
   const [profileInfo, setProfileInfo] = useState({});
   const [profileModalVisible, setProfileModalVisible] = useState(false);
   const studentId: string = useSelector((state: any) => state?.student?.studentData?.studentId);
-
+  const studentData: any | null = useSelector((state: RootState) => state?.student?.studentData);
 
   useEffect(() => {
     fetchStudentProfile();
@@ -89,8 +89,8 @@ const handleProfileUpdateSuccess = () =>{
               )}
 
               <div className='flex flex-1 flex-col ml-8 mt-5'>
-                {profileInfo?.firstName && profileInfo?.lastName ? (
-                  <h1 className='text-sm font-semibold font-roboto'>{profileInfo.firstName} {profileInfo.lastName}</h1>
+                {studentData?.name  ? (
+                  <h1 className='text-sm font-semibold font-roboto'>{studentData?.name}</h1>
                 ) : (
                   <h1 className='text-sm font-semibold font-roboto'>{exampleData.firstName} {exampleData.lastName}</h1>
                 )}
@@ -101,13 +101,13 @@ const handleProfileUpdateSuccess = () =>{
                 )}
 
                 <div className="flex gap-3 mt-2">
-                  {profileInfo?.batch ? (
-                    <span className="inline-flex items-center rounded-md bg-pink-50 px-2 py-1 text-xs font-medium text-pink-700 ring-1 ring-inset ring-pink-700/10 cursor-pointer">{profileInfo.batch}</span>
+                  {studentData?.batch ? (
+                    <span className="inline-flex items-center rounded-md bg-pink-50 px-2 py-1 text-xs font-medium text-pink-700 ring-1 ring-inset ring-pink-700/10 cursor-pointer font-roboto">{studentData.batch}</span>
                   ) : (
-                    <span className="inline-flex items-center rounded-md bg-pink-50 px-2 py-1 text-xs font-medium text-pink-700 ring-1 ring-inset ring-pink-700/10 cursor-pointer">{exampleData.batch}</span>
+                    <span className="inline-flex items-center rounded-md bg-pink-50 px-2 py-1 text-xs font-medium text-pink-700 ring-1 ring-inset ring-pink-700/10 cursor-pointer font-roboto">{exampleData.batch}</span>
                   )}
 
-                  <span className="inline-flex items-center rounded-md bg-pink-50 px-2 py-1 text-xs font-medium text-pink-700 ring-1 ring-inset ring-pink-700/10 cursor-pointer">Remote</span>
+                  <span className="inline-flex items-center rounded-md bg-pink-50 px-2 py-1 text-xs font-medium text-pink-700 ring-1 ring-inset ring-pink-700/10 cursor-pointer font-roboto">{profileInfo?.environment}</span>
                 </div>
               </div>
               <span className="absolute top-12 right-5 inline-flex items-center rounded-md bg-pink-50 px-3 py-1 text-xs font-medium text-pink-600 ring-1 ring-inset ring-pink-700/10 cursor-pointer" onClick={() => { setProfileUpdate(true) }}>

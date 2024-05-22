@@ -21,6 +21,7 @@ const BatchRecord=()=>{
   const [activeTab,setActiveTab]=useState(1)
   const [markModal,setMarkModal]=useState(false)
   const [tableModal,setTableModal]=useState(false)
+  const [deleteModal,setDeleteModal]=useState(false)
  // const markData=useSelector(state=>state.batch.studentMark)
 
 
@@ -93,7 +94,7 @@ useEffect(()=>{
   console.log('first callleddddddddddddddd',id);
   const batchId = id
 
-  axios.get(`https://brototypes.com/api/fumigation/get-batchwise-students/${batchId}`).then(res=>{
+  axios.get(`http://localhost:3002/api/fumigation/get-batchwise-students/${batchId}`).then(res=>{
 
   console.log("batch student",res.data);
   
@@ -108,7 +109,7 @@ useEffect(()=>{
   
   
 
-},[])
+},[deleteModal])
 
 
 // to fetch mark
@@ -125,7 +126,7 @@ const getStudentMark=(studId)=>{
 
   try{
 
-    axios.get('https://brototypes.com/api/fumigation/get-students-mark',{params:{studentId:studId,batchId:id,fumigationType}}).then(res=>{
+    axios.get('http://localhost:3002/api/fumigation/get-students-mark',{params:{studentId:studId,batchId:id,fumigationType}}).then(res=>{
       console.log(res.data.response," from my useeffetttttttttttttt");
       dispatch(getIndividualMark(res.data.response))
       
@@ -146,7 +147,7 @@ const getStudentMark=(studId)=>{
 
 //remove student
 
-const [deleteModal,setDeleteModal]=useState(false)
+
 
 
 
@@ -163,9 +164,14 @@ const [deleteModal,setDeleteModal]=useState(false)
         studentId :studentId,
          batchId : id 
        }
-      axios.delete(`https://brototypes.com/api/fumigation/remove-batchwise-students`,{ params: data }).then(res=>{
-          console.log('hhuhhuh');
-
+      axios.delete(`http://localhost:3002/api/fumigation/remove-batchwise-students`,{ params: data }).then(res=>{
+          console.log('hhuhhuh333',res);
+           if(res?.data?.response?.status===true &&res?.data?.response?.message==="Student removed from the batch and moved back to pending"){
+            setDeleteModal(false)
+             toast.success("student remove successfully")
+           }else{
+            toast.error("student not removed,please try after some time")
+           }
         })
         dispatch(removeStudents(studentId))
         setDeleteModal(false)
@@ -199,7 +205,7 @@ const [deleteModal,setDeleteModal]=useState(false)
 
       console.log("passed students");
       
-      axios.get(`https://brototypes.com/api/fumigation/get-passed-students`,{params:{batchId:id,fumigationType}}).then(res=>{
+      axios.get(`http://localhost:3002/api/fumigation/get-passed-students`,{params:{batchId:id,fumigationType}}).then(res=>{
   
     console.log("batch passed student",res.data);
     
@@ -220,7 +226,7 @@ const [deleteModal,setDeleteModal]=useState(false)
     }else if(filter == 'failed'){
 
 
-      axios.get(`https://brototypes.com/api/fumigation/get-failed-students`,{params:{batchId:id,fumigationType}}).then(res=>{
+      axios.get(`http://localhost:3002/api/fumigation/get-failed-students`,{params:{batchId:id,fumigationType}}).then(res=>{
   
     
     if(res.data.response.status===true){
@@ -241,7 +247,7 @@ const [deleteModal,setDeleteModal]=useState(false)
     else {
       console.log('else case');
       
-      axios.get(`https://brototypes.com/api/fumigation/get-batchwise-students/${id}`,).then(res=>{
+      axios.get(`http://localhost:3002/api/fumigation/get-batchwise-students/${id}`,).then(res=>{
   
     console.log("batch student",res.data.response);
     
@@ -263,7 +269,8 @@ const handlePassedStudents = (batchId:string,fumigationType:string) =>{
     batchId,
     fumigationType
   }
-  axios.post(`https://brototypes.com/api/fumigation/confirm-passed-students`,data).then(res=>{
+  axios.post(`http://localhost:3002/api/fumigation/confirm-passed-students`,data).then(res=>{
+  console.log(res,"res in confirm passe studnts");
   
   if(res.data.sendDataAuthServResponse.status===true){
     toast.success("passed students updated successfully")

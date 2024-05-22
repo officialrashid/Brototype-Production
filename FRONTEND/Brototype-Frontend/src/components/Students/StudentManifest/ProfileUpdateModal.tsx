@@ -1,9 +1,10 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import useMutation from "../../../hooks/useMutation";
 import * as Yup from 'yup';
 import { useFormik } from 'formik';
 import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
+import { getAllBathes, getAllCourses } from "../../../utils/methods/get";
 
 const validFileTypes = ['image/jpg', 'image/jpeg', 'image/png'];
 
@@ -24,7 +25,9 @@ const ErrorText: React.FC<{ children: React.ReactNode }> = ({ children }) => (
 );
 
 const ProfileUpdateModal: React.FC<ProfileUpdateModalProps> = ({ isVisible, onClose, handleProfileUpdateSuccess }) => {
-  const studentId:any = useSelector((state: any) => state?.student?.studentData?.studentId);
+  const studentId: any = useSelector((state: any) => state?.student?.studentData?.studentId);
+  const [batches, setBatches] = useState([])
+  const [courses, setCourses] = useState([])
   const validationSchema = Yup.object().shape({
     selectedFile: Yup.mixed()
       .required('Please select an image')
@@ -32,35 +35,31 @@ const ProfileUpdateModal: React.FC<ProfileUpdateModalProps> = ({ isVisible, onCl
         if (!file) return true;
         return validFileTypes.includes(file.type);
       }),
-    firstName: Yup.string()
-      .required('First Name is required')
-      .transform((value, originalValue) => (originalValue.trim() === '' ? undefined : originalValue.trim()))
-      .test('capitalize-first', 'First letter must be capital', (value) => {
-        return /^[A-Z]/.test(value || ''); // Check if the first letter is capital
-      })
-      ,
-    lastName: Yup.string()
-      .required('Last Name is required')
-      .transform((value, originalValue) => (originalValue.trim() === '' ? undefined : originalValue.trim()))
-      .test('capitalize-first', 'First letter must be capital', (value) => {
-        return /^[A-Z]/.test(value || '');
-      }),
+    // firstName: Yup.string()
+    //   .required('First Name is required')
+    //   .transform((value, originalValue) => (originalValue.trim() === '' ? undefined : originalValue.trim()))
+    //   .test('capitalize-first', 'First letter must be capital', (value) => {
+    //     return /^[A-Z]/.test(value || ''); // Check if the first letter is capital
+    //   })
+    // ,
+    // lastName: Yup.string()
+    //   .required('Last Name is required')
+    //   .transform((value, originalValue) => (originalValue.trim() === '' ? undefined : originalValue.trim()))
+    //   .test('capitalize-first', 'First letter must be capital', (value) => {
+    //     return /^[A-Z]/.test(value || '');
+    //   }),
     domain: Yup.string()
       .required('Domain is required')
       .transform((value, originalValue) => (originalValue.trim() === '' ? undefined : originalValue.trim()))
       .test('capitalize-first', 'First letter must be capital', (value) => {
         return /^[A-Z]/.test(value || '');
       }),
-    batch: Yup.string()
-      .required('Batch is required')
+    environment: Yup.string()
+      .required('environment is required')
       .transform((originalValue) => {
         const trimmedValue = originalValue.trim();
         return trimmedValue.toUpperCase();
       })
-      .test('all-uppercase', 'Batch must be in uppercase', (value) => {
-        // Check if the transformed value is the same as the original value
-        return value === value?.toUpperCase();
-      }),
   });
 
   const {
@@ -76,18 +75,47 @@ const ProfileUpdateModal: React.FC<ProfileUpdateModalProps> = ({ isVisible, onCl
     formik.setFieldValue('selectedFile', file || null); // Set to null if file is undefined
     setSelectedFile(file || null);
   };
+  useEffect(() => {
+    const fetchCourses = async () => {
+      try {
+        const response = await getAllCourses()
+        if (response?.status) {
+          setCourses(response.data)
+        } else {
+          setCourses([])
+        }
 
+      } catch (error) {
+        setCourses([])
+      }
+    }
+    fetchCourses()
+  }, []);
+  useEffect(() => {
+    const fetchAllBatches = async () => {
+      try {
+        const response = await getAllBathes()
+        console.log(response, "get all batchesss");
+        if (response?.data?.status === true) {
+          setBatches(response?.data?.response)
+        } else {
+          setBatches([])
+        }
+      } catch (error) {
+        setBatches([])
+      }
+    }
+    fetchAllBatches()
+  },[])
   const formik = useFormik({
     initialValues: {
       selectedFile: null,
-      firstName: '',
-      lastName: '',
       domain: '',
-      batch: '',
+      environment: '',
     },
     validationSchema,
-    onSubmit: async (e:any) => {
-     
+    onSubmit: async (e: any) => {
+
       try {
         if (!formik.values.selectedFile) {
           formik.setFieldError('selectedFile', 'Please select an image');
@@ -95,20 +123,18 @@ const ProfileUpdateModal: React.FC<ProfileUpdateModalProps> = ({ isVisible, onCl
         }
         const formData = new FormData();
         formData.append('image', formik.values.selectedFile as unknown as File);
-        formData.append('firstName', formik.values.firstName);
-        formData.append('lastName', formik.values.lastName);
         formData.append('domain', formik.values.domain);
-        formData.append('batch', formik.values.batch);
+        formData.append('environment', formik.values.environment);
         formData.append('studentId', studentId);
-        console.log(formData,"forData comingggggggggggggggggggggggggggggg");
-        
+        console.log(formData, "forData comingggggggggggggggggggggggggggggg");
+
         const response = await uploadImage(formData);
-        if(response?.data?.status===true){
-           toast.success("profile updated successfully")
-           handleProfileUpdateSuccess()
-           onClose();
-      
-        }else{
+        if (response?.data?.status === true) {
+          toast.success("profile updated successfully")
+          handleProfileUpdateSuccess()
+          onClose();
+
+        } else {
           toast.error("profile updated not done,something went wrong")
           onClose();
         }
@@ -122,7 +148,7 @@ const ProfileUpdateModal: React.FC<ProfileUpdateModalProps> = ({ isVisible, onCl
   if (!isVisible) return null;
 
   return (
-    <div className="fixed inset-0 bg-opacity-20 backdrop-blur-sm flex justify-center items-center overflow-y-scroll overflow-hidden z-40">
+    <div className="fixed inset-0 bg-opacity-20 backdrop-blur-sm flex justify-center items-center overflow-y-scroll overflow-hidden z-40 ">
       <div className="border border- shadow-md w-fit m-10 rounded-md bg-white ">
         <div className="flex justify-between mt-4 mr-4">
           <div></div>
@@ -132,7 +158,7 @@ const ProfileUpdateModal: React.FC<ProfileUpdateModalProps> = ({ isVisible, onCl
             </svg>
           </div>
         </div>
-        <div className="flex gap-6  rounded-md">
+        <div className="flex gap-6  rounded-md mb-4">
           <div>
             <div className="border border-2px h-28 w-28 rounded-full m-6 mb-3">
               {selectedFile ? (
@@ -141,12 +167,12 @@ const ProfileUpdateModal: React.FC<ProfileUpdateModalProps> = ({ isVisible, onCl
                   alt="Uploaded"
                   className="h-full w-full object-cover rounded-full"
                 />
-              ):(
+              ) : (
                 <img
-                src="/defaultPhoto.png"
-                alt="Uploaded"
-                className="h-full w-full object-cover rounded-full"
-              />
+                  src="/defaultPhoto.png"
+                  alt="Uploaded"
+                  className="h-full w-full object-cover rounded-full"
+                />
               )}
             </div>
             <div>
@@ -166,7 +192,7 @@ const ProfileUpdateModal: React.FC<ProfileUpdateModalProps> = ({ isVisible, onCl
             </div>
           </div>
           <div className="m">
-            <div className=" m-6 flex">
+            {/* <div className=" m-6 flex">
               <div>
                 <div>
                   <span className="text-sm font-roboto">First Name</span>
@@ -197,36 +223,58 @@ const ProfileUpdateModal: React.FC<ProfileUpdateModalProps> = ({ isVisible, onCl
                   <ErrorText>{formik.errors.lastName}</ErrorText>
                 )}
               </div>
-            </div>
-            <div className=" m-6 flex">
+            </div> */}
+            <div className=" m-6  gap-2 flex">
               <div>
                 <div>
                   <span className="text-sm font-roboto">
                     Domain
                   </span>
                 </div>
-                <input type="text" className="border border-2px mr-4 outline-black py-1 rounded-sm "
+                <select
+                  className="border border-2px mr-8 outline-black py-2 w-full px-8  font-roboto rounded-sm text-sm dropdown"
                   name="domain"
                   value={formik.values.domain}
                   onChange={formik.handleChange}
                   onBlur={formik.handleBlur}
-                />
+                >
+                  <option value="" label="Select domain" className="" />
+                  {courses.map((course:any,index:number) => (
+                    <>
+                      <option className="text-sm font-roboto" value={course.courseName} label={course.courseName} />
+
+                    </>
+                  ))}
+
+                  {/* Add more options as needed */}
+                </select>
                 {formik.touched.domain && formik.errors.domain && (
                   <ErrorText>{formik.errors.domain}</ErrorText>
                 )}
               </div>
               <div>
                 <div>
-                  <span className="text-sm font-roboto">Batch</span>
+                  <span className="text-sm font-roboto">
+                  environment
+                  </span>
                 </div>
-                <input type="text" className="border border-2px mr-4 outline-black py-1 rounded-sm "
-                  name="batch"
-                  value={formik.values.batch}
+                <select
+                  className="border border-2px mr-8 outline-black py-2 w-full px-8  font-roboto rounded-sm text-sm dropdown"
+                  name="environment"
+                  value={formik.values.environment}
                   onChange={formik.handleChange}
                   onBlur={formik.handleBlur}
-                />
-                {formik.touched.batch && formik.errors.batch && (
-                  <ErrorText>{formik.errors.batch}</ErrorText>
+                >
+                  <option value="" label="Select environment" className="" />
+                    <>
+                      <option className="text-sm font-roboto" value="Current" label="Current" />
+                      <option className="text-sm font-roboto" value="Remote" label="Remote" />
+                    </>
+
+                  {/* Add more options as needed */}
+                </select>
+                {formik.touched.environment && formik.errors.environment && (
+                  <ErrorText>{formik.errors.environment}</ErrorText>
                 )}
               </div>
             </div>
@@ -236,7 +284,7 @@ const ProfileUpdateModal: React.FC<ProfileUpdateModalProps> = ({ isVisible, onCl
                 <button
                   type="button" // Add this line to specify the type
                   className="bg-black text-white rounded-md px-5 py-1.5 font-roboto hover:bg-gray-500"
-                  onClick={(e)=>formik.handleSubmit(e)}
+                  onClick={(e) => formik.handleSubmit(e)}
                   disabled={uploading}
                 >
                   {uploading ? "Uploading..." : "Submit"}
@@ -254,3 +302,5 @@ const ProfileUpdateModal: React.FC<ProfileUpdateModalProps> = ({ isVisible, onCl
 };
 
 export default ProfileUpdateModal;
+
+

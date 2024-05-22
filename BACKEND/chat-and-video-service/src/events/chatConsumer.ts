@@ -21,6 +21,8 @@ export const consumeChat = async () => {
                 const jsonString:any = binaryData?.toString(); // Convert binary data to a string
                 console.log(jsonString, "after convert to string");
                 const jsonData = JSON.parse(jsonString); // Parse the string as JSON
+                console.log(jsonData,"jsonDtaaaaa");
+                
                 console.log("Received JSON dataaaaaaaaaaaaaaaaaa\\\\\\\\\\////////////////////////////:", jsonData.data);
 
                 const messageType = jsonData?.type;

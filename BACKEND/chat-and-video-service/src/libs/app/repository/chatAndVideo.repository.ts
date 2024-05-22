@@ -586,7 +586,7 @@ export default {
             const response = await schema.Messages.deleteOne({ _id: new ObjectId(messageId) })
             console.log(response);
             if (response) {
-                console.log("kerii delte il keriii kkunu");
+                console.log("kerii delte il keriii kkunu11111111111111111");
 
                 return { status: true, response }
             }
@@ -908,6 +908,8 @@ export default {
             if (!data) {
                 return { status: false, message: "chater image not updated" }
             }
+            console.log(data,"dfata coming from chate schemaaaa");
+            
             const chaterId = data.superleadId || data.studentId || data.advisorId || data.reviewerId
             const response = await schema.Chaters.updateOne(
                 { chaterId: chaterId }, // Filter criteria

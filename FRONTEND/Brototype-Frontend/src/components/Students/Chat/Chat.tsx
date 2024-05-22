@@ -43,7 +43,7 @@ const Chat = () => {
     const [showEmojis, setShowEmojis] = useState(false)
     const [cursorPosition, setCursorPosition] = useState()
     const inputRef = useRef(null);
-    const { setUnreadReload } = useContext(GlobalContext);
+    const { setUnreadReload,clicked } = useContext(GlobalContext);
     useEffect(() => {
         if (!socket || !studentId) return;
 
@@ -722,7 +722,7 @@ const Chat = () => {
                                 )}
                             </div>
                         </div>
-                    </div>
+                    </div>   
                 )}
             </div>
             <ChatMediaModal isVisible={selectMedia} onClose={() => { setSelectMedia(false) }} changeModalStatus={changeModalStatus} handleMessageChange={handleMessageChange} />
