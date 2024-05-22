@@ -2,7 +2,7 @@ import kafkajs,{Partitioners} from 'kafkajs'
 
 const kafkaClient=new kafkajs.Kafka({
     clientId:'coordinator-service',
-    brokers:['demo-kafka:9092']
+    brokers:['localhost:9092']
 })
 
 

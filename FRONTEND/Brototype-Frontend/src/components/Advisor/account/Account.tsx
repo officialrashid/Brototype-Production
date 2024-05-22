@@ -73,7 +73,7 @@ const Account=()=>{
       <div className="m-2">
         <div><span>197</span></div>
       <div>
-        <span className="font-bold">Total reviews</span>
+        <span className="font-bold">Pending reviews</span>
       </div>
       </div>
 
@@ -82,7 +82,7 @@ const Account=()=>{
       <div className="m-2">
         <div><span>197</span></div>
       <div>
-        <span className="font-bold">Total reviews</span>
+        <span className="font-bold">Shared reviews</span>
       </div>
       </div>
 
@@ -91,7 +91,7 @@ const Account=()=>{
       <div className="m-2">
         <div><span>197</span></div>
       <div>
-        <span className="font-bold">Total reviews</span>
+        <span className="font-bold">weekly reviews</span>
       </div>
       </div>
 
@@ -106,7 +106,7 @@ const Account=()=>{
   <div className="m-2">
     <span className="font-bold">Performance Graph</span>
   </div>
-  <PerformanceGraph graphHeight={340}/>
+  <PerformanceGraph graphHeight={340} />
   
 </div>
 <div className="border border-2px    rounded-md bg-white  h-full max-h-96 overflow-y-auto ">
@@ -120,81 +120,22 @@ const Account=()=>{
    <div className="flex justify-between gap-6 ">
    <div>
    <span className="text-sm font-bold">Rashid </span><br />
-   <span className="text-sm font-bold">Riyas </span><br />
+   {/* <span className="text-sm font-bold">Riyas </span><br /> */}
 
    </div>
    <div>
-    <span className="text-sm">2:30pm</span>
+    <span className="text-sm"></span>
    </div>
     </div>
     <div className="flex gap-4">
-      <button className="border bg-darkBlue rounded-md px-8 py-1 text-sm text-white">Start</button>
-      <button className="border  rounded-md text-sm px-2 text-black">Cancel</button>
+      <button className="border bg-darkBlue rounded-md px-8 py-1 text-sm text-white">BCE-55</button>
+      <button className="border  rounded-md text-sm px-2 text-black">week-8</button>
     </div>
    </div>
 
 
   </div>
-  <div className="border rounded-md m-2">
-   <div className="m-2">
-   <div className="flex justify-between gap-6 ">
-   <div>
-   <span className="text-sm font-bold">Rashid </span><br />
-   <span className="text-sm font-bold">Riyas </span><br />
-
-   </div>
-   <div>
-    <span  className="text-sm">2:30pm</span>
-   </div>
-    </div>
-    <div className="flex gap-4">
-      <button className="border bg-darkBlue rounded-md px-8 py-1 text-sm text-white">Start</button>
-      <button className="border  rounded-md text-sm px-2 text-black">Cancel</button>
-    </div>
-   </div>
-
-
-  </div>
-  <div className="border rounded-md m-2">
-   <div className="m-2">
-   <div className="flex justify-between gap-6 ">
-   <div>
-   <span className="text-sm font-bold">Rashid </span><br />
-   <span className="text-sm font-bold">Riyas </span><br />
-
-   </div>
-   <div>
-    <span className="text-sm">2:30pm</span>
-   </div>
-    </div>
-    <div className="flex gap-4">
-      <button className="border bg-darkBlue rounded-md px-8 py-1 text-sm text-white">Start</button>
-      <button className="border  rounded-md text-sm px-2 text-black">Cancel</button>
-    </div>
-   </div>
-
-
-  </div>
-  <div className="border rounded-md m-2">
-   <div className="m-2">
-   <div className="flex justify-between gap-6 ">
-   <div>
-   <span className="text-sm font-bold">Rashid </span><br />
-   <span className="text-sm font-bold">Riyas </span><br />
-
-   </div>
-   <div>
-    <span className="text-sm">2:30pm</span>
-   </div>
-    </div>
-    <div className="flex gap-4">
-      <button className="border bg-darkBlue rounded-md px-8 py-1 text-sm text-white">Start</button>
-      <button className="border  rounded-md text-sm px-2 text-black">Cancel</button>
-    </div>
-   </div>
-
-
-  </div>
+ 
   
     
    
@@ -309,276 +250,9 @@ const Account=()=>{
   </div>
 
 </div>
-<div className="">
-
-  <div className
-=" border rounded-md   bg-white  mt-2 mb-2 ">
-  <div className
-="flex justify-between ">
-
-    <div className
-  ="flex gap-3 m-2 mt-4">
-    <div>
-      <div className
-    ="bg-gray-200 w-10 h-10 rounded-full flex items-center justify-center ">
-      <svg
-  height="200px"
-  width="200px"
-  version="1.1"
-  id="Capa_1"
-  className
-="w-4 h-6"
-  xmlns="http://www.w3.org/2000/svg"
-  xmlns:xlink="http://www.w3.org/1999/xlink"
-  viewBox="0 0 23.612 23.612"
-  xml:space="preserve"
-  fill="#000000"
->
-  <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
-  <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
-  <g id="SVGRepo_iconCarrier">
-    <g>
-      <g>
-        <g>
-          <path
-            style={{ fill: "#dc2626" }}
-            d="M16.192,5.224V4.487h-8.77v0.737c0,0,1.334,3.713,3.838,5.428v1.785c0,0-2.761,2.686-3.838,5.775 v0.842h8.77v-0.842c-1.399-3.41-3.837-5.775-3.837-5.775v-1.785C15.759,7.726,16.192,5.224,16.192,5.224z"
-          ></path>
-        </g>
-        <g>
-          <path
-            style={{ fill: "#dc2626" }}
-            d="M19.353,3.856V2.529h1.258V0H3.002v2.529h1.259v1.327c0,2.025,3.634,7.555,3.804,7.955 c-0.167,0.397-3.804,5.929-3.804,7.946v1.325H3.002v2.53h17.609v-2.53h-1.258v-1.325c0-2.025-3.635-7.521-3.829-7.951 C15.718,11.376,19.353,5.88,19.353,3.856z M18.096,19.757v1.325H5.519v-1.325c0-1.455,3.854-7.222,3.854-7.951 s-3.854-6.495-3.854-7.95V2.529h12.578v1.327c0,1.455-3.886,7.221-3.886,7.95C14.21,12.535,18.096,18.302,18.096,19.757z"
-          ></path>
-        </g>
-      </g>
-    </g>
-  </g>
-</svg>
-
-  </div>
-
-   <div className
-  =" ml-6 -mt-5 ">
-   
-   <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="#dc2626" className="w-3 h-4">
-  <path stroke-linecap="round" stroke-linejoin="round" d="m9.75 9.75 4.5 4.5m0-4.5-4.5 4.5M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
-</svg>
 
 
-   </div>
-    </div>
-   <div className
-  ="m-2"><span>Team meeting</span></div>
 
-  </div>
- <div className
-="flex gap-4"><div className
-="h-2 w-2 bg-red-600 rounded-md col mt-8 "></div>
- <div className
-="mt-6 ">
-   <span className
-  ="text-gray-400 text-sm">18-04-2024</span>
- </div>
- </div>
- <span></span>
-  
-     <div className
-    ="flex m-5 gap-3 mt-6">
-    <div >
-      <button className
-    ="px-6 border rounded-md  bg-darkBlue text-white font-bold text-sm py-1">Edit</button>
-
-    </div>
-     <div className
-    ="">
-      <button className
-    ="px-4 border rounded-md text-black text-sm font-bold py-1">Delete</button>
-
-    </div>
-  </div>
-  </div>
-
-</div>
-</div>
-<div className
-=" border rounded-md   bg-white  mt-2 mb-2 ">
-  <div className
-="flex justify-between ">
-
-    <div className
-  ="flex gap-3 m-2 mt-4">
-    <div>
-      <div className
-    ="bg-gray-200 w-10 h-10 rounded-full flex items-center justify-center ">
-      <svg
-  height="200px"
-  width="200px"
-  version="1.1"
-  id="Capa_1"
-  className
-="w-4 h-6"
-  xmlns="http://www.w3.org/2000/svg"
-  xmlns:xlink="http://www.w3.org/1999/xlink"
-  viewBox="0 0 23.612 23.612"
-  xml:space="preserve"
-  fill="#000000"
->
-  <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
-  <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
-  <g id="SVGRepo_iconCarrier">
-    <g>
-      <g>
-        <g>
-          <path
-            style={{ fill: "#10b981" }}
-            d="M16.192,5.224V4.487h-8.77v0.737c0,0,1.334,3.713,3.838,5.428v1.785c0,0-2.761,2.686-3.838,5.775 v0.842h8.77v-0.842c-1.399-3.41-3.837-5.775-3.837-5.775v-1.785C15.759,7.726,16.192,5.224,16.192,5.224z"
-          ></path>
-        </g>
-        <g>
-          <path
-            style={{ fill: "#10b981" }}
-            d="M19.353,3.856V2.529h1.258V0H3.002v2.529h1.259v1.327c0,2.025,3.634,7.555,3.804,7.955 c-0.167,0.397-3.804,5.929-3.804,7.946v1.325H3.002v2.53h17.609v-2.53h-1.258v-1.325c0-2.025-3.635-7.521-3.829-7.951 C15.718,11.376,19.353,5.88,19.353,3.856z M18.096,19.757v1.325H5.519v-1.325c0-1.455,3.854-7.222,3.854-7.951 s-3.854-6.495-3.854-7.95V2.529h12.578v1.327c0,1.455-3.886,7.221-3.886,7.95C14.21,12.535,18.096,18.302,18.096,19.757z"
-          ></path>
-        </g>
-      </g>
-    </g>
-  </g>
-</svg>
-
-  </div>
-
-   <div className
-  =" ml-6 -mt-5 ">
-   
-<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="#10b981" className="w-3 h-4">
-  <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
-</svg>
-
-
-   </div>
-    </div>
-   <div className
-  ="m-2"><span>Team meeting</span></div>
-
-  </div>
- <div className
-="flex gap-4"><div className
-="h-2 w-2 bg-green-500 rounded-md col mt-8 "></div>
- <div className
-="mt-6 ">
-   <span className
-  ="text-gray-400 text-sm">18-04-2024</span>
- </div>
- </div>
- <span></span>
-  
-     <div className
-    ="flex m-5 gap-3 mt-6">
-    <div >
-      <button className
-    ="px-6 border rounded-md  bg-darkBlue text-white font-bold text-sm py-1">Edit</button>
-
-    </div>
-     <div className
-    ="">
-      <button className
-    ="px-4 border rounded-md text-black text-sm font-bold py-1">Delete</button>
-
-    </div>
-  </div>
-  </div>
-
-</div>
-<div className
-=" border rounded-md   bg-white  mt-2 mb-2 ">
-  <div className
-="flex justify-between ">
-
-    <div className
-  ="flex gap-3 m-2 mt-4">
-    <div>
-      <div className
-    ="bg-gray-200 w-10 h-10 rounded-full flex items-center justify-center ">
-      <svg
-  height="200px"
-  width="200px"
-  version="1.1"
-  id="Capa_1"
-  className
-="w-4 h-6"
-  xmlns="http://www.w3.org/2000/svg"
-  xmlns:xlink="http://www.w3.org/1999/xlink"
-  viewBox="0 0 23.612 23.612"
-  xml:space="preserve"
-  fill="#000000"
->
-  <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
-  <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
-  <g id="SVGRepo_iconCarrier">
-    <g>
-      <g>
-        <g>
-          <path
-            style={{ fill: "#10b981" }}
-            d="M16.192,5.224V4.487h-8.77v0.737c0,0,1.334,3.713,3.838,5.428v1.785c0,0-2.761,2.686-3.838,5.775 v0.842h8.77v-0.842c-1.399-3.41-3.837-5.775-3.837-5.775v-1.785C15.759,7.726,16.192,5.224,16.192,5.224z"
-          ></path>
-        </g>
-        <g>
-          <path
-            style={{ fill: "#10b981" }}
-            d="M19.353,3.856V2.529h1.258V0H3.002v2.529h1.259v1.327c0,2.025,3.634,7.555,3.804,7.955 c-0.167,0.397-3.804,5.929-3.804,7.946v1.325H3.002v2.53h17.609v-2.53h-1.258v-1.325c0-2.025-3.635-7.521-3.829-7.951 C15.718,11.376,19.353,5.88,19.353,3.856z M18.096,19.757v1.325H5.519v-1.325c0-1.455,3.854-7.222,3.854-7.951 s-3.854-6.495-3.854-7.95V2.529h12.578v1.327c0,1.455-3.886,7.221-3.886,7.95C14.21,12.535,18.096,18.302,18.096,19.757z"
-          ></path>
-        </g>
-      </g>
-    </g>
-  </g>
-</svg>
-
-  </div>
-
-   <div className
-  =" ml-6 -mt-5 ">
-   
-<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="#10b981" className="w-3 h-4">
-  <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
-</svg>
-
-
-   </div>
-    </div>
-   <div className
-  ="m-2"><span>Team meeting</span></div>
-
-  </div>
- <div className
-="flex gap-4"><div className
-="h-2 w-2 bg-green-500 rounded-md col mt-8 "></div>
- <div className
-="mt-6 ">
-   <span className
-  ="text-gray-400 text-sm">18-04-2024</span>
- </div>
- </div>
- <span></span>
-  
-     <div className
-    ="flex m-5 gap-3 mt-6">
-    <div >
-      <button className
-    ="px-6 border rounded-md  bg-darkBlue text-white font-bold text-sm py-1">Edit</button>
-
-    </div>
-     <div className
-    ="">
-      <button className
-    ="px-4 border rounded-md text-black text-sm font-bold py-1">Delete</button>
-
-    </div>
-  </div>
-  </div>
-
-</div>
 </div>
 
 

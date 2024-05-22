@@ -1,9 +1,22 @@
 import { useState } from "react";
 import Tasks from "./Tasks";
+import CreateTask from "../Scheduled/CreateTask";
+import Api from "../../../utils/baseUrl/taskBaseUrl";
+import { useSelector } from "react-redux";
 
 const TasksPage = () => {
+  const advisorId:any = useSelector((state: RootState) => state?.advisor?.advisorData?.advisorId);
+
+
     const technicalTasks:any=[]
     const [activeTask,setActiveTask]=useState(0)
+    const [editModal,setEditModal]=useState(false)
+
+    const editData=async (type:string,week:string)=>{
+      const response=await Api.get(`/task-service/`,)
+
+    }
+
   
     return (
       <>
@@ -49,7 +62,7 @@ const TasksPage = () => {
             </div>
             <div className="flex gap-2">
              
-                <button className={`bg-black rounded-md px-3 py-1 text-white`} >
+                <button className={`bg-black rounded-md px-3 py-1 text-white`} onClick={()=>{setEditModal(true),editData('technical',task.week)}}>
                   Edit
                 </button>
        
@@ -90,7 +103,7 @@ const TasksPage = () => {
             </div>
             <div className="flex gap-2">
              
-                <button className={`bg-black rounded-md px-3 py-1 text-white`} >
+                <button className={`bg-black rounded-md px-3 py-1 text-white`} onClick={()=>{setEditModal(true),editData('technical',task.week)}}>
                   Edit
                 </button>
        
@@ -120,19 +133,19 @@ const TasksPage = () => {
             </div>
           </div>
         </div>
-        {
-    activeTask==3?technicalTasks.length?technicalTasks.map((task)=>{
-        return (
+       // {
+    // activeTask==3?technicalTasks.length?technicalTasks.map((task)=>{
+    //     return (
             <div className="m-7 border border-1px rounded-md shadow-xl  bg-white">
           <div className="flex justify-between m-2 items-center py-2">
             <div>
               <span className='"'>
-               {task.week}
+         
               </span>
             </div>
             <div className="flex gap-2">
              
-                <button className={`bg-black rounded-md px-3 py-1 text-white`} >
+                <button className={`bg-black rounded-md px-3 py-1 text-white`} onClick={()=>{setEditModal(true)} }>
                   Edit
                 </button>
        
@@ -143,11 +156,12 @@ const TasksPage = () => {
             </div>
           </div>
         </div>
-        )
-    }):<div><h1 className="text-center font-bold text-lg">There is no tasks</h1></div>:""
+    //     )
+    // }):<div><h1 className="text-center font-bold text-lg">There is no tasks</h1></div>:""
    }
-        
+     <CreateTask isVisible={editModal} onClose={()=>{setEditModal(false)}}/>
       </>
+     
     );
   };
   

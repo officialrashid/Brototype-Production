@@ -28,5 +28,5 @@ app.use("/api", routes(dependencies));
 serverConfig(server, config).startServer();
 
 // setInterval(async() => {
-     consumeAuthentication();
+     //consumeAuthentication();
 // }, 10000);

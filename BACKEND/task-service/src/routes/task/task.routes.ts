@@ -21,3 +21,5 @@ export default (dependencies:any)=>{
   router.get('/get-student-week-task',getWeekTaskController)
   return router
 }
+
+

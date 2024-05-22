@@ -155,6 +155,32 @@ return res.json(response)
 
  }
  }
+
+
+ async onGetPerformanceGraphData(req:Request,res:Response){
+
+    const coordinatorId:string=req.params.id
+    const resposne= await this.reviewInteractor.getPerformanceGraphData(coordinatorId)
+    return res.json(resposne)
+ }
+
+ async OnGetTopFiveCoordinators(req:Request,res:Response){
+    const response=await this.reviewInteractor.getTopFiveCoordinators()
+     return res.json(response)
+
+ }
+
+ async OnGetWeeklySummaryGraphData(req:Request,res:Response){
+    const coordinatorId:string=req.params.id
+    const response=await this.reviewInteractor.getWeeklySummaryData(coordinatorId)
+    return res.json(response)
+ }
+ async onGetCoordinatorReviewDetails(req:Request,res:Response){
+   const coordinatorId:string=req.params.id
+   const response=await this.reviewInteractor.getCoordinatorTaskDetails(coordinatorId)
+   return res.json(response)
+
+ }
 }
 
 export {ReviewController}

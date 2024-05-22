@@ -30,6 +30,7 @@ app.use('/review',reviewRouter)
 let lastEmitTime:any=null
 // nodecron.schedule('* * * * *', async () => {
 // let currentTime:any=new Date()
+ 
   
 //   try {
 //  if(!lastEmitTime||(currentTime-lastEmitTime)>=(1*60*1000)){
@@ -40,6 +41,7 @@ let lastEmitTime:any=null
 // }
   
 // sendMessage('review-events',message)
+// console.log('event emited2....');
 // lastEmitTime=currentTime
  
 
@@ -56,11 +58,15 @@ var studentsData:any
 var savedReviewData:any
 let i=0
 function checkAndSchduleEVents() {
-
+console.log('check and schedule');
+console.log('helllo33333',studentsData,coordinatorsData);
   if(coordinatorsData !== undefined && studentsData!== undefined){
    
    if(i==0){
     i+1
+    console.log('called');
+    
+    
     scheduleInteractor()
    }
     
@@ -122,7 +128,11 @@ console.log(studentsData,coordinatorsData,);
 
 async function consumeCoordinatorEvents(message:any) {
   try {
-    coordinatorsData = JSON.parse(message.value.toString()).data
+    console.log(JSON.parse(message.value.toString()));
+    
+    coordinatorsData = JSON.parse(message.value.toString())
+    console.log('coo',coordinatorsData);
+    
   checkAndSchduleEVents()
 //return  coordinatorsData
     
@@ -131,10 +141,12 @@ async function consumeCoordinatorEvents(message:any) {
   }
 }
 async function consumeStudentEvents(message:any) {
+  console.log(JSON.parse(message.value.toString()),'studeeent dataa');
+  
   try {
-   studentsData = JSON.parse(message.value.toString()).data;
+   studentsData = JSON.parse(message.value.toString());
     
-   // checkAndSchduleEVents()
+    checkAndSchduleEVents()
   } catch (error) {
     console.error('Error processing product event:', error);
   }
@@ -145,6 +157,6 @@ app.listen(port,()=>{
 
 })
 connectDB(config)
-consumerConnect()
+//consumerConnect()
 
 export {consumeCoordinatorEvents,consumeStudentEvents}
