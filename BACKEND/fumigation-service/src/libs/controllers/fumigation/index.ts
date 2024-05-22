@@ -27,6 +27,7 @@ import updateStudentStatus_Controller from "./studentsController/updateStudentSt
 import getPerPageStudent_Controller from "./studentsController/getPerPageStudentController"
 import superleadAddStudent_Controller from "./studentsController/superleadAddStudentController"
 import getPendingStudents_Controller from "./studentsController/getPendingStudentsController"
+import getEnqueryGraph_Controller from "./studentsController/getEnqueryGraphController"
 export default (dependencies:any)=>{
 
     return{
@@ -57,7 +58,8 @@ export default (dependencies:any)=>{
         updateStudentStatusController: updateStudentStatus_Controller(dependencies),
         getPerPageStudentController: getPerPageStudent_Controller(dependencies),
         superleadAddStudentController: superleadAddStudent_Controller(dependencies),
-        getPendingStudentsController: getPendingStudents_Controller(dependencies)
+        getPendingStudentsController: getPendingStudents_Controller(dependencies),
+        getEnqueryGraphController: getEnqueryGraph_Controller(dependencies)
 
     }  
 }

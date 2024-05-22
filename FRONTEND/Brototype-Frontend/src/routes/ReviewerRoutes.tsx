@@ -31,6 +31,7 @@ function ReviewerRoutes() {
                   <Route path="/schedule" element={reviewerAccessToken ? <Calender /> : <ReviewerSignIn />} />
                   <Route path="/reviewerProfile" element={reviewerAccessToken ? <ReviewerProfile /> : <ReviewerSignIn />} />
                   <Route path="/chat" element={reviewerAccessToken ? <Chat /> : <ReviewerSignIn />} />
+                  <Route path='/start-review/:3213213' element={<JaasMeet roomId={reviewerId}/>}></Route>
                 </Routes>
               </div>
             </div>

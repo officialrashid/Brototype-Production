@@ -134,28 +134,28 @@ export default {
     mark: number,
     fumigationType: string
   ) => {
-    console.log("update mark section il keriii ttaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",batchId);
-    
+    console.log("update mark section il keriii ttaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", batchId);
+
     try {
       // Find the batch with the given batchId and studentId
-      const batch:any = await schema.Batches.findOne({ _id: batchId});
-console.log(batch,"batchhhhh geteeeeeeeee");
+      const batch: any = await schema.Batches.findOne({ _id: batchId });
+      console.log(batch, "batchhhhh geteeeeeeeee");
 
       if (!batch) {
         console.log("! batch il keriii ttaaaaaaaa");
-        
+
         return { status: false, message: "Batch not found" }
       }
 
       // Find the student's fumigationStudents record
-      const fumigationStudent:any = batch.fumigationStudents.find(
+      const fumigationStudent: any = batch.fumigationStudents.find(
         (student: { studentId: { toString: () => string; }; }) => student?.studentId?.toString() === studentId
       );
 
       if (!fumigationStudent) {
         return { status: false, message: "students not found in the batch" }
       }
-console.log(fumigationStudent,"fumihgation studentseeeee");
+      console.log(fumigationStudent, "fumihgation studentseeeee");
 
       // Find the appropriate array within the student object based on fumigationType
       let targetArray;
@@ -163,11 +163,11 @@ console.log(fumigationStudent,"fumihgation studentseeeee");
         targetArray = fumigationStudent.mock;
       } else if (fumigationType === "final") {
         console.log("keriyannuuuuuuuuuuu taaaaaaaaaa");
-        
+
         targetArray = fumigationStudent.final;
       } else {
         console.log("erorr ilannn kerunnathhhhh");
-        
+
         return { status: false, message: "only accept mock and final" }
       }
       // Find the index of the existing object if it exists
@@ -349,23 +349,23 @@ console.log(fumigationStudent,"fumihgation studentseeeee");
         _id: batchId,
         "fumigationStudents.studentId": studentId,
       });
-      console.log(studentDetails?.fumigationStudents,"studentDetailsss");
-      
+      console.log(studentDetails?.fumigationStudents, "studentDetailsss");
+
       if (!studentDetails) {
         return { status: false, message: "Batch or student not found" };
       }
 
       // Assuming fumigationStudents is an array, find the student in the array
-      const foundStudentIndex = studentDetails.fumigationStudents.findIndex((student) =>{
-        console.log(student.studentId?.toString(),'----',studentId);
-        
-return student.studentId == studentId
-      } );
-console.log(foundStudentIndex,"llllllllllll990***");
+      const foundStudentIndex = studentDetails.fumigationStudents.findIndex((student) => {
+        console.log(student.studentId?.toString(), '----', studentId);
+
+        return student.studentId == studentId
+      });
+      console.log(foundStudentIndex, "llllllllllll990***");
 
       if (foundStudentIndex === -1) {
         console.log("errore il keriiii");
-        
+
         return { status: false, message: "Student not found in the batch" };
       }
 
@@ -479,13 +479,13 @@ console.log(foundStudentIndex,"llllllllllll990***");
           });
 
           if (batch) {
-            console.log(batch,"batch cominggggggggg");
-            
+            console.log(batch, "batch cominggggggggg");
+
             const studentInfo = batch.fumigationStudents.find((std) => std.studentId?.toString() === studentId);
 
             if (studentInfo) {
-              console.log(studentInfo,"studenyInfo comingggggg");
-              
+              console.log(studentInfo, "studenyInfo comingggggg");
+
               // Assuming 'name' and 'email' are properties of the student object
               studentDetails.push({
                 studentId: studentId,
@@ -505,181 +505,363 @@ console.log(foundStudentIndex,"llllllllllll990***");
       return { status: false, message: error };
     }
   },
-    sendAllDataToAuth : async (data: Array<object>): Promise<any> => {
+  sendAllDataToAuth: async (data: Array<object>): Promise<any> => {
     console.log(data, 'fghghsgsh');
-      try {
-        // Send data to authentication service
-        const response = await fumigationProducer(data, 'authentication', 'addStudents');
-        return {status:true,message:"confirm passed students updated successfully"}
-      } catch (error) {
-        // Remove the listener in case of an error
-         return {status:false,message:"Error in the send all data to auth"}
-      }
-    
+    try {
+      // Send data to authentication service
+      const response = await fumigationProducer(data, 'authentication', 'addStudents');
+      return { status: true, message: "confirm passed students updated successfully" }
+    } catch (error) {
+      // Remove the listener in case of an error
+      return { status: false, message: "Error in the send all data to auth" }
+    }
+
   },
   getAllFumigationStudents: async (hubLocation: string, currentPage: number) => {
     try {
-        if (!hubLocation) {
-            return { status: false, message: "Fumigation students not found for your hub" };
-        }
-        const pageSize = 3; // Number of students per page
-        const skip = (currentPage - 1) * pageSize;
-
-        const incompleteBatches = await schema.Batches.find({ IsCompleted: false });
-
-        const students: {
-            studentId: any | undefined;
-            name: string | undefined;
-            email: string | undefined;
-            phone: number | undefined;
-            qualification: string | undefined;
-            prefferredLocation: string;
-            batchName: string | undefined;
-            status: string;
-        }[] = [];
-
-        // Loop through incomplete batches and filter students by preferred location
-        incompleteBatches.forEach(batch => {
-            batch.fumigationStudents.forEach(student => {
-                if (student.prefferredLocation === hubLocation) {
-                    students.push({
-                        studentId: student?.studentId,
-                        name: student.name,
-                        email: student.email,
-                        phone: student.phone,
-                        qualification: student.qualification,
-                        prefferredLocation: student.prefferredLocation,
-                        batchName: batch.batchName,
-                        status: student.isStatus
-                    });
-                }
-            });
-        });
-
-        // Sort students in descending order based on studentId or any relevant field
-        students.sort((a, b) => b.studentId - a.studentId);
-
-        // Paginate the sorted students array
-        const paginatedStudents = students.slice(skip, skip + pageSize);
-
-        return { status: true, students: paginatedStudents };
-    } catch (error) {
-        console.error("Error occurred while fetching all fumigation students:", error);
-        return { status: false, message: "An error occurred while getting all fumigation students" };
-    }
-},
-
-
-updateStudentStatus: async (studentId: string, batch: string, action: string) => {
-  try {
-    if (!studentId || !batch || !action) {
-      return { status: false, message: "Fumigation students not updated, some issue occurred. Please try again later." };
-    }
-
-    // Find the batch
-    const findBatch = await schema.Batches.findOne({ batchName: batch });
-    if (!findBatch) {
-      return { status: false, message: "Student batch not found." };
-    }
-
-    // Find the student in the batch
-    const student = findBatch.fumigationStudents.find(std => String(std.studentId) === studentId);
-    if (!student) {
-      return { status: false, message: "Student not found." };
-    }
-
-    // Update the student's status
-    student.isStatus = action;
-    await findBatch.save();
-
-    return { status: true, message: "Student status updated successfully." };
-  } catch (error) {
-    console.error(error);
-    return { status: false, message: "Error in updating the fumigation student status." };
-  }
-},
-getPerPageStudents: async (hubLocation: string, perPage: number) => {
-  try {
       if (!hubLocation) {
-          return { status: false, message: "Fumigation students not found for your hub" };
+        return { status: false, message: "Fumigation students not found for your hub" };
       }
-console.log(perPage,"dfdbfdfdfdperp pageeeee");
+      const pageSize = 3; // Number of students per page
+      const skip = (currentPage - 1) * pageSize;
 
       const incompleteBatches = await schema.Batches.find({ IsCompleted: false });
 
       const students: {
-          studentId: any | undefined;
-          name: string | undefined;
-          email: string | undefined;
-          phone: number | undefined;
-          qualification: string | undefined;
-          prefferredLocation: string;
-          batchName: string | undefined;
-          status: string;
+        studentId: any | undefined;
+        name: string | undefined;
+        email: string | undefined;
+        phone: number | undefined;
+        qualification: string | undefined;
+        prefferredLocation: string;
+        batchName: string | undefined;
+        status: string;
       }[] = [];
 
       // Loop through incomplete batches and filter students by preferred location
       incompleteBatches.forEach(batch => {
-          batch.fumigationStudents.forEach(student => {
-              if (student.prefferredLocation === hubLocation) {
-                  students.push({
-                      studentId: student?.studentId,
-                      name: student.name,
-                      email: student.email,
-                      phone: student.phone,
-                      qualification: student.qualification,
-                      prefferredLocation: student.prefferredLocation,
-                      batchName: batch.batchName,
-                      status: student.isStatus
-                  });
-              }
-          });
+        batch.fumigationStudents.forEach(student => {
+          if (student.prefferredLocation === hubLocation) {
+            students.push({
+              studentId: student?.studentId,
+              name: student.name,
+              email: student.email,
+              phone: student.phone,
+              qualification: student.qualification,
+              prefferredLocation: student.prefferredLocation,
+              batchName: batch.batchName,
+              status: student.isStatus
+            });
+          }
+        });
+      });
+
+      // Sort students in descending order based on studentId or any relevant field
+      students.sort((a, b) => b.studentId - a.studentId);
+
+      // Paginate the sorted students array
+      const paginatedStudents = students.slice(skip, skip + pageSize);
+
+      return { status: true, students: paginatedStudents };
+    } catch (error) {
+      console.error("Error occurred while fetching all fumigation students:", error);
+      return { status: false, message: "An error occurred while getting all fumigation students" };
+    }
+  },
+
+
+  updateStudentStatus: async (studentId: string, batch: string, action: string) => {
+    try {
+      if (!studentId || !batch || !action) {
+        return { status: false, message: "Fumigation students not updated, some issue occurred. Please try again later." };
+      }
+
+      // Find the batch
+      const findBatch = await schema.Batches.findOne({ batchName: batch });
+      if (!findBatch) {
+        return { status: false, message: "Student batch not found." };
+      }
+
+      // Find the student in the batch
+      const student = findBatch.fumigationStudents.find(std => String(std.studentId) === studentId);
+      if (!student) {
+        return { status: false, message: "Student not found." };
+      }
+
+      // Update the student's status
+      student.isStatus = action;
+      await findBatch.save();
+
+      return { status: true, message: "Student status updated successfully." };
+    } catch (error) {
+      console.error(error);
+      return { status: false, message: "Error in updating the fumigation student status." };
+    }
+  },
+  getPerPageStudents: async (hubLocation: string, perPage: number) => {
+    try {
+      if (!hubLocation) {
+        return { status: false, message: "Fumigation students not found for your hub" };
+      }
+      console.log(perPage, "dfdbfdfdfdperp pageeeee");
+
+      const incompleteBatches = await schema.Batches.find({ IsCompleted: false });
+
+      const students: {
+        studentId: any | undefined;
+        name: string | undefined;
+        email: string | undefined;
+        phone: number | undefined;
+        qualification: string | undefined;
+        prefferredLocation: string;
+        batchName: string | undefined;
+        status: string;
+      }[] = [];
+
+      // Loop through incomplete batches and filter students by preferred location
+      incompleteBatches.forEach(batch => {
+        batch.fumigationStudents.forEach(student => {
+          if (student.prefferredLocation === hubLocation) {
+            students.push({
+              studentId: student?.studentId,
+              name: student.name,
+              email: student.email,
+              phone: student.phone,
+              qualification: student.qualification,
+              prefferredLocation: student.prefferredLocation,
+              batchName: batch.batchName,
+              status: student.isStatus
+            });
+          }
+        });
       });
 
       // Limit the number of students based on the perPage parameter
       const limitedStudents = students.slice(0, (perPage));
-       console.log(limitedStudents,"ndfdfdfdfdhfdfdfdvghfvdfdvfvgdvfghdfvdvfvdfvdf");
-       
+      console.log(limitedStudents, "ndfdfdfdfdhfdfdfdvghfvdfdvfvgdvfghdfvdvfvdfvdf");
+
       return { status: true, students: limitedStudents };
-  } catch (error) {
+    } catch (error) {
       console.error("Error occurred while fetching all fumigation students:", error);
       return { status: false, message: "An error occurred while getting all fumigation students" };
+    }
+  },
+  getBatchId: async (batch: string) => {
+    try {
+      if (!batch) {
+        return { status: false, message: "student not added" }
+      }
+      const response: any = await schema.Batches.find({ batchName: batch })
+      if (response) {
+        console.log(response[0]._id, "batchId respone cominggg");
+
+        const batchId: any = response[0]._id.toString()
+        return { status: true, batchId }
+      } else {
+        return { status: false, message: "batch not found" }
+      }
+    } catch (error) {
+      return { status: false, message: "Error in the get batch" }
+    }
+  },
+  getPendingStudents: async (uniqueId: string) => {
+    try {
+      if (!uniqueId) {
+        return { status: false, message: "pending students not get successfully" }
+      }
+      const response = await schema.Enqueries.find({}).sort({ _id: -1 });
+      if (response.length > 0) {
+        const pendingStudentCount = response.length
+        return { status: true, pendingStudentCount }
+      } else {
+        return { status: false, message: "No Pending Students Available" }
+      }
+    } catch (error) {
+      return { status: false, message: "Error getting from get pending students" }
+    }
+  },
+  getEnqueryGraph: async () => {
+    console.log("aggregate il ethiiiiiiii33");
+    
+    try {
+      const response = await schema.Enqueries.aggregate([
+        {
+              '$group': {
+                '_id': {
+                  '$dateToString': {
+                    'format': '%Y-%m', 
+                    'date': '$createdAt'
+                  }
+                }, 
+                'enquiryCount': {
+                  '$sum': 1
+                }
+              }
+            }, {
+              '$project': {
+                '_id': 0, 
+                'month': {
+                  '$concat': [
+                    {
+                      '$substr': [
+                        '$_id', 2, 2
+                      ]
+                    }, '-', {
+                      '$switch': {
+                        'branches': [
+                          {
+                            'case': {
+                              '$eq': [
+                                {
+                                  '$substr': [
+                                    '$_id', 5, 2
+                                  ]
+                                }, '01'
+                              ]
+                            }, 
+                            'then': 'jan'
+                          }, {
+                            'case': {
+                              '$eq': [
+                                {
+                                  '$substr': [
+                                    '$_id', 5, 2
+                                  ]
+                                }, '02'
+                              ]
+                            }, 
+                            'then': 'Feb'
+                          }, {
+                            'case': {
+                              '$eq': [
+                                {
+                                  '$substr': [
+                                    '$_id', 5, 2
+                                  ]
+                                }, '03'
+                              ]
+                            }, 
+                            'then': 'Mar'
+                          }, {
+                            'case': {
+                              '$eq': [
+                                {
+                                  '$substr': [
+                                    '$_id', 5, 2
+                                  ]
+                                }, '04'
+                              ]
+                            }, 
+                            'then': 'Apr'
+                          }, {
+                            'case': {
+                              '$eq': [
+                                {
+                                  '$substr': [
+                                    '$_id', 5, 2
+                                  ]
+                                }, '05'
+                              ]
+                            }, 
+                            'then': 'May'
+                          }, {
+                            'case': {
+                              '$eq': [
+                                {
+                                  '$substr': [
+                                    '$_id', 5, 2
+                                  ]
+                                }, '06'
+                              ]
+                            }, 
+                            'then': 'june'
+                          }, {
+                            'case': {
+                              '$eq': [
+                                {
+                                  '$substr': [
+                                    '$_id', 5, 2
+                                  ]
+                                }, '07'
+                              ]
+                            }, 
+                            'then': 'july'
+                          }, {
+                            'case': {
+                              '$eq': [
+                                {
+                                  '$substr': [
+                                    '$_id', 5, 2
+                                  ]
+                                }, '08'
+                              ]
+                            }, 
+                            'then': 'Aug'
+                          }, {
+                            'case': {
+                              '$eq': [
+                                {
+                                  '$substr': [
+                                    '$_id', 5, 2
+                                  ]
+                                }, '09'
+                              ]
+                            }, 
+                            'then': 'sept'
+                          }, {
+                            'case': {
+                              '$eq': [
+                                {
+                                  '$substr': [
+                                    '$_id', 5, 2
+                                  ]
+                                }, '10'
+                              ]
+                            }, 
+                            'then': 'oct'
+                          }, {
+                            'case': {
+                              '$eq': [
+                                {
+                                  '$substr': [
+                                    '$_id', 5, 2
+                                  ]
+                                }, '11'
+                              ]
+                            }, 
+                            'then': 'Nov'
+                          }, {
+                            'case': {
+                              '$eq': [
+                                {
+                                  '$substr': [
+                                    '$_id', 5, 2
+                                  ]
+                                }, '12'
+                              ]
+                            }, 
+                            'then': 'Dec'
+                          }
+                        ], 
+                        'default': ' '
+                      }
+                    }
+                  ]
+                }, 
+                'enquiryCount': 1
+              }
+            }
+      ])
+      console.log(response,"responseee get graphhwwww333");
+      if(response.length > 0){
+        return {status:true,response}
+      }else{
+        return {status:false,message:"No Enquery Details Found"}
+      }
+    } catch (error) {
+      return {status:false,message:"Error getting from get enquery graph details"}
+    }
   }
-},
-getBatchId : async (batch:string) =>{
-   try {
-       if(!batch){
-        return {status:false,message:"student not added"}
-       }
-       const response:any = await schema.Batches.find({batchName:batch})
-       if(response){
-        console.log(response[0]._id,"batchId respone cominggg");
-        
-        const batchId:any = response[0]._id.toString()
-        return {status:true,batchId}
-       }else{
-        return {status:false,message:"batch not found"}
-       }
-   } catch (error) {
-     return {status:false,message:"Error in the get batch"}
-   }
-},
-getPendingStudents : async (uniqueId:string) =>{
-   try {
-     if(!uniqueId){
-      return {status:false,message:"pending students not get successfully"}
-     }
-     const response = await schema.Enqueries.find({}).sort({_id: -1});
-     if(response.length > 0){
-      const pendingStudentCount = response.length
-      return {status:true,pendingStudentCount}
-     }else{
-       return {status:false,message:"No Pending Students Available"}
-     }
-   } catch (error) {
-     return {status:false,message:"Error getting from get pending students"}
-   }
-}
 
 
 }

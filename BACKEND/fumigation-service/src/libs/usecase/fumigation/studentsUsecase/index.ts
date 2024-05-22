@@ -11,7 +11,8 @@ import {getAllFumigationStudents_Usecase} from "./getAllFumigationStudentsUsecas
 import {updateStudentStatus_Usecase} from "./updateStudentStatusUsecase";
 import {getPerPageStudent_Usecase} from "./getPerPageStudentUsecase";
 import {superleadAddStudent_Usecase} from "./superleadAddStudentUsecase";
-import {getPendingStudents_Usecase} from "./getPendingStudentsUsecase"
+import {getPendingStudents_Usecase} from "./getPendingStudentsUsecase";
+import {getEnqueryGraph_Usecase} from "./getEnqueryGraphUsecase"
 export{
     fumigation_Usecase,
     getAllPendingStudents_Usecase,
@@ -26,5 +27,6 @@ export{
     updateStudentStatus_Usecase,
     getPerPageStudent_Usecase,
     superleadAddStudent_Usecase,
-    getPendingStudents_Usecase
+    getPendingStudents_Usecase,
+    getEnqueryGraph_Usecase
 }

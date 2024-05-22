@@ -121,6 +121,7 @@ function StudentRoutes() {
                   <Route path="/extendDetails" element={studentAccessToken ? <ExtendDetails /> : <StudentSignIn />} />
                   <Route path="/review" element={studentAccessToken ? <ReviewResult /> : <StudentSignIn />} />
                   <Route path="/chat" element={studentAccessToken ? <Chat /> : <StudentSignIn />} />
+                  <Route path='/start-review/:3213213' element={<JaasMeet roomId={studentId}/>}></Route>
                 </Routes>
               </div>
             </div>
