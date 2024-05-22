@@ -29,6 +29,10 @@ import reviewerGoogleLogin_Controller from "./reviewerGoogleLoginController"
 import superleadGoogleLogin_Controller from "./superleadGoogleLoginController"
 import getAllChatStudents_Controller from "./getAllChatStudentsController"
 import getAllChatSuperleads_Controller from "./getAllChatSuperleadsController"
+import createEvent_Controller from "./createEventController"
+import editEvent_Controller from "./editEventController"
+import deleteEvent_Controller from "./deleteEventController"
+import createSuperlead_Controller from "./createSuperleadController"
 export default (dependencies:any)=>{
 
     return{
@@ -62,6 +66,9 @@ export default (dependencies:any)=>{
         superleadGoogleLoginController: superleadGoogleLogin_Controller(dependencies),
         getAllChatStudentsController: getAllChatStudents_Controller(dependencies),
         getAllChatSuperleadsController: getAllChatSuperleads_Controller(dependencies),
-
+        createEventController: createEvent_Controller(dependencies),
+        editEventController: editEvent_Controller(dependencies),
+        deleteEventController: deleteEvent_Controller(dependencies),
+        createSuperleadController: createSuperlead_Controller(dependencies),
     }
 }

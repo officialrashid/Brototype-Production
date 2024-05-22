@@ -33,7 +33,11 @@ import {superleadGoogleLogin_Usecase} from "./superleadGoogleLoginUsecase";
 import { superleadImageUpdate_Usecase } from "./superleadImageUpdateUsecase";
 import {reviewerImageUpdate_Usecase} from "./reviewerImageUpdateUsecase";
 import { getAllChatStudents_Usecase } from "./getAllChatStudentsUsecase";
-import {getAllChatSuperleads_Usecase} from "./getAllChatSuperleadsUsecase"
+import {getAllChatSuperleads_Usecase} from "./getAllChatSuperleadsUsecase";
+import {createEvent_Usecase} from "./createEventUsecase";
+import { editEvent_Usecase } from "./editEventUsecase";
+import {deleteEvent_Usecase} from "./deleteEventUsecase";
+import {createSuperlead_Usecase} from "./createSuperleadUsecase"
 export{
     createInvigilator_Usecase,
     checkStudentUniqueId_Usecase,
@@ -70,5 +74,9 @@ export{
     superleadImageUpdate_Usecase,
     reviewerImageUpdate_Usecase,
     getAllChatStudents_Usecase,
-    getAllChatSuperleads_Usecase
+    getAllChatSuperleads_Usecase,
+    createEvent_Usecase,
+    editEvent_Usecase,
+    deleteEvent_Usecase,
+    createSuperlead_Usecase
 }

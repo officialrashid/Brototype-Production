@@ -10,6 +10,7 @@ import {getTechnicalWorkoutTask_Usecase} from "./getTechnicalWorkoutTaskUsecase"
 import {addMiscellaneousWorkoutsTask_Usecase} from "./addMiscellaneousWorkoutsTaskUsecase";
 import {getMiscellaneousWorkoutTask_Usecase} from "./getMiscellaneousWorkoutTaskUsecase";
 import {getWeekTask_Usecase} from "./getWeekTaskUsecase"
+import {getAdvisorCreatedTask_Usecase} from "./getAdvisorCreatedTaskUsecase"
 
 export{
     updatePersonalWorkout_Usecase,
@@ -23,6 +24,7 @@ export{
     getTechnicalWorkoutTask_Usecase,
     addMiscellaneousWorkoutsTask_Usecase,
     getMiscellaneousWorkoutTask_Usecase,
-    getWeekTask_Usecase
+    getWeekTask_Usecase,
+    getAdvisorCreatedTask_Usecase
   
 }

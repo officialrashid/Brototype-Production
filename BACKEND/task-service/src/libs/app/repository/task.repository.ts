@@ -624,6 +624,30 @@ console.log(data,"this is repository dataassssssssssss*******(((((((((******((((
       console.error("Error fetching week tasks:", error);
       return { status: false, message: "Some error occurred while fetching week tasks" };
     }
+  },
+  getCreatedTask : async (technicalLeadId:string,week:string,taskType:string) =>{
+    try {
+      if(!technicalLeadId||!week||!taskType){
+        return {status:false,message:"Error getting from get created task"}
+      }
+      let response:any;
+      if(taskType==="personalWorkouts"){
+        response = await schema.PersonalWorkouts.find({technicalLeadId:technicalLeadId,week:week})
+        console.log(response,"mndbfdfbdbfdbfdfv");
+        
+      }else if(taskType==="technicalWorkouts"){
+         response = await schema.TechnicalWorkouts.find({technicalLeadId:technicalLeadId,week:week})
+      } else if(taskType==="miscellaneousWorkouts"){
+         response = await schema.MiscellaneousWorkouts.find({technicalLeadId:technicalLeadId,week:week})
+      }
+       if(response.length > 0){
+        return {status:true,response}
+       }else{
+        return {status:false,message:"Your Not Created Tasks"}
+       }
+    } catch (error) {
+      return {status:false,message:"Error getting from get created task"}
+    }
   }
 
 

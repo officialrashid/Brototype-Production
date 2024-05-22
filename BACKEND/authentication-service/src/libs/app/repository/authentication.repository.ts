@@ -8,6 +8,7 @@ import mongoose from "mongoose";
 import { response } from "express";
 import { authenticationProducer } from "../../../events/authenticationProducer";
 import { ObjectId } from "mongodb";
+import { isElementAccessExpression } from "typescript";
 const serviceAccount = firebaseAccountCredentials as admin.ServiceAccount
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
@@ -949,29 +950,126 @@ export default {
       return { status: false, message: "Error getting from superlead update image" }
     }
   },
-  getAllChatStudents: async  () => {
+  getAllChatStudents: async () => {
     try {
-       const response = await schema.Students.find({})
-       if(response.length>0){
-        return {status:true,response}
-       }else{
-        return {status:false,message:"Students not found"}
-       }
+      const response = await schema.Students.find({})
+      if (response.length > 0) {
+        return { status: true, response }
+      } else {
+        return { status: false, message: "Students not found" }
+      }
     } catch (error) {
-       return {status:false,message:"Error getting from get all chat students"}
+      return { status: false, message: "Error getting from get all chat students" }
     }
   },
-  getAllChatSuperleads: async  () => {
+  getAllChatSuperleads: async () => {
     try {
-       const response = await schema.Superleads.find({})
-       if(response.length>0){
-        return {status:true,response}
-       }else{
-        return {status:false,message:"Students not found"}
-       }
+      const response = await schema.Superleads.find({})
+      if (response.length > 0) {
+        return { status: true, response }
+      } else {
+        return { status: false, message: "Students not found" }
+      }
     } catch (error) {
-       return {status:false,message:"Error getting from get all chat students"}
+      return { status: false, message: "Error getting from get all chat students" }
     }
+  },
+  createEvent: async (event: any, coordinatorId: string) => {
+    const response = await schema.Advisors.findOneAndUpdate({ _id: coordinatorId }, { $push: { events: event } }, { new: true })
+    if (response) {
+      return { status: true, response }
+    } else {
+      return { status: false, message: "Event Not Added,please try after some time" }
+    }
+
+  },
+  editEvent: async (event: any, coordinatorId: string) => {
+    const coordinatorData = await schema.Advisors.findOne({ _id: new mongoose.Schema.Types.ObjectId(coordinatorId) })
+    let eventData = coordinatorData?.events
+    let index: number | undefined
+    console.log(eventData, 'vss');
+
+    index = eventData?.findIndex(obj => (obj as any)._id == event.id)
+    console.log(index, 'indee');
+
+    if (eventData && index !== undefined) {
+
+      if (index !== -1) {
+        console.log('helooooooo');
+
+        eventData[index] = event
+        const res = await coordinatorData?.save()
+        console.log(res, 'edittttt');
+        return res
+
+      }
+    }
+  },
+  deleteEvent: async (eventId: string, coordinatorId: string) => {
+
+    const coordinatorData = await schema.Advisors.findById({ _id: coordinatorId })
+    let eventData = coordinatorData?.events
+    let index: number | undefined
+    index = eventData?.findIndex(obj => (obj as any)._id === eventId)
+    if (index !== undefined) {
+      eventData?.splice(index, 1)
+
+    }
+
+    const res = await coordinatorData?.save()
+    return res
+  },
+  createSuperleadUniqueId : async (hubLocation:string) =>{
+    try {
+
+        const response = await schema.Superleads.find({hubLocation:hubLocation}).sort({ createdAt: -1 }).limit(1).exec()
+        console.log(response,"lllldnjf responseehebfhjbfjefefjebfejfbe");
+        
+        return response;
+
+    } catch (error) {
+      return {status:false,message:"Error getting from create superlead"}
+    }
+  },
+  superleadEmailExist : async (email:string,phone:string)=>{
+     try {
+         if(!email || !phone){
+          return {status:false,message:"superlead not created"}
+         }
+          const response = await schema.Superleads.find({ $or: [{ email }, { phone }] });
+          return response;
+     
+     } catch (error) {
+      return {status:false,message:"Error getting from superlead email check"}
+     }
+  },
+  superleadUniqueIdExist : async (uniqueId:string) =>{
+    try {
+      try {
+        const response = await schema.Superleads.find({ uniqueId: uniqueId })
+        return response;
+      } catch (err) {
+        return { status: false, message: "An Error occur whilte creating advisor" }
+      }
+    } catch (error) {
+       return {status:false,message:"Error getting from create superlead"}
+    }
+  },
+  createSuperleads :async (data:any,uniqueId:string) =>{
+    try {
+      const superleadData = {
+        firstnameame: data.name,
+        email: data.email,
+        phone: data.phone,
+        hubLocation : data.hubLocation,
+        uniqueId: uniqueId,
+      };
+      const response = await schema.Superleads.create(superleadData);
+      return { status: true, message: "advisor created successfully" };
+    } catch (err) {
+      return { status: false, message: "An Error occur whilte creating advisor" }
+    }
+    
   }
 
 }

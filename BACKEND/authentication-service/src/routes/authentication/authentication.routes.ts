@@ -6,7 +6,7 @@ export default (dependencies:any)=>{
 
   const router = express.Router();
   
-  const {createInvigilatorController,studentLoginController,reviewerLoginController,superleadLoginController,getAllStudentsStatusController,updateStudentStatusController,getHubwiseStudentsDetailsController,getAllReviewersStatusController,addReviewerController,updateReviewerStatusController,addStudentController,getSuperleadHubController,updateStudentPlacedController,getStudentsAndPlacedStudentsController,addAdvisorController,advisorLoginController,getStdDashboardDetailsController,getAdvisorDetailsController,getAllAdvisorsController,updateAdvisorStatusController,getReviewInitiatorsController,updateReviewStatusController,getStudentProfileController,advisorGoogleLoginController,studentGoogleLoginController,reviewerGoogleLoginController,superleadGoogleLoginController,getAllChatStudentsController,getAllChatSuperleadsController} = authentication_Controller(dependencies) 
+  const {createInvigilatorController,studentLoginController,reviewerLoginController,superleadLoginController,getAllStudentsStatusController,updateStudentStatusController,getHubwiseStudentsDetailsController,getAllReviewersStatusController,addReviewerController,updateReviewerStatusController,addStudentController,getSuperleadHubController,updateStudentPlacedController,getStudentsAndPlacedStudentsController,addAdvisorController,advisorLoginController,getStdDashboardDetailsController,getAdvisorDetailsController,getAllAdvisorsController,updateAdvisorStatusController,getReviewInitiatorsController,updateReviewStatusController,getStudentProfileController,advisorGoogleLoginController,studentGoogleLoginController,reviewerGoogleLoginController,superleadGoogleLoginController,getAllChatStudentsController,getAllChatSuperleadsController,createEventController,editEventController,deleteEventController,createSuperleadController} = authentication_Controller(dependencies) 
 
   router.post('/createInvigilator',jwtVerification(secretKey),createInvigilatorController)
   router.post('/student-login',studentLoginController)
@@ -37,6 +37,10 @@ export default (dependencies:any)=>{
   router.post('/reviewer-google-login',reviewerGoogleLoginController)
   router.post('/superlead-google-login',superleadGoogleLoginController)
   router.get('/get-all-chat-students',jwtVerification(secretKey),getAllChatStudentsController)
-  router.get('/get-all-chat-superleads',jwtVerification(secretKey),getAllChatSuperleadsController)
+  router.get('/get-all-chat-superleads',getAllChatSuperleadsController)
+  router.post('/create-event',jwtVerification(secretKey),createEventController)
+  router.patch('/edit-event',jwtVerification(secretKey),editEventController)
+  router.delete('/delete-event',jwtVerification(secretKey),deleteEventController)
+  router.post('/create-superlead',createSuperleadController)
   return router
 }

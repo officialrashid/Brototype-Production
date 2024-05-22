@@ -7,7 +7,10 @@ const superleadSchema = new mongoose.Schema({
     hubLocation: String,
     uniqueId: String,
     profileUrl: {type:String , default:""},
-   
+    createdDate: {
+        type: Date,
+        default: Date.now // Set default value to the current date
+    },
 });
 
 const Superleads = mongoose.model("Superleads", superleadSchema);
