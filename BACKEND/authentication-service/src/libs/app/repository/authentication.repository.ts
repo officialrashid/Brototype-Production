@@ -5,7 +5,6 @@ import jwt from 'jsonwebtoken'
 import admin from 'firebase-admin';
 import firebaseAccountCredentials from '../../../../brototype-29983-firebase-adminsdk-9qeji-41b48a5487'
 import mongoose from "mongoose";
-import { response } from "express";
 import { authenticationProducer } from "../../../events/authenticationProducer";
 import { ObjectId } from "mongodb";
 import { isElementAccessExpression } from "typescript";
@@ -18,6 +17,20 @@ interface MonthlyStudentsCount {
   month: number;
   currentStudents: number;
   placedStudents: number;
+}
+interface UpdateAdvisorDetailsResponse {
+  status: boolean;
+  message: string;
+  updatedAdvisor?: Advisor | null; // Define the type of your advisor object
+}
+
+interface Advisor {
+  _id: string;
+  firstName: string;
+  lastName: string;
+  email: string;
+  phone: string;
+  profileUrl?: string;
 }
 export default {
 
@@ -1070,7 +1083,45 @@ export default {
       return { status: false, message: "An Error occur whilte creating advisor" }
     }
     
-  }
+  },
+   updateAdvisorDetails:async(advisorId: any, firstName: any, lastName: any, email: any, phone: any, profileUrl: any) =>{
+    try {
+        if (!advisorId) {
+            return { status: false, message: "Advisor details not updated" };
+        }
+
+        // Find the advisor by advisorId
+        const advisor = await schema.Advisors.findOne({_id: advisorId});
+
+        if (!advisor) {
+            return { status: false, message: "Advisor not found" };
+        }
+
+        // Update the advisor's details if the corresponding parameters are provided
+        if (firstName) {
+            advisor.firstName = firstName;
+        }
+        if (lastName) {
+            advisor.lastName = lastName;
+        }
+        if (email) {
+            advisor.email = email;
+        }
+        if (phone) {
+            advisor.phone = phone;
+        }
+        if (profileUrl) {
+            advisor.profileUrl = profileUrl;
+        }
+
+        // Save the updated advisor back to the database
+        await advisor.save();
+
+        return { status: true, message: "Advisor details updated successfully", updatedAdvisor: advisor };
+    } catch (error) {
+        return { status: false, message: "Error getting from update advisor details" };
+    }
+}
 
 }
 

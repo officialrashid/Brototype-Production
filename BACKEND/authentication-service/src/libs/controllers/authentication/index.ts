@@ -33,6 +33,7 @@ import createEvent_Controller from "./createEventController"
 import editEvent_Controller from "./editEventController"
 import deleteEvent_Controller from "./deleteEventController"
 import createSuperlead_Controller from "./createSuperleadController"
+import updateAdvisorDetails_Controller from "./updateAdvisorDetailsController"
 export default (dependencies:any)=>{
 
     return{
@@ -70,5 +71,6 @@ export default (dependencies:any)=>{
         editEventController: editEvent_Controller(dependencies),
         deleteEventController: deleteEvent_Controller(dependencies),
         createSuperleadController: createSuperlead_Controller(dependencies),
+        updateAdvisorDetailsController: updateAdvisorDetails_Controller(dependencies),
     }
 }

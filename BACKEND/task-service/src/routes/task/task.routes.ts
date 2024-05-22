@@ -6,7 +6,7 @@ export default (dependencies:any)=>{
 
   const router = express.Router();
   
-  const {updatePersonalWorkoutController,updateTechnicalWorkoutController,updateMiscellaneousWorkoutController,getUpdateTaskController,getEditTaskDetailsController,addPersonalWorkoutsTaskController,getPersonalWorkoutTaskController,addTechnicalWorkoutsTaskController,getTechnicalWorkoutTaskController,addMiscellaneousWorkoutsTaskController,getMiscellaneousWorkoutTaskController,getWeekTaskController,getAdvisorCreatedTaskController} = task_Controller(dependencies) 
+  const {updatePersonalWorkoutController,updateTechnicalWorkoutController,updateMiscellaneousWorkoutController,getUpdateTaskController,getEditTaskDetailsController,addPersonalWorkoutsTaskController,getPersonalWorkoutTaskController,addTechnicalWorkoutsTaskController,getTechnicalWorkoutTaskController,addMiscellaneousWorkoutsTaskController,getMiscellaneousWorkoutTaskController,getWeekTaskController,getAdvisorCreatedTaskController,deleteAdvisorCreatedTaskController,getAllCreatedTaskController} = task_Controller(dependencies) 
 
   router.post('/update-personal-workout',jwtVerification(secretKey),updatePersonalWorkoutController)
   router.post('/update-technical-workout',jwtVerification(secretKey),updateTechnicalWorkoutController)
@@ -21,6 +21,8 @@ export default (dependencies:any)=>{
   router.get('/get-technicalWorkout-task',jwtVerification(secretKey),getTechnicalWorkoutTaskController)
   router.get('/get-student-week-task',jwtVerification(secretKey),getWeekTaskController)
   router.get('/get-advisor-created-task',getAdvisorCreatedTaskController)
+  router.delete('/delete-advisor-created-task',deleteAdvisorCreatedTaskController)
+  router.get('/get-all-created-task/:technicalLeadId',getAllCreatedTaskController)
   return router
 }
 

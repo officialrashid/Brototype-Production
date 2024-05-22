@@ -37,7 +37,8 @@ import {getAllChatSuperleads_Usecase} from "./getAllChatSuperleadsUsecase";
 import {createEvent_Usecase} from "./createEventUsecase";
 import { editEvent_Usecase } from "./editEventUsecase";
 import {deleteEvent_Usecase} from "./deleteEventUsecase";
-import {createSuperlead_Usecase} from "./createSuperleadUsecase"
+import {createSuperlead_Usecase} from "./createSuperleadUsecase";
+import {updateAdvisorDetails_Usecase} from "./updateAdvisorDetailsUsecase"
 export{
     createInvigilator_Usecase,
     checkStudentUniqueId_Usecase,
@@ -78,5 +79,6 @@ export{
     createEvent_Usecase,
     editEvent_Usecase,
     deleteEvent_Usecase,
-    createSuperlead_Usecase
+    createSuperlead_Usecase,
+    updateAdvisorDetails_Usecase
 }

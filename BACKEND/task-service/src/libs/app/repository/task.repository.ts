@@ -6,6 +6,7 @@ import admin from 'firebase-admin';
 import firebaseAccountCredentials from '../../../../brototype-29983-firebase-adminsdk-9qeji-41b48a5487'
 import { response } from "express";
 import mongoose from "mongoose";
+import { ObjectId } from "mongodb";
 const serviceAccount = firebaseAccountCredentials as admin.ServiceAccount
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
@@ -16,7 +17,7 @@ export default {
 
   updatePersonalWorkout: async (data: any) => {
 
-console.log(data,"this is repository dataassssssssssss*******(((((((((******((((****))))))))");
+    console.log(data, "this is repository dataassssssssssss*******(((((((((******((((****))))))))");
 
     try {
       if (!data) {
@@ -144,7 +145,7 @@ console.log(data,"this is repository dataassssssssssss*******(((((((((******((((
         return { status: false, message: "Personal workout data not found" };
       }
 
-      console.log(data,"this is repository dataassssssssssss*******(((((((((******((((****))))))))");
+      console.log(data, "this is repository dataassssssssssss*******(((((((((******((((****))))))))");
 
       const existingStudent = await schema.WeeklyTaskUpdation.findOne({ studentId: data.studentId });
 
@@ -194,11 +195,11 @@ console.log(data,"this is repository dataassssssssssss*******(((((((((******((((
               "technicalWorkouts": {
                 week: data.weekName,
                 mainQuestionNumber: data.mainQuestionNumber,
-                mainQuestion : data.mainQuestion,
-                questionNumbersAndAnswers: data.technicalWorkouts.map((item: { nestedQuestionNumber: any; answer: any; nestedQuestion:String }) => ({
+                mainQuestion: data.mainQuestion,
+                questionNumbersAndAnswers: data.technicalWorkouts.map((item: { nestedQuestionNumber: any; answer: any; nestedQuestion: String }) => ({
                   nestedQuestionNumber: item.nestedQuestionNumber,
                   answer: item.answer,
-                  nestedQuestion : item.nestedQuestion
+                  nestedQuestion: item.nestedQuestion
                 })),
               },
             },
@@ -227,11 +228,11 @@ console.log(data,"this is repository dataassssssssssss*******(((((((((******((((
             {
               week: data.weekName,
               mainQuestionNumber: data.mainQuestionNumber,
-              mainQuestion : data.mainQuestion,
-              questionNumbersAndAnswers: data.personalWorkouts.map((item: { nestedQuestionNumber: any; answer: any; nestedQuestion:string}) => ({
+              mainQuestion: data.mainQuestion,
+              questionNumbersAndAnswers: data.personalWorkouts.map((item: { nestedQuestionNumber: any; answer: any; nestedQuestion: string }) => ({
                 nestedQuestionNumber: item.nestedQuestionNumber,
                 answer: item.answer,
-                nestedQuestion : item.nestedQuestion
+                nestedQuestion: item.nestedQuestion
               })),
             },
           ],
@@ -320,11 +321,11 @@ console.log(data,"this is repository dataassssssssssss*******(((((((((******((((
               "miscellaneousWorkouts": {
                 week: data.weekName,
                 mainQuestionNumber: data.mainQuestionNumber,
-                mainQuestion : data.mainQuestion,
-                questionNumbersAndAnswers: data.miscellaneousWorkouts.map((item: { nestedQuestionNumber: any; answer: any; nestedQuestion:string }) => ({
+                mainQuestion: data.mainQuestion,
+                questionNumbersAndAnswers: data.miscellaneousWorkouts.map((item: { nestedQuestionNumber: any; answer: any; nestedQuestion: string }) => ({
                   nestedQuestionNumber: item.nestedQuestionNumber,
                   answer: item.answer,
-                  nestedQuestion : item.nestedQuestion
+                  nestedQuestion: item.nestedQuestion
                 })),
               },
             },
@@ -353,11 +354,11 @@ console.log(data,"this is repository dataassssssssssss*******(((((((((******((((
             {
               week: data.weekName,
               mainQuestionNumber: data.mainQuestionNumber,
-              mainQuestion : data.mainQuestion,
-              questionNumbersAndAnswers: data.miscellaneousWorkouts.map((item: { nestedQuestionNumber: any; answer: any; nestedQuestion:string }) => ({
+              mainQuestion: data.mainQuestion,
+              questionNumbersAndAnswers: data.miscellaneousWorkouts.map((item: { nestedQuestionNumber: any; answer: any; nestedQuestion: string }) => ({
                 nestedQuestionNumber: item.nestedQuestionNumber,
                 answer: item.answer,
-                nestedQuestion : item.nestedQuestion
+                nestedQuestion: item.nestedQuestion
               })),
             },
           ],
@@ -602,20 +603,20 @@ console.log(data,"this is repository dataassssssssssss*******(((((((((******((((
       // const miscellaneousWorkouts = await schema.MiscellaneousWorkouts.find({ week: weekName })
       // Filter the arrays based on the matching week
       // if (personalWorkoutQuestions && technicalWorkoutQuestions && miscellaneousWorkouts) {
-        const filteredTasks = response.toJSON(); // Convert Mongoose document to plain JavaScript object
+      const filteredTasks = response.toJSON(); // Convert Mongoose document to plain JavaScript object
 
-        const weekTasks = {
-          personalWorkouts: filteredTasks.personalWorkouts.filter(workout => workout.week === weekName),
-          technicalWorkouts: filteredTasks.technicalWorkouts.filter(workout => workout.week === weekName),
-          miscellaneousWorkouts: filteredTasks.miscellaneousWorkouts.filter(workout => workout.week === weekName)
-        };
+      const weekTasks = {
+        personalWorkouts: filteredTasks.personalWorkouts.filter(workout => workout.week === weekName),
+        technicalWorkouts: filteredTasks.technicalWorkouts.filter(workout => workout.week === weekName),
+        miscellaneousWorkouts: filteredTasks.miscellaneousWorkouts.filter(workout => workout.week === weekName)
+      };
 
-        if (Object.values(weekTasks).some(array => array.length > 0)) {
-          console.log(weekTasks, "Week tasks fetched successfully");
-          return { status: true, message: "Week tasks fetched successfully", data: weekTasks };
-        } else {
-          return { status: false, message: "No tasks found for the specified student and week" };
-        }
+      if (Object.values(weekTasks).some(array => array.length > 0)) {
+        console.log(weekTasks, "Week tasks fetched successfully");
+        return { status: true, message: "Week tasks fetched successfully", data: weekTasks };
+      } else {
+        return { status: false, message: "No tasks found for the specified student and week" };
+      }
       // } else {
       //   return { status: false, message: "student updated task question not found" }
       // }
@@ -625,32 +626,75 @@ console.log(data,"this is repository dataassssssssssss*******(((((((((******((((
       return { status: false, message: "Some error occurred while fetching week tasks" };
     }
   },
-  getCreatedTask : async (technicalLeadId:string,week:string,taskType:string) =>{
+  getCreatedTask: async (technicalLeadId: string, week: string, taskType: string) => {
     try {
-      if(!technicalLeadId||!week||!taskType){
-        return {status:false,message:"Error getting from get created task"}
+      if (!technicalLeadId || !week || !taskType) {
+        return { status: false, message: "Error getting from get created task" }
       }
-      let response:any;
-      if(taskType==="personalWorkouts"){
-        response = await schema.PersonalWorkouts.find({technicalLeadId:technicalLeadId,week:week})
-        console.log(response,"mndbfdfbdbfdbfdfv");
-        
-      }else if(taskType==="technicalWorkouts"){
-         response = await schema.TechnicalWorkouts.find({technicalLeadId:technicalLeadId,week:week})
-      } else if(taskType==="miscellaneousWorkouts"){
-         response = await schema.MiscellaneousWorkouts.find({technicalLeadId:technicalLeadId,week:week})
+      let response: any;
+      if (taskType === "personalWorkouts") {
+        response = await schema.PersonalWorkouts.find({ technicalLeadId: technicalLeadId, week: week })
+        console.log(response, "mndbfdfbdbfdbfdfv");
+
+      } else if (taskType === "technicalWorkouts") {
+        response = await schema.TechnicalWorkouts.find({ technicalLeadId: technicalLeadId, week: week })
+      } else if (taskType === "miscellaneousWorkouts") {
+        response = await schema.MiscellaneousWorkouts.find({ technicalLeadId: technicalLeadId, week: week })
       }
-       if(response.length > 0){
-        return {status:true,response}
-       }else{
+      if (response.length > 0) {
+        return { status: true, response }
+      } else {
+        return { status: false, message: "Your Not Created Tasks" }
+      }
+    } catch (error) {
+      return { status: false, message: "Error getting from get created task" }
+    }
+  },
+
+  deleteCreatedTask: async (taskId: string, taskType: string) => {
+    try {
+      if (!taskId || !taskType) {
+        return { status: false, message: "task not deleted" }
+      }
+      console.log(taskId, taskType, "comingggggyaararrrrr");
+
+      let response: any;
+      if (taskType === "personalWorkouts") {
+        response = await schema.PersonalWorkouts.deleteOne({ _id: taskId })
+        console.log(response, "mndbfdfbdbfdbfdfv");
+
+      } else if (taskType === "technicalWorkouts") {
+        response = await schema.TechnicalWorkouts.deleteOne({ _id: taskId })
+      } else if (taskType === "miscellaneousWorkouts") {
+        response = await schema.MiscellaneousWorkouts.deleteOne({ _id: taskId })
+      }
+      if (!response) {
+        return { status: false, message: "Task Not Deleted" }
+
+      } else {
+        return { status: true, message: "task deleted successfully" }
+      }
+    } catch (error) {
+      return { status: false, message: "Error getting from delete created task" }
+    }
+  },
+  getAllCreatedTask: async (technicalLeadId:string) => {
+    try {
+       if(!technicalLeadId){
         return {status:false,message:"Your Not Created Tasks"}
        }
+       const personalWorkout = await schema.PersonalWorkouts.find({technicalLeadId:technicalLeadId})
+       const technicalWorkout = await schema.TechnicalWorkouts.find({technicalLeadId:technicalLeadId})
+       const miscellaneousWorkout = await schema.MiscellaneousWorkouts.find({technicalLeadId:technicalLeadId})
+       if(personalWorkout || technicalWorkout || miscellaneousWorkout){
+        return {status:true,personalWorkout,technicalWorkout,miscellaneousWorkout}
+       }else{
+        return {status:false,message:"Your Not Created Task"}
+       }
     } catch (error) {
-      return {status:false,message:"Error getting from get created task"}
+      return { status: false, message: "Error getting from get all created atsk" }
     }
   }
-
-
 
 
 

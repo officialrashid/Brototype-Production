@@ -1,4 +1,4 @@
-import {updatePersonalWorkout_Usecase,updateTechnicalWorkout_Usecase,updateMiscellaneousWorkout_Usecase,getUpdateTask_Usecase,getEditTaskDetails_Usecase,addPersonalWorkoutsTask_Usecase,getPersonalWorkoutTask_Usecase,addTechnicalWorkoutsTask_Usecase,getTechnicalWorkoutTask_Usecase,addMiscellaneousWorkoutsTask_Usecase,getMiscellaneousWorkoutTask_Usecase,getWeekTask_Usecase,getAdvisorCreatedTask_Usecase} from "./task"
+import {updatePersonalWorkout_Usecase,updateTechnicalWorkout_Usecase,updateMiscellaneousWorkout_Usecase,getUpdateTask_Usecase,getEditTaskDetails_Usecase,addPersonalWorkoutsTask_Usecase,getPersonalWorkoutTask_Usecase,addTechnicalWorkoutsTask_Usecase,getTechnicalWorkoutTask_Usecase,addMiscellaneousWorkoutsTask_Usecase,getMiscellaneousWorkoutTask_Usecase,getWeekTask_Usecase,getAdvisorCreatedTask_Usecase,deleteAdvisorCreatedTask_Usecase,getAllCreatedTask_Usecase} from "./task"
 
 export {
     updatePersonalWorkout_Usecase,
@@ -13,6 +13,8 @@ export {
     addMiscellaneousWorkoutsTask_Usecase,
     getMiscellaneousWorkoutTask_Usecase,
     getWeekTask_Usecase,
-    getAdvisorCreatedTask_Usecase
+    getAdvisorCreatedTask_Usecase,
+    deleteAdvisorCreatedTask_Usecase,
+    getAllCreatedTask_Usecase
 
 }
