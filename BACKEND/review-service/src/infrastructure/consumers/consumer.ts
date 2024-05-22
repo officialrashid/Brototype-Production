@@ -3,7 +3,7 @@ import { consumeStudentEvents,consumeCoordinatorEvents } from '../..';
 import { reviewController } from '../../routes/reviewRouter';
 const kafkaClient = new Kafka({
   clientId: 'review-service',
-  brokers: ['demo-kafka:9092'] 
+  brokers: ['localhost:9092'] 
 });
 
 const consumer = kafkaClient.consumer({ groupId: 'review-service-group' });

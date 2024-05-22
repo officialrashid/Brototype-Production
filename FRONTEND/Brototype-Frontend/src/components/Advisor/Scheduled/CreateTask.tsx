@@ -32,12 +32,15 @@ const CreateTask=({isVisible,onClose})=>{
        subquestion2:"",
        subquestion3:"",
        subquestion4:"",
-       domain:""
+       domain:"",
+       id:""
 
      
        }
      
        const validationSchema=(values)=>{
+        console.log(values,'valueddddddddd');
+        
         return (
           Yup.object({
             workout:Yup.string().required("Task is required"),
@@ -48,8 +51,8 @@ const CreateTask=({isVisible,onClose})=>{
            subquestion2:Yup.string(),
            subquestion3:Yup.string(),
            subquestion4:Yup.string(),
-          //  domain:values.taskType==="technical"?Yup.string().required("domain is required"):Yup.string()
-          domain:Yup.string().required("domain is required")
+           //domain:values.taskType==="technical"?Yup.string().required("domain is required"):Yup.string()
+           domain:Yup.string()
     
              
             
@@ -65,13 +68,48 @@ const CreateTask=({isVisible,onClose})=>{
 
             
          console.log(values);
+         
+         handleToast('Task created successfully!!!!!','')
 
-         try{
-            const response= await axios.post('https://brototypes.com/task-service/create-task')
+         if(values.taskType=='personal'){
+          try{
+             const response= await axios.post('https://brototypes.com/task-service/add-personalWorkout-task')
 
-         }catch(error){
+             if(response.data){
+
+              resetForm()
+              handleToast('Task created successfully!!!!!','')
+             }
+
+ 
+          }catch(error){
+            handleToast('There is an error occured!!!!!',error)
+ 
+          }
 
          }
+         else if(values.taskType=='technical'){
+          try{
+             const response= await axios.post('https://brototypes.com/task-service/add-technicalWorkout-task')
+ 
+          }catch(error){
+ 
+          }
+
+         }
+
+
+
+          else{
+            try{
+               const response= await axios.post('https://brototypes.com/task-service/add-miscellaneousWorkout-task')
+   
+            }catch(error){
+   
+            }
+        }
+
+        
          
         }}>
 {({values})=>(

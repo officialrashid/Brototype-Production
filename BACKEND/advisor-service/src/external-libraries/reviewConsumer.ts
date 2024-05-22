@@ -11,13 +11,13 @@ const distributeController=new DistributeController(distributeInteractor)
 
 const kafkaClient = new kafkajs.Kafka({
   clientId: 'coordinator-service',
-  brokers: ['demo-kafka:9092']
+  brokers: ['localhost:9092']
 });
 const consumer = kafkaClient.consumer({ groupId: 'coordinator' });
 
 async function consumeReviewData() {
   await consumer.connect();
-  await consumer.subscribe({ topic: 'review-events',fromBeginning: true });
+  await consumer.subscribe({ topic:'review-events',fromBeginning: true });
   await consumer.run({
     eachMessage: async ({ topic, partition, message }) => {
       try {
@@ -31,17 +31,20 @@ async function consumeReviewData() {
             
         }
         if(reviewDatas.type=='review-scheduler-data'){
+          console.log('coordinator data');
+          
 
-          // let coordinatorData = [{ _id: "612345678901234567890001", name: "reviewer1" },
-          // { _id: "612345678901234567890002", name: "reviewer2" },
-          // { _id: "612345678901234567890003", name: "reviewer3" },
-          // { _id: "612345678901234567890004", name: "reviewer4" },
-          // { _id: "612345678901234567890005", name: "reviewer5" }
+          let coordinatorData = [
+          { _id: "612345678901234567890001", name: "reviewer1" },
+          { _id: "612345678901234567890002", name: "reviewer2" },
+          { _id: "612345678901234567890003", name: "reviewer3" },
+          { _id: "612345678901234567890004", name: "reviewer4" },
+          { _id: "612345678901234567890005", name: "reviewer5" }
 
-          // ]
+          ]
 
           // const coordinatorData=await controller.OnGetAllCoordinators()
-            // const corrdinatorReviewData=sendAdvisorData('coordinator-data',coordinatorData)
+            const corrdinatorReviewData=sendAdvisorData('coordinator-data',coordinatorData)
           // console.log('Product availability updated successfully.');
             
         }

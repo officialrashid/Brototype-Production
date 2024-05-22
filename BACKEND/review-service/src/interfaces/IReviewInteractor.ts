@@ -13,5 +13,9 @@ export interface IReviewInteractor{
     getCoordinatorExtendRequests(coordinatorId:string):any,
     studentExtendRequests(studentId:string):any
     updateExtendReqStatus(coordinatorId:string,reviewId:string,type:string):any
+    getPerformanceGraphData(coordinatorId:string):any
+    getTopFiveCoordinators():any
+    getWeeklySummaryData(coordinatorId:string):any,
+    getCoordinatorTaskDetails(coordinatorId:string):any
 }
 

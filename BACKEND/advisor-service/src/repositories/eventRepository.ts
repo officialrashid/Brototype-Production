@@ -1,22 +1,20 @@
-
-
-
-
 import { coordinators } from "../entities/coordinators";
 import { eventInterface } from "../interfaces/eventInterface";
 import { eventRepositoryInterface } from "../interfaces/eventRepositoryInterface";
-
+import mongoose from 'mongoose'
 
 export class eventRepository implements eventRepositoryInterface{
-    async addEvent(event: eventInterface) {
+    async addEvent(event: eventInterface,coordinatorId:string) {
+
+     
         console.log('hello',event);  
-        const response= await coordinators.findByIdAndUpdate('66199c84e5ef257629c45d69',{$push:{events:event}},  { new: true})
+        const response= await coordinators.findOneAndUpdate({coordinatorId:coordinatorId},{$push:{events:event}},{ new: true})
 
            return response
     }
 
     async editEvent(coordinatorId:string,event:any){
-        const coordinatorData= await coordinators.findById('66199c84e5ef257629c45d69')
+        const coordinatorData= await coordinators.findOne({coordinatorId:new mongoose.Schema.Types.ObjectId(coordinatorId)})
         let eventData= coordinatorData?.events
         let index:number|undefined
         console.log(eventData,'vss');
@@ -42,9 +40,6 @@ export class eventRepository implements eventRepositoryInterface{
            
         }
        
-
-      
-
         async deleteEvent(coordinatorId:string,eventId:string){
 
             const coordinatorData= await coordinators.findById('66199c84e5ef257629c45d69')

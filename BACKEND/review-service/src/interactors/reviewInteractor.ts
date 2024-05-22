@@ -88,7 +88,7 @@ interface scheduleReviews{
           return this.ReviewRepository.addScheduledReviews(id,scheduledReviews)
       }
 
-      //student count is greater than the coordinators count student count [test cased passed]
+      //student count is greater than the coordinators count student count [case-3 test cased passed]
       if((students.length!==0&&coordinators.length!==0)&&(students.length>coordinators.length)){
           console.log('review intractrooooooo');
           
@@ -114,7 +114,7 @@ interface scheduleReviews{
                 if(remainingStudents[j]==undefined){
                   break;
                 }else{
-                  scheduledReviews[i].studentList.push(remainingStudents[j])
+                  scheduledReviews[i].StudentList.push(remainingStudents[j])
 
                 }
 
@@ -130,10 +130,12 @@ interface scheduleReviews{
         }
         
 
-        //student count is odd number,and coordinators count is even--test case passsesd
+        //[case-4]student count is odd number,and coordinators count is even--test case passsesd
 
         if(students.length%2!==0 && coordinators.length%2==0){
            remainingStudents=students.splice(coordinators.length,orgStudentCount)
+           console.log(remainingStudents,'remainingggggggggggg============');
+           
 
           for(let i=0;i<coordinators.length;i++){
 
@@ -141,24 +143,20 @@ interface scheduleReviews{
 
             }
                 
-              
-
-              // if(remainingStudents.length){
-              //   for(let i=0;i<remainingStudents.length;i++){
-              //   scheduledReviews[i].StudentList.push(remainingStudents[i])
-              //   }
-              // }
+            
               if(remainingStudents.length){
                 console.log(remainingStudents.length,);
                 let orgRemainingStudentCount=remainingStudents.length
                 for(let i=0;i<coordinators.length;i++){
                   console.log(scheduledReviews);
                   let j
-                  for(j=0;j<Math.floor(orgRemainingStudentCount/coordinators.length);j++){
+                  for(j=0;j<Math.ceil(orgRemainingStudentCount/coordinators.length);j++){
+                    
+                    
                     if(remainingStudents[j]==undefined){
                       break;
                     }else{
-                      scheduledReviews[i].studentList.push(remainingStudents[j])
+                      scheduledReviews[i].StudentList.push(remainingStudents[j])
     
                     }
     
@@ -177,7 +175,7 @@ interface scheduleReviews{
 
               
 
-             // student count is even  number and, coordinator count is odd number//test case passes
+             //[case-5] student count is even  number and, coordinator count is odd number//test case passes
 
               if(students.length%2==0&&coordinators.length%2!==0){
 
@@ -195,13 +193,13 @@ interface scheduleReviews{
             console.log(remainingStudents.length,);
             let orgRemainingStudentCount=remainingStudents.length
             for(let i=0;i<coordinators.length;i++){
-              console.log(scheduledReviews);
               let j
-              for(j=0;j<Math.floor(orgRemainingStudentCount/coordinators.length);j++){
+              for(j=0;j<Math.ceil(orgRemainingStudentCount/coordinators.length);j++){
+                console.log('entered remaining loopppppppsppppppppp');
                 if(remainingStudents[j]==undefined){
                   break;
                 }else{
-                  scheduledReviews[i].studentList.push(remainingStudents[j])
+                  scheduledReviews[i].StudentList.push(remainingStudents[j])
 
                 }
 
@@ -220,7 +218,7 @@ interface scheduleReviews{
                 return this.ReviewRepository.addScheduledReviews(id,scheduledReviews)
               }
 
-              // Both student and coordinators count is odd number
+              // Both student and coordinators count is odd number[case-6]
 
               if(students.length%2!==0&&coordinators.length%2!==0){
 
@@ -382,6 +380,72 @@ interface scheduleReviews{
        
       updateExtendReqStatus(coordinatorId: string, reviewId: string, type: string) {
         return this.ReviewRepository.updateExtendRequestByCoordinator(coordinatorId,reviewId,type)
+      }
+
+      getPerformanceGraphData(coordinatorId: string) {
+        return this.ReviewRepository.findPerformanceGraphData(coordinatorId)
+        
+      }
+
+      async getTopFiveCoordinators() {
+
+
+        try{
+          // console.log('entereddd');
+          
+          const fivecoordinatorDetails=  await this.ReviewRepository.findTopFiveCoordinators()
+           console.log(fivecoordinatorDetails);
+          const coordinators=fivecoordinatorDetails
+          // console.log(reviews);
+          
+          const coordinatorDetails=await Promise.all(coordinators.map(async (coordinator:any)=>{
+  // console.log(student,'studennnttttttttttttt');
+  
+         const coordinatorData:any=await this.getFiveCoordinatorDetails(coordinator._id)
+  //console.log(studentData);
+  
+         return {coordinatorData,coordinator}
+  
+          }))
+           console.log('student detaislsssssssssssss');
+           
+        console.log(coordinatorDetails);
+          return coordinatorDetails
+        }catch(error){
+          console.log(error);
+          
+          return {error,message:"there is an error in fetching the reviews"}
+        }
+
+
+
+
+        //return this.ReviewRepository.findTopFiveCoordinators()
+      }
+
+      getWeeklySummaryData(coordinatorId: string) {
+        return this.ReviewRepository.findSummaryGraphData(coordinatorId)
+      }
+
+      async getFiveCoordinatorDetails(advisorId:string){
+        try{
+          // console.log('entered student', studentId);
+          
+          const coordinator= await axios.get(`http://localhost:6002/api/auth/get-advisor-details/${advisorId}`)
+          // console.log('|||||||||||||||||||||');
+          console.log(coordinator.data,"studenteeeee");
+          // console.log('|||||||||||||||||||||');
+          return coordinator.data.response.response
+ 
+        }catch(error){
+
+        }
+
+
+      }
+
+      getCoordinatorTaskDetails(coordinatorId: string) {
+        return this.ReviewRepository.findCoordinatorReviewDetail(coordinatorId)
       }
 
 

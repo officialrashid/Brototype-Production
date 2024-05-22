@@ -11,18 +11,20 @@ import { useEffect } from "react"
 import { axiosInstance } from "../services/api/apiClient"
 import { getCoordinatorData } from "../../../redux-toolkit/coordinatorSlice"
 import { useDispatch, useSelector } from "react-redux"
-
+import Api from "../../../utils/baseUrl/reviewBaseUrl"
+import { updateCoordinatorData } from "../../../redux-toolkit/coordinatorSlice"
 
 
 
 const Dashboard=()=>{
-  const advisorId:any = useSelector((state: RootState) => state?.advisor?.advisorData?.advisorId)
+ // const advisorId:any = useSelector((state: RootState) => state?.advisor?.advisorData?.advisorId)
+ const advisorId='612345678901234567890001'
   console.log(advisorId,"advisorId get successfullyy ysssrrr in reduxxxxx");
   const dispatch=useDispatch()
 const coordinatorData=useSelector(state=>state.coordinator.coordinatorData)
-const percentData=()=>{
+console.log(coordinatorData,'coordiantor dassjjjjjjjjjjgggggg');
 
-  
+const percentData=()=>{
 
 }
 
@@ -34,13 +36,13 @@ console.log(coordinatorData,'');
   try{
     const advisorData=async ()=>{
    console.log('calledddd');
-   const id='66199c84e5ef257629c45d69'
-      const response= await axiosInstance.get(`/profile/get-coordinators-data/${id}`)
+   
+      const response= await Api.get(`/review/coordinator-review-details/${advisorId}`)
   
       if(response){
-      console.log(response);
+      console.log(response,'reviewDetail');
       
-        dispatch(getCoordinatorData(response.data))
+        dispatch(updateCoordinatorData(response.data))
   
     
        
@@ -144,9 +146,9 @@ console.log(coordinatorData,'');
   </div>
   <div className="border border-2px  m-2 mx-auto rounded-md  bg-white   shadow-lg" >
     <div className="flex m-2 ">
-      <div> <span className="font-medium  font-roboto">  Weekly Task</span>
+      <div> <span className="font-medium  font-roboto">Weekly Task</span>
    <div className="mt-3">
-     <span className="text-4xl font-roboto">{coordinatorData?.weeklyTask?coordinatorData.weeklyTask:0}</span>
+     <span className="text-4xl font-roboto">{coordinatorData?.pendingReviews?coordinatorData.pendingReviews:0}</span>
    </div>
       </div>
       <div className=" mt-4 ml-6 border-darkBlue w-20 h-20 rounded-full border-4 "  > 
@@ -158,7 +160,7 @@ console.log(coordinatorData,'');
   </div>
   <div className="border border-2px  m-2 mx-auto rounded-md  bg-white   shadow-lg" >
     <div className="flex m-2  ">
-      <div> <span className="font-medium  font-roboto"> Total reviews </span>
+      <div> <span className="font-medium  font-roboto">Total reviews</span>
    <div className="mt-3">
      <span className="text-4xl font-roboto"> {coordinatorData?.totalReviews?coordinatorData.totalReviews:0}</span>
    </div>

@@ -4,9 +4,7 @@ import ReactApexChart from "react-apexcharts"
 const EnquiryGraph=()=>{
 
 
-  useEffect(()=>{
-
-    // [
+// [
     //   {
     //     '$group': {
     //       '_id': {
@@ -175,6 +173,23 @@ const EnquiryGraph=()=>{
     //   }
     // ]
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  useEffect(()=>{
+
+    
 
     console.log('new performance graph useEffect called');
     

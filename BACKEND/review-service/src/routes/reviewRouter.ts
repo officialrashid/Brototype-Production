@@ -21,5 +21,10 @@ reviewRouter.post('/extend-request',reviewController.OnExtendRequestsSend.bind(r
 reviewRouter.get('/extend-requests/:coordinatorId',reviewController.OnGetExtendReqsForCoordinators.bind(reviewController))
 reviewRouter.get('/student-extend-requests/:studentId',reviewController.OnGetStudentExtendRequests.bind(reviewController))
 reviewRouter.get('/change-extend-request-status',reviewController.OnChangeStudentExtendStatus.bind(reviewController))
+reviewRouter.get('/performance-graph/:id',reviewController.onGetPerformanceGraphData.bind(reviewController))
+reviewRouter.get('/top-five-coordinators/',reviewController.OnGetTopFiveCoordinators.bind(reviewController))
+reviewRouter.get('/weekly-summary-graph/:id',reviewController.OnGetWeeklySummaryGraphData.bind(reviewController))
+reviewRouter.get('/coordinator-review-details/:id',reviewController.onGetCoordinatorReviewDetails.bind(reviewController))
+
 
 export {reviewRouter,reviewController}

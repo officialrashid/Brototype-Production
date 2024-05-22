@@ -116,6 +116,8 @@ export class ReviewRepository implements IReviewRepository{
 
     }
 
+
+
    
 
 }
@@ -327,4 +329,409 @@ console.log(coordinatorId);
 
  }
 
+async  findPerformanceGraphData(coordinatorId:string) {
+  try{
+    const response=await reviews.aggregate(
+      [
+            {
+              '$match': {
+                'coordinatorId':  new mongoose.Types.ObjectId(coordinatorId)
+              }
+            }, {
+              '$unwind': {
+                'path': '$reviews'
+              }
+            }, {
+              '$match': {
+                'reviews.reviewStatus': 'completed'
+              }
+            }, {
+              '$project': {
+                'year': {
+                  '$year': '$createdAt'
+                }, 
+                'month': {
+                  '$dateToString': {
+                    'format': '%Y-%m', 
+                    'date': '$createdAt'
+                  }
+                }
+              }
+            }, {
+              '$group': {
+                '_id': {
+                  'year': '$year', 
+                  'month': '$month'
+                }, 
+                'reviewCount': {
+                  '$sum': 1
+                }
+              }
+            }, {
+              '$project': {
+                'month': {
+                  '$concat': [
+                    {
+                      '$substrCP': [
+                        '$_id.year', 2, 3
+                      ]
+                    }, '-', {
+                      '$switch': {
+                        'branches': [
+                          {
+                            'case': {
+                              '$eq': [
+                                {
+                                  '$substr': [
+                                    '$_id.month', 5, 2
+                                  ]
+                                }, '01'
+                              ]
+                            }, 
+                            'then': 'Jan'
+                          },
+                          {
+                            'case': {
+                              '$eq': [
+                                {
+                                  '$substr': [
+                                    '$_id.month', 5, 2
+                                  ]
+                                }, '02'
+                              ]
+                            }, 
+                            'then': 'Feb'
+                          },
+                          {
+                            'case': {
+                              '$eq': [
+                                {
+                                  '$substr': [
+                                    '$_id.month', 5, 2
+                                  ]
+                                }, '03'
+                              ]
+                            }, 
+                            'then': 'Mar'
+                          },
+                          {
+                            'case': {
+                              '$eq': [
+                                {
+                                  '$substr': [
+                                    '$_id.month', 5, 2
+                                  ]
+                                }, '04'
+                              ]
+                            }, 
+                            'then': 'Apr'
+                          },
+                          {
+                            'case': {
+                              '$eq': [
+                                {
+                                  '$substr': [
+                                    '$_id.month', 5, 2
+                                  ]
+                                }, '05'
+                              ]
+                            }, 
+                            'then': 'May'
+                          },
+                          {
+                            'case': {
+                              '$eq': [
+                                {
+                                  '$substr': [
+                                    '$_id.month', 5, 2
+                                  ]
+                                }, '06'
+                              ]
+                            }, 
+                            'then': 'Jun'
+                          },
+                          {
+                            'case': {
+                              '$eq': [
+                                {
+                                  '$substr': [
+                                    '$_id.month', 5, 2
+                                  ]
+                                }, '07'
+                              ]
+                            }, 
+                            'then': 'July'
+                          },
+                          {
+                            'case': {
+                              '$eq': [
+                                {
+                                  '$substr': [
+                                    '$_id.month', 5, 2
+                                  ]
+                                }, '08'
+                              ]
+                            }, 
+                            'then': 'Aug'
+                          },
+                          {
+                            'case': {
+                              '$eq': [
+                                {
+                                  '$substr': [
+                                    '$_id.month', 5, 2
+                                  ]
+                                }, '09'
+                              ]
+                            }, 
+                            'then': 'sept'
+                          },
+                          {
+                            'case': {
+                              '$eq': [
+                                {
+                                  '$substr': [
+                                    '$_id.month', 5, 2
+                                  ]
+                                }, '10'
+                              ]
+                            }, 
+                            'then': 'Oct'
+                          },
+                          {
+                            'case': {
+                              '$eq': [
+                                {
+                                  '$substr': [
+                                    '$_id.month', 5, 2
+                                  ]
+                                }, '11'
+                              ]
+                            }, 
+                            'then': 'Nov'
+                          },
+                          {
+                            'case': {
+                              '$eq': [
+                                {
+                                  '$substr': [
+                                    '$_id.month', 5, 2
+                                  ]
+                                }, '12'
+                              ]
+                            }, 
+                            'then': 'Dec'
+                          }
+                        ], 
+                        'default': ''
+                      }
+                    }
+                  ]
+                }, 
+                '_id': 0, 
+                'reviewCount': 1
+              }
+            }, {
+              '$sort': {
+                'month': 1
+              }
+            }
+          ])
+
+
+          console.log(response);
+          
+          return response
+
+
+
+  }
+  catch(error){
+    return {error:true,}
+  }
+
+ }
+
+async findTopFiveCoordinators() {
+
+  try{
+
+    const currentMonthStart=new Date()
+    currentMonthStart.setDate(1)
+    currentMonthStart.setHours(0,0,0,0)
+    const nextMonthStart=new Date(currentMonthStart)
+    nextMonthStart.setMonth(nextMonthStart.getMonth()+1)
+console.log(currentMonthStart,'ne>>',nextMonthStart)
+
+    const response=await reviews.aggregate([
+      {
+        '$unwind': {
+          'path': '$reviews'
+        }
+      }, {
+        '$match': {
+        'reviews.createdAt':
+        {
+        '$gte':currentMonthStart,
+        '$lte':nextMonthStart
+        },
+          'reviews.reviewStatus': 'completed'
+        }
+      }, {
+        '$group': {
+          '_id': '$coordinatorId', 
+          'count': {
+            '$sum': 1
+          }
+        }
+      }, {
+        '$sort': {
+          'count': -1
+        }
+      }, {
+        '$limit': 5
+      }
+    ])
+
+    console.log(response,'toppppp');
+    return response
+    
+
+
+  }catch(error){
+
+  }
+  
 }
+async findSummaryGraphData(coordinatorId: string) {
+  try{
+const sevenDaysAgo=new Date()
+sevenDaysAgo.setDate(sevenDaysAgo.getDate()-7)
+
+    const response=await reviews.aggregate([
+      {
+        '$match': {
+          'coordinatorId': new mongoose.Types.ObjectId(coordinatorId)
+        }
+      }, {
+        '$unwind': {
+          'path': '$reviews'
+        }
+      }, {
+        '$match': {
+          'reviews.createdAt':{
+            '$gte':sevenDaysAgo
+
+          },
+          'reviews.reviewStatus': 'completed'
+        }
+      }, {
+        '$addFields': {
+          'dayOfweek': {
+            '$dayOfWeek': '$reviews.createdAt'
+          }
+        }
+      }, {
+        '$group': {
+          '_id': '$dayOfweek', 
+          'count': {
+            '$sum': 1
+          }
+        }
+      }, {
+        '$addFields': {
+          'dayName': {
+            '$arrayElemAt': [
+              [
+                'Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'
+              ], {
+                '$subtract': [
+                  '$_id', 1
+                ]
+              }
+            ]
+          }
+        }
+      }, 
+      {
+        '$sort': { '_id': 1 }
+      },  
+      {
+        '$project': {
+          '_id': 0, 
+          'count': 1, 
+          'day': '$dayName'
+        }
+      }
+      
+    ])
+
+    console.log(response,'response graphhhhh');
+    
+    return response
+
+  }catch(error){
+
+  }
+}
+
+async findCoordinatorReviewDetail(coordinatorId: string) {
+
+  const today = new Date();
+today.setHours(0, 0, 0, 0);
+
+const tomorrow = new Date(today);
+tomorrow.setDate(today.getDate() + 1);
+
+const response = await reviews.aggregate([
+  {
+    '$match': {
+      'coordinatorId': new mongoose.Types.ObjectId(coordinatorId)
+    }
+  },
+  {
+    '$unwind': {
+      'path': '$reviews'
+    }
+  },
+  {
+    '$facet': {
+      'reviewStatusCounts': [
+        {
+          '$group': {
+            '_id': '$reviews.reviewStatus',
+            'count': { '$sum': 1 }
+          }
+        }
+      ],
+      'scheduledTodayCount': [
+        {
+          '$match': {
+            'reviews.scheduledDate': {
+              '$gte': today,
+              '$lt': tomorrow
+            }
+          }
+        },
+        {
+          '$count': 'count'
+        }
+      ]
+    }
+  }
+])
+
+
+  return response
+  
+}
+
+
+
+
+
+
+
+}
+
+

@@ -23,3 +23,5 @@ export default (dependencies:any)=>{
   router.get('/get-advisor-created-task',getAdvisorCreatedTaskController)
   return router
 }
+
+

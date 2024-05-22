@@ -15,5 +15,9 @@ export interface IReviewRepository{
     findCoordinatorExtendReqs(coordinatorId:string):any
     findStudentExtendRequests(studentId:string):any
     updateExtendRequestByCoordinator(coordinatorId:string,reviewId:string,type:string):any
+    findPerformanceGraphData(coordinatorId:string):any
+    findTopFiveCoordinators():any
+    findSummaryGraphData(coordinatorId:string):any,
+    findCoordinatorReviewDetail(coordinatorId:string):any
 }
 

@@ -10,13 +10,19 @@ const coordinatorSlice=createSlice({
     },
     reducers:{
         getCoordinatorData:(state,action)=>{
-            state.coordinatorData={events:action.payload.events,id:action.payload._id,fullName:action.payload.fullName,emailId:action.payload.emailId,mobileNumber:action.payload.mobileNumber, shared:action.payload.sharedReviews,totalReviews:action.payload.totalReviews,weeklyTask:action.payload.weeklyReviews,todaysReview:action.payload.todaysReview,image:action.payload.profileImageUrl
+            state.coordinatorData={events:action.payload.events,id:action.payload._id,fullName:action.payload.fullName,emailId:action.payload.emailId,mobileNumber:action.payload.mobileNumber, shared:0,totalReviews:'',pendingReviews:'',todaysReview:'',image:action.payload.profileImageUrl
             }    
         
         },
         getTopCoordinators:(state,action)=>{
-            state.topCoordinators=action.payload.map((coordinator:any)=>{
-                return {id:coordinator._id,fullName:coordinator.fullName,totalReviews:coordinator.totalReviews,dailyReviews:coordinator.todaysReview,image:coordinator.profileImageUrl}
+            console.log(action.payload.length,'payloadddded dataaaaa');
+            
+            state.topCoordinators=action.payload.map((coordinatorDetail:any)=>{
+
+                
+                console.log(coordinatorDetail,'coordinatorDetaillsssddads')
+                return {firstName:coordinatorDetail?.coordinatorData[0]?.firstName,lastName:coordinatorDetail?.coordinatorData[0]?.lastName,profileUrl:coordinatorDetail?.coordinatorData[0]?.profileUrl,reviewCount:coordinatorDetail?.coordinator?.count}
+                
             })
         },   
         
@@ -44,12 +50,22 @@ const coordinatorSlice=createSlice({
             state.sideNav=action.payload
        
             
+        },
+        updateCoordinatorData:(state,action)=>{
+console.log(action.payload[0].scheduledTodayCount[0].count,'==================');
+
+            
+            
+            state.coordinatorData={totalReviews:action.payload[0].reviewStatusCounts[1].count,pendingReviews:action.payload[0].reviewStatusCounts[0].count,todaysReview:action.payload[0].scheduledTodayCount[0].count}
+
+
         }
 
-    }
+    },
+   
 
 
 })
 
-export const {getCoordinatorData,getTopCoordinators,deleteEvents,editEvents,activeSideNav}=coordinatorSlice.actions
+export const {getCoordinatorData,getTopCoordinators,deleteEvents,editEvents,activeSideNav,updateCoordinatorData}=coordinatorSlice.actions
 export default coordinatorSlice.reducer

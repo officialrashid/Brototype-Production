@@ -9,8 +9,8 @@ export class eventInteractor implements eventIntercatorInterface{
         this.eventRepository=eventRepository
     }
 
-    addEvent(event: eventInterface) {
-        return this.eventRepository.addEvent(event)
+    addEvent(event: eventInterface,coordinatorid:string) {
+        return this.eventRepository.addEvent(event,coordinatorid)
         
     }
 

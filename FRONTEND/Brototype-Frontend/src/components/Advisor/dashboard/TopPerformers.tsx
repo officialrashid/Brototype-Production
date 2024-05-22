@@ -4,35 +4,37 @@ import { useEffect } from 'react'
 import { axiosInstance } from '../services/api/apiClient'
 import { useDispatch, useSelector } from 'react-redux'
 import { getTopCoordinators } from '../../../redux-toolkit/coordinatorSlice'
+import Api from '../../../utils/baseUrl/reviewBaseUrl'
 
 const TopPerformers=()=>{
   const performers:any=useSelector(state=>state.coordinator.topCoordinators)
-  console.log(performers,'loooooo');
+  console.log(performers,'Top555 performersssssss');
   
   const dispatch=useDispatch()
+
   useEffect(()=>{
-   
-    const topPerformers=async()=>{
-
-      try{
-        const response=await axiosInstance.get('/profile/top-coordinators')
-        if(response){
-
-          console.log(response,'toppp');
-          
-          dispatch(getTopCoordinators(response.data))
-          
-        }
-      }
-      catch(error){
-
-      }
-
+    console.log('performer use effect callleddddd');
     
-    }
-    topPerformers()
-
-  },[])
+     const topPerformers=async()=>{
+ 
+       try{
+         const response=await Api.get('/review/top-five-coordinators/')
+         if(response){
+ 
+           console.log(response.data,'entered');
+           
+           dispatch(getTopCoordinators(response.data))
+           
+         }
+       }
+       catch(error){
+ 
+       }
+     }
+     topPerformers()
+ 
+   },[])
+   
   
     return (
         <>
@@ -64,10 +66,11 @@ const TopPerformers=()=>{
           return(<div className="border border-2px rounded-md m-2 flex justify-between mt-1">
           <div  className="m-2 flex gap-2">
                
-               <div className="border border-2px  px-1 py-1 rounded-md "><img className='w-10 h-12' src={profile} alt="" /></div>
-                <div className="m-2  ml-0"><span className='text-sm'><p>{performer.fullName.split(' ')[0]}</p></span></div>
+               <div className="border border-2px  px-1 py-1 rounded-md "><img className='w-10 h-12'  alt="" /></div>
+                <div className="m-2  ml-0"><span className='text-sm'><p>{performer.firstName } </p></span></div>
+               
                 <div className='flex'>
-                <div className="m-2  ml-0"><span className='text-sm font-bold text-color-green-400 font-roboto'>83% </span> 
+                <div className="m-2  ml-0"><span className='text-sm font-bold text-color-green-400 font-roboto'>{performer.reviewCount} </span> 
                 </div>
                 
                 <div className="mt-2"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="#f97316" className="w-5 h-5">

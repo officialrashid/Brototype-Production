@@ -3,29 +3,7 @@ import { ICoordinators } from "../interfaces/ICoordinators";
 
 const coordinatorSchema= new Schema<ICoordinators>(
     {
-        coordinatorsId:String,
-        fullName:String,
-        email:String,
-        mobileNumber:String,
-        totalReviewCount:{
-            type:Number,
-            default:0
-
-        },
-        profileImageUrl:String,
-        sharedReviewCount:
-        {
-            type:Number,
-            default:0
-        },
-        weeklyTaskCount:{
-            type:Number,
-            default:0
-        },
-        todaysTaskCount:{
-            type:Number,
-            default:0
-        },
+        coordinatorsId:mongoose.Schema.Types.ObjectId, 
         events:[{
             _id:{
                 type:mongoose.Schema.Types.ObjectId,

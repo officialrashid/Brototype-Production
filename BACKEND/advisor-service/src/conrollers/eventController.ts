@@ -16,7 +16,7 @@ export class eventController{
         const eventData:eventInterface=req.body
         if(! eventData.id){
             
-        const response= await this.eventInteractor.addEvent(eventData)
+        const response= await this.eventInteractor.addEvent(eventData,eventData.coordinatorId)
         //res.json(response)
         return res.json(response)
 
@@ -24,7 +24,7 @@ export class eventController{
         else{
             console.log('edit event');
             
-            const response=await this.eventInteractor.editevent(eventData)
+            const response=await this.eventInteractor.editevent(eventData,eventData.coordinatorId)
            return  res.json(response)
 
         }

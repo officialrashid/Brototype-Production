@@ -12,4 +12,5 @@ export  interface eventInterface{
     eventStartTime:string,
     eventEndTime:string
     id?:string
+    coordinatorId:string
 }
