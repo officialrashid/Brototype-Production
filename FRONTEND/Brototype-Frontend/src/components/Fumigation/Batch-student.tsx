@@ -94,7 +94,7 @@ useEffect(()=>{
   console.log('first callleddddddddddddddd',id);
   const batchId = id
 
-  axios.get(`http://localhost:3002/api/fumigation/get-batchwise-students/${batchId}`).then(res=>{
+  axios.get(`https://brototypes.com/api/fumigation/get-batchwise-students/${batchId}`).then(res=>{
 
   console.log("batch student",res.data);
   
@@ -126,7 +126,7 @@ const getStudentMark=(studId)=>{
 
   try{
 
-    axios.get('http://localhost:3002/api/fumigation/get-students-mark',{params:{studentId:studId,batchId:id,fumigationType}}).then(res=>{
+    axios.get('https://brototypes.com/api/fumigation/get-students-mark',{params:{studentId:studId,batchId:id,fumigationType}}).then(res=>{
       console.log(res.data.response," from my useeffetttttttttttttt");
       dispatch(getIndividualMark(res.data.response))
       
@@ -164,7 +164,7 @@ const getStudentMark=(studId)=>{
         studentId :studentId,
          batchId : id 
        }
-      axios.delete(`http://localhost:3002/api/fumigation/remove-batchwise-students`,{ params: data }).then(res=>{
+      axios.delete(`https://brototypes.com/api/fumigation/remove-batchwise-students`,{ params: data }).then(res=>{
           console.log('hhuhhuh333',res);
            if(res?.data?.response?.status===true &&res?.data?.response?.message==="Student removed from the batch and moved back to pending"){
             setDeleteModal(false)
@@ -205,7 +205,7 @@ const getStudentMark=(studId)=>{
 
       console.log("passed students");
       
-      axios.get(`http://localhost:3002/api/fumigation/get-passed-students`,{params:{batchId:id,fumigationType}}).then(res=>{
+      axios.get(`https://brototypes.com/api/fumigation/get-passed-students`,{params:{batchId:id,fumigationType}}).then(res=>{
   
     console.log("batch passed student",res.data);
     
@@ -226,7 +226,7 @@ const getStudentMark=(studId)=>{
     }else if(filter == 'failed'){
 
 
-      axios.get(`http://localhost:3002/api/fumigation/get-failed-students`,{params:{batchId:id,fumigationType}}).then(res=>{
+      axios.get(`https://brototypes.com/api/fumigation/get-failed-students`,{params:{batchId:id,fumigationType}}).then(res=>{
   
     
     if(res.data.response.status===true){
@@ -247,7 +247,7 @@ const getStudentMark=(studId)=>{
     else {
       console.log('else case');
       
-      axios.get(`http://localhost:3002/api/fumigation/get-batchwise-students/${id}`,).then(res=>{
+      axios.get(`https://brototypes.com/api/fumigation/get-batchwise-students/${id}`,).then(res=>{
   
     console.log("batch student",res.data.response);
     
@@ -269,7 +269,7 @@ const handlePassedStudents = (batchId:string,fumigationType:string) =>{
     batchId,
     fumigationType
   }
-  axios.post(`http://localhost:3002/api/fumigation/confirm-passed-students`,data).then(res=>{
+  axios.post(`https://brototypes.com/api/fumigation/confirm-passed-students`,data).then(res=>{
   console.log(res,"res in confirm passe studnts");
   
   if(res.data.sendDataAuthServResponse.status===true){

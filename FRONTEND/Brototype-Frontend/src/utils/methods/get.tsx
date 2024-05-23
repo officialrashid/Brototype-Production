@@ -89,7 +89,7 @@ export const getExtendDetails = async (studentId:string) => {
 export const getRequestExtendDetails = async (studentId: string) => {
   try {
 
-    const response = await reviewApi.get(`/review/student-extend-requests/${studentId}`);
+    const response = await reviewApi.get(`/review-service/student-extend-requests/${studentId}`);
     return response.data; // Assuming your API response has a 'data' property
   } catch (err) {
     return { status: false, message: "There is some issue" };
@@ -538,7 +538,7 @@ export const getStudentReview = async (studentId: string) => {
   try {
     console.log(studentId, "studnet id in get student review api function");
 
-    const response = await reviewApi.get(`/review/student-review/${studentId}`)
+    const response = await reviewApi.get(`/review-service/student-review/${studentId}`)
     return response?.data;
   } catch (error) {
 
@@ -589,7 +589,7 @@ export const getInitiatorsDetails = async (advisorId: string, reviewerId: string
 export const getAllCourses = async () => {
 
   try {
-    const response = await adminApi.get(`/admin/course/get-all-courses`)
+    const response = await adminApi.get(`/admin-service/course/get-all-courses`)
     return response;
   } catch (error) {
 

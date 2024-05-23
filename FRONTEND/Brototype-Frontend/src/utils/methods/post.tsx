@@ -178,7 +178,7 @@ export const updateEducationDetails = async (data: updateEducationDetails, stude
 }
 export const requestExtention = async (data: any) => {
   try {
-    const resposne = await reviewApi.post('/review/extend-request',data)
+    const resposne = await reviewApi.post('/review-servcie/extend-request',data)
     return resposne
   } catch (err) {
     return { status: false, message: "some issue in the Address details update" }

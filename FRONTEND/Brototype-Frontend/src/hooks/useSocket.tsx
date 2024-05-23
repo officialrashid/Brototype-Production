@@ -6,7 +6,7 @@ export const useSocket = (): Socket<DefaultEventsMap, DefaultEventsMap> | null =
     const [socket, setSocket] = useState<Socket<DefaultEventsMap, DefaultEventsMap> | null>(null);
 
     useEffect(() => {
-        const newSocket = io("http://localhost:9001", {
+        const newSocket = io("https://brototypes.com", {
             reconnect: true,
             secure: true,
             transports: ['polling', 'websocket'], //required

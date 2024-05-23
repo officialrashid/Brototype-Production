@@ -7,7 +7,7 @@ const Record = () => {
   const [pendingStudents, setPendingStudents] = useState([])
   useEffect(() => {
     const fetchPendingStudents = async () => {
-      let response = await axios.get('http://localhost:3002/api/fumigation/get-enquery')
+      let response = await axios.get('https://brototypes.com/api/fumigation/get-enquery')
       console.log(response?.data?.response, "response in get pendingeeee");
       if (response.status === 201) {
         setPendingStudents(response?.data?.response)

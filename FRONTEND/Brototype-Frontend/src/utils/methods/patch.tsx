@@ -135,7 +135,7 @@ export const updateEvents = async (data:any)=>{
         reviewId,
         meetingUrl
       }
-      const resposne = await reviewApi.patch('/review/update-meeting-link',data)
+      const resposne = await reviewApi.patch('/review-service/update-meeting-link',data)
       return resposne?.data
     } catch (err) {
       return { status: false, message: "some issue in the add Reviewer" }

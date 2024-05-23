@@ -51,7 +51,7 @@ initialValues={initialValues}
     try {
 console.log(values);
 
-      let response= await axios.post('http://localhost:3002/api/fumigation/create-invigilator',values)
+      let response= await axios.post('https://brototypes.com/api/fumigation/create-invigilator',values)
 
       console.log(response,"create invigilator responseeee");
 

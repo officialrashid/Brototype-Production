@@ -19,7 +19,7 @@ const BatchRow = () => {
 
   useEffect(() => {
 
-    axios.get('http://localhost:3002/api/fumigation/get-all-batches').then(res => {
+    axios.get('https://brototypes.com/api/fumigation/get-all-batches').then(res => {
 
       console.log("batches");
 
@@ -51,7 +51,7 @@ const BatchRow = () => {
   const editBatch = (batchId) => {
 
 
-    axios.get(`http://localhost:3002/api/fumigation/edit-batch/${batchId}`).then(res => {
+    axios.get(`https://brototypes.com/api/fumigation/edit-batch/${batchId}`).then(res => {
       console.log('get response  edit batch cominggggggggg', res);
 
       setRecord(res.data.response.response[0])

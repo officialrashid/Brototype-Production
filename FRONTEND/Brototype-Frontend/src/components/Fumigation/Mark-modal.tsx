@@ -25,7 +25,7 @@ if(activeTab!==1){
 //   console.log("useeffect czllledddddddddd");
   
 
-//   axios.get('http://localhost:3002/api/fumigation/get-students-mark',{params:{studentId,batchId,fumigationType}}).then(res=>{
+//   axios.get('https://brototypes.com/api/fumigation/get-students-mark',{params:{studentId,batchId,fumigationType}}).then(res=>{
 //     console.log(res.data.response,"my useeffetttttttttttttt");
     
 //   }).catch(err=>{
@@ -284,7 +284,7 @@ const handleCommnField=()=>{
             const endTime = patternEndTime
             let type:string="Pattern"
             let invigilatorId="1234444"
-                  let response= await  axios.patch('http://localhost:3002/api/fumigation/add-students-mark',{startTime,endTime,type,fumigationType,invigilatorId,studentId,batchId})
+                  let response= await  axios.patch('https://brototypes.com/api/fumigation/add-students-mark',{startTime,endTime,type,fumigationType,invigilatorId,studentId,batchId})
                  
                   console.log(response,"response i pattern mark updatedww");
             
@@ -371,7 +371,7 @@ const endTime =  arrayEndTime
 
   
      let invigilatorId="1234444"
-        let response= await  axios.patch('http://localhost:3002/api/fumigation/add-students-mark',{type,fumigationType,studentId,startTime,endTime,invigilatorId,batchId})
+        let response= await  axios.patch('https://brototypes.com/api/fumigation/add-students-mark',{type,fumigationType,studentId,startTime,endTime,invigilatorId,batchId})
        
         console.log(response,'arraymark');
   
@@ -445,7 +445,7 @@ try {
 
   
      let invigilatorId="1234444"
-        let response= await  axios.patch('http://localhost:3002/api/fumigation/add-students-mark',{type,fumigationType,studentId,startTime,endTime,invigilatorId,batchId,mark:commnMark})
+        let response= await  axios.patch('https://brototypes.com/api/fumigation/add-students-mark',{type,fumigationType,studentId,startTime,endTime,invigilatorId,batchId,mark:commnMark})
        
         console.log(response);
   
@@ -523,7 +523,7 @@ try {
 
   
      let invigilatorId="1234444"
-        let response= await  axios.patch('http://localhost:3002/api/fumigation/add-students-mark',{type,fumigationType,studentId,startTime,endTime,invigilatorId,batchId,mark:oopsMark})
+        let response= await  axios.patch('https://brototypes.com/api/fumigation/add-students-mark',{type,fumigationType,studentId,startTime,endTime,invigilatorId,batchId,mark:oopsMark})
        
         console.log(response);
   
