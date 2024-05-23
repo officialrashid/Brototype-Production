@@ -268,7 +268,7 @@ interface scheduleReviews{
         try{
           // console.log('entered student', studentId);
           
-          const student= await axios.get(`http://localhost:6002/api/auth/get-particular-student-profile/${studentId}`)
+          const student= await axios.get(`https://brototypes.com/api/auth/get-particular-student-profile/${studentId}`)
           // console.log('|||||||||||||||||||||');
           
           console.log(student,"studenteeeee");
@@ -431,7 +431,7 @@ interface scheduleReviews{
         try{
           // console.log('entered student', studentId);
           
-          const coordinator= await axios.get(`http://localhost:6002/api/auth/get-advisor-details/${advisorId}`)
+          const coordinator= await axios.get(`https://brototypes.com/api/auth/get-advisor-details/${advisorId}`)
           // console.log('|||||||||||||||||||||');
           console.log(coordinator.data,"studenteeeee");
           // console.log('|||||||||||||||||||||');
