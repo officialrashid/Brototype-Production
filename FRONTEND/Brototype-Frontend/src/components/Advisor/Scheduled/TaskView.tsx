@@ -28,7 +28,7 @@ const TaskView = ({ isVisible, onClose, currentWeek,studentId,domain }) => {
       }
     }
     fetchTask()
-  },[])
+  },[currentWeek, studentId, domain])
   if (!isVisible) return null
 
   return (
