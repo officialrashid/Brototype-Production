@@ -130,7 +130,7 @@ async function consumeCoordinatorEvents(message:any) {
   try {
     console.log(JSON.parse(message.value.toString()));
     
-    coordinatorsData = JSON.parse(message.value.toString())
+    coordinatorsData = JSON.parse(message.value.toString()).data
     console.log('coo',coordinatorsData);
     
   checkAndSchduleEVents()
@@ -144,9 +144,9 @@ async function consumeStudentEvents(message:any) {
   console.log(JSON.parse(message.value.toString()),'studeeent dataa');
   
   try {
-   studentsData = JSON.parse(message.value.toString());
+   studentsData = JSON.parse(message.value.toString()).data
     
-    checkAndSchduleEVents()
+    //checkAndSchduleEVents()
   } catch (error) {
     console.error('Error processing product event:', error);
   }
