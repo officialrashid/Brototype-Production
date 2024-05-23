@@ -2,6 +2,7 @@ import { Form,Field,Formik,ErrorMessage } from "formik"
 import { useDispatch, useSelector } from "react-redux"
 import * as Yup from 'yup'
 import { editCompanyData } from "../../../redux-toolkit/companySlice"
+import Api from "../../../utils/baseUrl/adminBaseUrl"
 const DataModal=({isVisible,onClose,editData,handleModalClose,handleToast})=>{
   const companyData=useSelector(state=>state.companyReducer.companyData)
   const dispatch=useDispatch()
@@ -32,7 +33,7 @@ const DataModal=({isVisible,onClose,editData,handleModalClose,handleToast})=>{
        {
         console.log(editData,'editddararar');
         
-          const response= await axiosInstance.post(`/company/edit-company-data/${editData}`,values)
+          const response= await Api.post(`/company/edit-company-data/${editData}`,values)
           if(response){
             resetForm()
             console.log(response,'update dataaaata');

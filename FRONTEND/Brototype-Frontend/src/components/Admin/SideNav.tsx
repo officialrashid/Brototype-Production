@@ -32,32 +32,32 @@ const SideNav = () => {
 
     if (tab == 1) {
       setActiveTab(tabIndex)
-      navigate('/admin/dashboard')
+      navigate('/admin-service/dashboard')
     }
     if (tab == 2) {
       console.log('chatttttttt');
 
-      navigate('/admin/chat/')
+      navigate('/admin-service/chat/')
     }
 
 
     if (tab == 3) {
-      navigate('/admin/content/')
+      navigate('/admin-service/content/')
     }
     if (tab == 4) {
-      navigate('/admin/academic-counsellors/')
+      navigate('/admin-service/academic-counsellors/')
     }
     if (tab == 5) {
-      navigate('/admin/branches/')
+      navigate('/admin-service/branches/')
     }
     if (tab == 6) {
-      navigate('/admin/enquiries/')
+      navigate('/admin-service/enquiries/')
     }
     if (tab == 7) {
-      navigate('/admin/courses/')
+      navigate('/admin-service/courses/')
     }
     if (tab == 8) {
-      navigate('/admin/company-data/')
+      navigate('/admin-service/company-data/')
     }
     if (tab == 9) {
       Swal.fire({

@@ -8,6 +8,7 @@ import CourseModal from "../../../pages/Admin/Dashboard/CourseModal"
 import DeleteCourse from "./DeleteCourse"
 import { ToastContainer, toast,Bounce } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css'
+import Api from "../../../utils/baseUrl/adminBaseUrl"
 
 const Course=()=>{
     const [deleteModal,setDeleteModal]=useState(false)
@@ -53,7 +54,7 @@ const Course=()=>{
       setCoursePage(true)
         const courseData=async ()=>{
 
-          const response=await axiosInstance.get('/course/all-courses')
+          const response=await Api.get('/course/all-courses')
           if(response){
 
             dispatch(getCourseData(response.data))

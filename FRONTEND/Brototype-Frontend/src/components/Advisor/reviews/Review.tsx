@@ -32,7 +32,7 @@ const Review = () => {
     useEffect(() => {
         const getStudentDetails = async () => {
          const scheduled:Boolean=true
-            const studentData = await axios.get(`https://brototypes.com/review/assigned-reviews?coordinatorId=${advisorId}&type=scheduled`,)
+            const studentData = await axios.get(`https://brototypes.com/review-service/assigned-reviews?coordinatorId=${advisorId}&type=scheduled`,)
             console.log(studentData, 'studenrnttttt');
             //const filteredData:any=[{name:'hhh'}]
             console.log(studentData.data,'sttt');

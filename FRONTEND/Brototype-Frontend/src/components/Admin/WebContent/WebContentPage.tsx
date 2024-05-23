@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from "react-redux"
 import { getContentData } from "../../../redux-toolkit/contentSlice"
 import { ToastContainer, toast,Bounce } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css'
+import Api from "../../../utils/baseUrl/adminBaseUrl"
 
 
 const WebContentPage=()=>{
@@ -29,7 +30,7 @@ const WebContentPage=()=>{
         setContentPage(true)
 
         const contentData=async ()=>{
-           const response=await axiosInstance.get('/content/all-contents')
+           const response=await Api.get('/content/all-contents')
            if(response){
             dispatch(getContentData(response.data))
            }

@@ -23,7 +23,7 @@ app.use(bodyParser.json())
 const reviewRepository= new ReviewRepository()
 const reviewInteractor=new ReviewInteractor(reviewRepository)
 const reviewController=new ReviewController(reviewInteractor)
-app.use('/review',reviewRouter)
+app.use('/review-service',reviewRouter)
 
 
 

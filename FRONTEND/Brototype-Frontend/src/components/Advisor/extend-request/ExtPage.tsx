@@ -42,7 +42,7 @@ const ExtPage=()=>{
 
         const getExtendRequests=async()=>{
 
-const response=await Api.get(`/review/extend-requests/${advisorId}`)
+const response=await Api.get(`/review-service/extend-requests/${advisorId}`)
 console.log(response.data,'data');
 dispatch(getExtendRequestData(response.data))
 

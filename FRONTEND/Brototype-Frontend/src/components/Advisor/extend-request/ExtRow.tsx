@@ -18,7 +18,7 @@ const ExtRow=({extData,handleToast})=>{
 
   const rejectFn=async()=>{
 
-    const response=await Api.get(`/review/change-extend-request-status?coordinatorId=${advisorId}&reviewId=${68886}&type=reject`)
+    const response=await Api.get(`/review-service/change-extend-request-status?coordinatorId=${advisorId}&reviewId=${68886}&type=reject`)
     if(response.data.success){
       handleToast("Request rejected",)
 

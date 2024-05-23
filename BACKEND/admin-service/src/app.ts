@@ -30,12 +30,12 @@ console.log(process.env.MONGODB_URI);
 console.log(process.env.PORT,'rwrwrew' );
 
 
-app.use('/admin',courseRouter)
-app.use('/admin',branchRouter)
-app.use('/admin',enquiryRouter)
-app.use('/admin',counsellorRouter)
-app.use('/admin',contentRouter)
-app.use('/admin',companyRouter)
+app.use('/admin-service',courseRouter)
+app.use('/admin-service',branchRouter)
+app.use('/admin-service',enquiryRouter)
+app.use('/admin-service',counsellorRouter)
+app.use('/admin-service',contentRouter)
+app.use('/admin-service',companyRouter)
 
 connectDb(mongodbUri)
 

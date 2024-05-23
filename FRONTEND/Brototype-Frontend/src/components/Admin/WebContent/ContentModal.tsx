@@ -5,6 +5,7 @@ import * as Yup from 'yup'
 import { useNavigate } from "react-router-dom"
 import { useDispatch } from "react-redux"
 import { addContent, editContentData } from "../../../redux-toolkit/contentSlice"
+import Api from "../../../utils/baseUrl/adminBaseUrl"
 
 
 const ContentModal=({isVisible,onClose,editData,editImageFile,showToastMessage})=>{
@@ -113,7 +114,7 @@ setManageData(editData)
   
 
     
-    const response = await  axiosInstance.post('/content/create-content',form,{
+    const response = await  Api.post('/content/create-content',form,{
       headers:{
         "Content-Type":'multipart/form-data'
       }}
@@ -148,7 +149,7 @@ setManageData(editData)
       console.log(form);
       
       console.log('new imageeeee' ,values.contentImage);
-      const response = await  axiosInstance.post('/content/create-content',form,{
+      const response = await  Api.post('/content/create-content',form,{
         headers:{
           "Content-Type":'multipart/form-data'
         }}
@@ -182,7 +183,7 @@ setManageData(editData)
       formData.append('id',editData[0].id)
 
        console.log(formData);
-       const response= await axiosInstance.post('/content/update-content',formData,
+       const response= await Api.post('/content/update-content',formData,
         {
           headers:{
             "Content-Type":'multipart/form-data'

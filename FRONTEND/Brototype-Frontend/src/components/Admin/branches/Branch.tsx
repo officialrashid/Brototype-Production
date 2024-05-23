@@ -7,6 +7,7 @@ import { getBranchData } from "../../../redux-toolkit/branchSlice"
 import { useDispatch, useSelector } from "react-redux"
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css'
+import Api from "../../../utils/baseUrl/adminBaseUrl"
 
 
 const Branch=()=>{
@@ -50,7 +51,7 @@ const Branch=()=>{
     setBranchPage(true)
     const branchData=async()=>{
   
-      const response= await axiosInstance.get('/branch/all-branches')
+      const response= await Api.get('/branch/all-branches')
   
       dispatch(getBranchData(response.data))
   
