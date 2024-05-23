@@ -119,10 +119,11 @@ if(response){
   
   }
   const handleViewTask = (currentWeek:any,domain:any,studentId:any) =>{
-      setCurrentWeek(currentWeek)
-      setTaskView(true)
+
+    setCurrentWeek(currentWeek)
       setDomain(domain)
       setStudentId(studentId)
+      setTaskView(true)
   }
   return (
     <>
