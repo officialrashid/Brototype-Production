@@ -6,6 +6,7 @@ import { getCompanyData } from "../../../redux-toolkit/companySlice"
 import { useDispatch, useSelector } from "react-redux"
 import { ToastContainer, toast,Bounce } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css'
+import Api from "../../../utils/baseUrl/adminBaseUrl"
 
 const Data=()=>{
     let content='+ Add'
@@ -16,7 +17,7 @@ const Data=()=>{
     useEffect(()=>{
         const data=async ()=>{
            try{
-            const response=await axiosInstance.get('/company/company-all-data')
+            const response=await Api.get('/company/company-all-data')
 
             if(response){
                 console.log(response.data,'companyDataaaaaaaaaaaaa');

@@ -43,7 +43,7 @@ const WeeklySummary = () => {
       const weeklySummaryData=async()=>{
 
         try{
-          const response=await Api.get(`/review/weekly-summary-graph/${advisorId}`)
+          const response=await Api.get(`/review-service/weekly-summary-graph/${advisorId}`)
 
           if(response.data.length){
           

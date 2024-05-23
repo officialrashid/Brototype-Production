@@ -4,7 +4,12 @@ import * as Yup from 'yup'
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css'
 import { useState } from "react";
-const CreateTask=({isVisible,onClose})=>{
+import { useSelector } from "react-redux";
+const CreateTask=({isVisible,onClose,editTaskData,taskType})=>{
+  const viewTaskData=useSelector((state:any)=>state?.task?.viewTaskData)
+console.log(editTaskData,'editYYYYYYYYYYYYYYY');
+
+
  const [domainField,setDomainField]=useState('')
     const handleToast=(message:any,error:any)=>{
         if(!error){
@@ -25,42 +30,34 @@ const CreateTask=({isVisible,onClose})=>{
        }
       }
     const inititalValues={
-       workout:"",
-       taskType:"",
-       week:"",
-       subquestion1:"",
-       subquestion2:"",
-       subquestion3:"",
-       subquestion4:"",
-       domain:"",
-       id:""
+       workout:editTaskData?.length?editTaskData[0].mainQuestion[0].Question:"",
+       taskType:editTaskData?.length?editTaskData[0].taskType:"",
+       week:editTaskData?.length?editTaskData[0].week:"",
+       subquestion1:editTaskData?.length?editTaskData[0].subQuestion[0].Question:"",
+       subquestion2:editTaskData?.length?editTaskData[0].subQuestion[1].Question:"",
+       subquestion3:editTaskData?.length?editTaskData[0].subQuestion[2].Question:"",
+       subquestion4:editTaskData?.length?editTaskData[0].subQuestion[3].Question:"",
+       domain:editTaskData?.length?editTaskData[0].domain:"",
+       id:editTaskData?.length?editTaskData[0]._id:""
 
      
        }
      
-       const validationSchema=(values)=>{
-        console.log(values,'valueddddddddd');
-        
-        return (
-          Yup.object({
-            workout:Yup.string().required("Task is required"),
-        
-           week:Yup.string().required("Week  is required"),
-           taskType:Yup.string().required("Type of task  is required"),
-           subquestion1:Yup.string().required("sub question1 is required"),
-           subquestion2:Yup.string(),
-           subquestion3:Yup.string(),
-           subquestion4:Yup.string(),
-           //domain:values.taskType==="technical"?Yup.string().required("domain is required"):Yup.string()
-           domain:Yup.string()
-    
-             
-            
-             
-           })
-        )
+      
+      const validationSchema = Yup.object().shape({
+        workout: Yup.string().required("Task is required"),
+        week: Yup.string().required("Week is required"),
+        taskType: Yup.string().required("Type of task is required"),
+        subquestion1: Yup.string().required("Sub question 1 is required"),
+        subquestion2: Yup.string(),
+        subquestion3: Yup.string(),
+        subquestion4: Yup.string(),
+        domain: Yup.string().when('taskType', (taskType, schema) => {
+          return taskType == 'technical' ? schema.required('Domain is required') : schema;
+        }),
+      })
 
-       }
+
     if(!isVisible) return null
     return(
         <>

@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { deleteBranchData } from "../../redux-toolkit/branchSlice";
 import { useDispatch } from "react-redux";
+import Api from "../../utils/baseUrl/adminBaseUrl";
 
 const DeleteModal=({isVisible,showDeleteModal,id,handleToastmessage})=>{
  
@@ -11,7 +12,7 @@ const dispatch=useDispatch()
         console.log(id);
         
         try{
-          const response= await axiosInstance.delete(`/branch/delete-branch/${id}`)
+          const response= await Api.delete(`/branch/delete-branch/${id}`)
         
           if(response){
             console.log(response);

@@ -3,6 +3,7 @@ import { toast } from "react-toastify";
 import { deleteContentData } from "../../../redux-toolkit/contentSlice";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
+import Api from "../../../utils/baseUrl/adminBaseUrl";
 
 const ContentDelete=({isVisible,showDeleteModal,id})=>{
    const navigate= useNavigate()
@@ -15,7 +16,7 @@ const ContentDelete=({isVisible,showDeleteModal,id})=>{
         
         
         try{
-          const response= await axiosInstance.delete(`/content/delete-content/${id}`)
+          const response= await Api.delete(`/content/delete-content/${id}`)
         
           if(response){
             console.log(response,'//////');

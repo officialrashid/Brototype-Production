@@ -10,7 +10,7 @@ const SideNavigation=()=>{
     const handleTabClick=(tabIndex:any)=>{
       setActiveTab(tabIndex)
       if(tabIndex==1){
-        navigate('/admin/dashboard')
+        navigate('/admin-service/dashboard')
     }
       if(tabIndex==2){
           navigate('/reviews/')

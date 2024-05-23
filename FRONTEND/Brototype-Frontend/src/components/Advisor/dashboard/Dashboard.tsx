@@ -37,7 +37,7 @@ console.log(coordinatorData,'');
     const advisorData=async ()=>{
    console.log('calledddd');
    
-      const response= await Api.get(`/review/coordinator-review-details/${advisorId}`)
+      const response= await Api.get(`/review-service/coordinator-review-details/${advisorId}`)
   
       if(response){
       console.log(response,'reviewDetail');

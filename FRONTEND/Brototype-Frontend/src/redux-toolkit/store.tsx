@@ -22,6 +22,7 @@ import advisorReducer from './advisorReducer';
 import reviewSlice from './reviewSlice';
 import studentSlice from './studentSlice';
 import reviewerSlice from './reviewerSlice';
+import taskSlice from './taskSlice';
 const persistConfig = {
   key: 'root',
   storage,
@@ -49,7 +50,8 @@ const persistedReducer = persistReducer(
     invigilator:invigilatorReducer,
     review:reviewSlice,
     students:studentSlice,
-    reviewers:reviewerSlice
+    reviewers:reviewerSlice,
+    task:taskSlice
   })
 );
 export type RootState = ReturnType<typeof persistedReducer>;

@@ -8,8 +8,6 @@ import { getStudentData } from "../../../redux-toolkit/studentSlice"
 const Student=()=>{
 
 const dispatch=useDispatch()
-
-
 const studentData=useSelector(state=>state.students.studentData)
 
 const [filteredData,setFilteredData]=useState(studentData)

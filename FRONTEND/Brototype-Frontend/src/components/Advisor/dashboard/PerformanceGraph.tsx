@@ -17,7 +17,7 @@ const PerformanceGraph=({graphHeight})=>{
       const performanceData=async()=>{
 
         try{
-          const response=await Api.get(`/review/performance-graph/${advisorId}`)
+          const response=await Api.get(`/review-service/performance-graph/${advisorId}`)
 
           if(response.data.length){
             console.log(response.data,'response.data');
