@@ -18,7 +18,7 @@ const TaskView = ({ isVisible, onClose, currentWeek,studentId,domain }) => {
       try {
          const response:any = await Api.get(`/api/task/get-student-week-task?studentId=${studentId}&weekName=week${currentWeek}&domain=${domain}`)
          console.log(response.data.response.data
-          ,'fsfs');
+          ,'fsfshjhhhoh');
 
          dispatch(getTasks([response.data.response.data]))
         
