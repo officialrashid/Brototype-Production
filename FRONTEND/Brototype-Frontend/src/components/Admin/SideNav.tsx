@@ -2,6 +2,7 @@ import { useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { useNavigate } from "react-router-dom"
 import { navigationData } from "../../redux-toolkit/controlSlice"
+import Swal from "sweetalert2"
 
 
 const SideNav = () => {
@@ -59,9 +60,39 @@ const SideNav = () => {
       navigate('/admin/company-data/')
     }
     if (tab == 9) {
-      navigate('/admin/log-out/')
+      Swal.fire({
+        title: "Are you sure?",
+        text: "Do you want to perform logout action?",
+        icon: "question",
+        showCancelButton: true,
+        confirmButtonText: "Yes",
+        cancelButtonText: "No"
+      }).then(async (result) => {
+        if (result.isConfirmed) {
+           localStorage.removeItem("adminVerify")
+           navigate('/adminIn')
+        }
+      }
+      )
+
     }
 
+  }
+  const handleLogout = () =>{
+    Swal.fire({
+      title: "Are you sure?",
+      text: "Do you want to perform logout action?",
+      icon: "question",
+      showCancelButton: true,
+      confirmButtonText: "Yes",
+      cancelButtonText: "No"
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+         localStorage.removeItem("adminVerify")
+         navigate('/adminIn')
+      }
+    }
+    )
   }
   return (
     <>
@@ -188,7 +219,7 @@ const SideNav = () => {
         </div>
 
         <div>
-          <span className="text-sm font-light text-gray-500">Log out</span>
+          <span className="text-sm font-light text-gray-500" onClick={(()=>handleLogout())}>Log out</span>
         </div>
 
       </div>

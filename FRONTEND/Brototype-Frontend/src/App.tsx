@@ -13,7 +13,7 @@ import SuperLeadRoutes from "./routes/SuperLeadRoutes"
 import AdminRoutes from "./routes/AdminRoutes"
 import AdvisorAuthRoutes from './routes/AdvisorAuthRoutes'
 import FumigationRoutes from './routes/FumigationRoutes';
-
+import AdminAuthRoutes from './routes/AdminAuthRoutes';
 
 function App() {
 
@@ -35,7 +35,7 @@ function App() {
           <Route path="/studentIn/*" element={<AuthenticationRoutes />} />
           <Route path="/advisorIn/*" element={<AdvisorAuthRoutes />} />
           <Route path="/superleadIn/*" element={<SuperleadAuthRoutes />} />
-  
+          <Route path="/adminIn/*" element={<AdminAuthRoutes />} />
           <Route path="/reviewer/*" element={<ReviewerRoutes />} />
   
           {/* Nested StudentRoutes */}
