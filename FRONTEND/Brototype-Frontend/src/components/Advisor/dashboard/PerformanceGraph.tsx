@@ -4,8 +4,8 @@ import { useSelector } from "react-redux";
 import Api from "../../../utils/baseUrl/reviewBaseUrl";
 
 const PerformanceGraph=({graphHeight})=>{
-  //const advisorId: any = useSelector((state: RootState) => state?.advisor?.advisorData?.advisorId);
-  const advisorId:any='612345678901234567890001'
+  const advisorId: any = useSelector((state: RootState) => state?.advisor?.advisorData?.advisorId);
+  //const advisorId:any='612345678901234567890001'
    const [performanceData,setPerformanceData]=useState([])
    const [monthData,setMonthData]=useState([])
   console.log(advisorId,"lllllllll");

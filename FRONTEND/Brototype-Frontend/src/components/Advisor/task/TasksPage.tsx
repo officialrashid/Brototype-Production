@@ -8,7 +8,7 @@ import { getTaskData, viewMiscellaneousTask, viewPersonalTask, viewTask, viewTec
 
 const TasksPage = () => {
   const dispatch=useDispatch()
-  //const advisorId:any = useSelector((state: RootState) => state?.advisor?.advisorData?.advisorId);
+  const advisorId:any = useSelector((state: RootState) => state?.advisor?.advisorData?.advisorId);
   const taskData=useSelector((state:any)=>state?.task?.taskData)
   //const viewTaskData=useSelector((state:any)=>state?.task?.viewTaskData)
 //const [editData,setEditData]=useState(Array)
@@ -16,7 +16,7 @@ const TasksPage = () => {
 
 
   
-  const advisorId='654ec0e69db7d1bfd50ca00b'
+  //const advisorId='654ec0e69db7d1bfd50ca00b'
   const handleToast=(message:any,error:any)=>{
     if(!error){
       toast.success(message, {

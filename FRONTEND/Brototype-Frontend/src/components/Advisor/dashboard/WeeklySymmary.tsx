@@ -32,8 +32,8 @@ import Api from '../../../utils/baseUrl/reviewBaseUrl'
 import { useSelector } from 'react-redux'
 
 const WeeklySummary = () => {
-  //const advisorId:any = useSelector((state: RootState) => state?.advisor?.advisorData?.advisorId)
-  const advisorId:any='612345678901234567890001'
+  const advisorId:any = useSelector((state: RootState) => state?.advisor?.advisorData?.advisorId)
+  //const advisorId:any='612345678901234567890001'
    const [summaryData,setSummaryData]=useState([])
    useEffect(()=>{
 
