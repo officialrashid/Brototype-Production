@@ -1,7 +1,8 @@
 import { JaaSMeeting} from '@jitsi/react-sdk'
 
 
-const JaasService=({roomId:any})=>{
+const JaasService=({roomId})=>{
+
     // const navigate=useNavigate()
     // const dispatch = useDispatch()
     // const [meetState,setMeetState]=useState(false)
