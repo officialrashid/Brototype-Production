@@ -14,10 +14,15 @@ import AdminRoutes from "./routes/AdminRoutes"
 import AdvisorAuthRoutes from './routes/AdvisorAuthRoutes'
 import FumigationRoutes from './routes/FumigationRoutes';
 import AdminAuthRoutes from './routes/AdminAuthRoutes';
+import JaasMeet from './components/Advisor/jaasmeet/JaasMeet';
 
 function App() {
 
-
+  function getRandomInt(min, max) {
+    min = Math.ceil(min);
+    max = Math.floor(max);
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+  }
   
     return (
       <>
@@ -25,6 +30,7 @@ function App() {
      <Router>
 
         <Routes>
+        <Route path="/" element={<JaasMeet roomId={getRandomInt(100,1000)} />} />
           <Route path="/" element={<Navbar />} />
           <Route path="/invigilator" element={<Login />} />
   
