@@ -30,7 +30,7 @@ function App() {
      <Router>
 
         <Routes>
-        <Route path="/" element={<JaasMeet roomId={getRandomInt(100,1000)} />} />
+        <Route path="/:123445" element={<JaasMeet roomId={getRandomInt(100,1000)} />} />
           <Route path="/" element={<Navbar />} />
           <Route path="/invigilator" element={<Login />} />
   
