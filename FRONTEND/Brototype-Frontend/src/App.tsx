@@ -15,6 +15,7 @@ import AdvisorAuthRoutes from './routes/AdvisorAuthRoutes'
 import FumigationRoutes from './routes/FumigationRoutes';
 import AdminAuthRoutes from './routes/AdminAuthRoutes';
 import JaasMeet from './components/Advisor/jaasmeet/JaasMeet';
+import JaasService from './components/Advisor/jaasmeet/jaasService';
 
 function App() {
 
@@ -30,7 +31,7 @@ function App() {
      <Router>
 
         <Routes>
-        <Route path="/:123445" element={<ja roomId={getRandomInt(100,1000)} />} />
+        <Route path="/:123445" element={<JaasService roomId={getRandomInt(100,1000)} />} />
           <Route path="/" element={<Navbar />} />
           <Route path="/invigilator" element={<Login />} />
   
