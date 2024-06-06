@@ -93,7 +93,7 @@ const SignIn = () => {
 
     signInWithPopup(auth, provider)
       .then(async (result) => {
-        if (result.user?.email) {
+        if (result?.user?.email) {
           let email: string = result.user.email;
           const response: any = await reviewerGoogleLogin(email);
           console.log(response,"response in google login fornenedd");

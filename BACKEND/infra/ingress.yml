@@ -7,7 +7,7 @@ metadata:
     kubernetes.io/ingress.class: nginx
     nginx.ingress.kubernetes.io/websocket-services: "trip-service"
     nginx.ingress.kubernetes.io/ssl-redirect: "true"
-    nginx.org/websocket-services: trip-service
+    nginx.org/websocket-services: "trip-service"
     nginx.ingress.kubernetes.io/secure-backends: "true"
 spec:
   rules:
@@ -77,13 +77,13 @@ spec:
             name: review-service
             port:
               number: 6001
-      # - path: /advisor/?(.*)
-      #   pathType: Prefix
-      #   backend:
-      #     service:
-      #       name: advisor-service
-      #       port:
-      #         number: 8002
+      - path: /socket.io/
+        pathType: Prefix
+        backend:
+          service:
+            name: chat-and-video-service
+            port:
+              number: 9001
       - path: /admin-service/?(.*)
         pathType: Prefix
         backend:
