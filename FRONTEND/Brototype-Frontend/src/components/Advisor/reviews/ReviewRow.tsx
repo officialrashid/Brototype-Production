@@ -119,9 +119,8 @@ if(response){
   
   }
   const handleViewTask = (currentWeek:any,domain:any,studentId:any) =>{
-    console.log(currentWeek,domain,studentId,'ddsds')
+
     setCurrentWeek(currentWeek)
-      
       setDomain(domain)
       setStudentId(studentId)
       setTaskView(true)
@@ -160,7 +159,7 @@ if(response){
                   {reviewData?.scheduledDate}
                 </th>
                 <th scope="col" className="w-1/4 px-4 py-6 text-center" style={{ whiteSpace: 'normal', wordWrap: 'break-word', textOverflow: 'ellipsis' }}>
-                  <button className="bg-black text-white px-3 rounded-md  py-1" onClick={() => { handleViewTask(reviewData.currentWeek,reviewData.domain,reviewData.studentId) }}>View</button>
+                  <button className="bg-black text-white px-3 rounded-md  py-1" onClick={() => { handleViewTask(reviewData.currentWeek,reviewData.domain,reviewData.studentId)}}>View</button>
                 </th>
                 <th scope="col" className="w-1/4 px-4 py-6 text-center" style={{ whiteSpace: 'normal', wordWrap: 'break-word', textOverflow: 'ellipsis' }}>
                   <button className="bg-black text-white px-3 rounded-md  py-1" onClick={() => { setTaskModal(true),updateReviewDetail(reviewData.studentId,reviewData.reviewerId,reviewData.eventId,reviewData.reviewId,reviewData.slotId,reviewData.currentWeek)}}>Update</button>
