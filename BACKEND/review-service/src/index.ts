@@ -28,30 +28,30 @@ app.use('/review-service',reviewRouter)
 
 
 let lastEmitTime:any=null
-// nodecron.schedule('*/5 * * * *', async () => {
-// let currentTime:any=new Date()
+nodecron.schedule('*/5 * * * *', async () => {
+let currentTime:any=new Date()
  
   
-//   try {
-//  if(!lastEmitTime||(currentTime-lastEmitTime)>=(1*60*1000)){
-//   const message={
-//     type:'review-scheduler-data',
-//     data:{id:'123'}
+  try {
+ if(!lastEmitTime||(currentTime-lastEmitTime)>=(1*60*1000)){
+  const message={
+    type:'review-scheduler-data',
+    data:{id:'123'}
   
-// }
+}
   
-// sendMessage('review-events',message)
-// console.log('event emited2....');
-// lastEmitTime=currentTime
+sendMessage('review-events',message)
+console.log('event emited2....');
+lastEmitTime=currentTime
  
 
-//  }
+ }
     
    
-//   } catch (error) {
-//     console.error('Error scheduling review:', error);
-//   }
-// })
+  } catch (error) {
+    console.error('Error scheduling review:', error);
+  }
+})
 
 var coordinatorsData:any
 var studentsData:any
@@ -134,7 +134,7 @@ async function consumeCoordinatorEvents(message:any) {
     console.log('coo',coordinatorsData);
     
   checkAndSchduleEVents()
-//return  coordinatorsData
+return  coordinatorsData
     
   } catch (error) {
     console.error('Error processing Coordinator event:', error);
@@ -146,7 +146,7 @@ async function consumeStudentEvents(message:any) {
   try {
    studentsData = JSON.parse(message.value.toString()).data
     
-    //checkAndSchduleEVents()
+    checkAndSchduleEVents()
   } catch (error) {
     console.error('Error processing product event:', error);
   }
