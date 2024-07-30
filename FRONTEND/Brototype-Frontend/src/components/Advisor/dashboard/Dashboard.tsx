@@ -61,7 +61,7 @@ console.log(coordinatorData,'');
   
 
   },[])
-  const series = [10]; //\ percent
+  const series = [0]; //\ percent
     const options = {
       labels: [], //label of this diagram
       plotOptions: {
@@ -181,9 +181,9 @@ console.log(coordinatorData,'');
           <div className="ml-2 mt-4 text-center">
                   <span className="font-medium  font-roboto">Task completion</span>
               </div>
-          <ReactApexChart options={options} series={series}   type="radialBar" width={200} height={200}  />
+          <ReactApexChart options={options} series={series}   type="radialBar" width={260} height={200}  />
           <div className="text-center ">
-              <span className="text-4xl font-roboto ">10%</span>
+              <span className="text-4xl font-roboto ">0%</span>
           </div>
   
           </div>
