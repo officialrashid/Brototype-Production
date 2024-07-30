@@ -66,6 +66,10 @@ console.log(coordinatorData,'');
       labels: [], //label of this diagram
       plotOptions: {
         radialBar: {
+          size: '100%', // Increase the size to 90% of the container
+          hollow: {
+            size: '60%', // Adjust the inner hollow circle size
+          },
          
           dataLabels: {
             name: {
