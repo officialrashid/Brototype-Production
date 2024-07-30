@@ -183,7 +183,7 @@ console.log(coordinatorData,'');
               </div>
           <ReactApexChart options={options} series={series}   type="radialBar" width={200} height={200}  />
           <div className="text-center ">
-              <span className="text-4xl font-roboto ">{Math.floor((coordinatorData?.weeklyTask/coordinatorData?.todaysReview)*100)}%</span>
+              <span className="text-4xl font-roboto ">10%</span>
           </div>
   
           </div>
