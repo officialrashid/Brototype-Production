@@ -28,7 +28,7 @@ const percentData=()=>{
 
 }
 
-const series =[]
+//const series =[]
 console.log(coordinatorData,'');
 
   useEffect(()=>{
@@ -61,7 +61,7 @@ console.log(coordinatorData,'');
   
 
   },[])
-    //const series = []; //70 percent
+  const series = [10]; //\ percent
     const options = {
       labels: [], //label of this diagram
       plotOptions: {
