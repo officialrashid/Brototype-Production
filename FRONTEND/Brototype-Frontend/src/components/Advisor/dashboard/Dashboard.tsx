@@ -17,8 +17,8 @@ import { updateCoordinatorData } from "../../../redux-toolkit/coordinatorSlice"
 
 
 const Dashboard=()=>{
- // const advisorId:any = useSelector((state: RootState) => state?.advisor?.advisorData?.advisorId)
- const advisorId='612345678901234567890001'
+ const advisorId:any = useSelector((state: RootState) => state?.advisor?.advisorData?.advisorId)
+ //const advisorId='612345678901234567890001'
   console.log(advisorId,"advisorId get successfullyy ysssrrr in reduxxxxx");
   const dispatch=useDispatch()
 const coordinatorData=useSelector(state=>state.coordinator.coordinatorData)
