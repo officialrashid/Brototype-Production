@@ -32,6 +32,7 @@ function App() {
 
         <Routes>
         <Route path="/meeting/:123445" element={<JaasService roomId={getRandomInt(1000,10000)} />} />
+        <Route path="/meeting/vpaas-magic-cookie-40d1ade414824ac88ae740a12fcf994e/:roomId" element={<JaasService roomId={getRandomInt(1000,10000)} />} />
           <Route path="/" element={<Navbar />} />
           <Route path="/invigilator" element={<Login />} />
   
