@@ -16,6 +16,7 @@ import FumigationRoutes from './routes/FumigationRoutes';
 import AdminAuthRoutes from './routes/AdminAuthRoutes';
 import JaasMeet from './components/Advisor/jaasmeet/JaasMeet';
 import JaasService from './components/Advisor/jaasmeet/jaasService';
+import JoinJaas from './components/Advisor/jaasmeet/JoinJaas';
 
 function App() {
 
@@ -32,7 +33,7 @@ function App() {
 
         <Routes>
         <Route path="/meeting/:123445" element={<JaasService roomId={getRandomInt(1000,10000)} />} />
-        <Route path="/meeting/vpaas-magic-cookie-40d1ade414824ac88ae740a12fcf994e/:roomId" element={<JaasService roomId={getRandomInt(1000,10000)} />} />
+        <Route path="/meeting/vpaas-magic-cookie-40d1ade414824ac88ae740a12fcf994e/:roomId" element={<JoinJaas/>} />
           <Route path="/" element={<Navbar />} />
           <Route path="/invigilator" element={<Login />} />
   

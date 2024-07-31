@@ -2,7 +2,7 @@ import { JaaSMeeting} from '@jitsi/react-sdk'
 import { useParams } from 'react-router-dom'
 
 
-const JaasService=()=>{
+const JoinJaas=()=>{
      
 
     const { roomId } = useParams();
@@ -64,4 +64,4 @@ const JaasService=()=>{
     )
 }
 
-export default JaasService
+export default JoinJaas
