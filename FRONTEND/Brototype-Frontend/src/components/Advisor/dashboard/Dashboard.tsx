@@ -17,8 +17,8 @@ import { updateCoordinatorData } from "../../../redux-toolkit/coordinatorSlice"
 
 
 const Dashboard=()=>{
- // const advisorId:any = useSelector((state: RootState) => state?.advisor?.advisorData?.advisorId)
- const advisorId='612345678901234567890001'
+ const advisorId:any = useSelector((state: RootState) => state?.advisor?.advisorData?.advisorId)
+ //const advisorId='612345678901234567890001'
   console.log(advisorId,"advisorId get successfullyy ysssrrr in reduxxxxx");
   const dispatch=useDispatch()
 const coordinatorData=useSelector(state=>state.coordinator.coordinatorData)
@@ -28,7 +28,7 @@ const percentData=()=>{
 
 }
 
-const series =[]
+//const series =[]
 console.log(coordinatorData,'');
 
   useEffect(()=>{
@@ -61,11 +61,15 @@ console.log(coordinatorData,'');
   
 
   },[])
-    //const series = []; //70 percent
+  const series = [0]; //\ percent
     const options = {
       labels: [], //label of this diagram
       plotOptions: {
         radialBar: {
+          size: '100%', // Increase the size to 90% of the container
+          hollow: {
+            size: '60%', // Adjust the inner hollow circle size
+          },
          
           dataLabels: {
             name: {
@@ -181,9 +185,9 @@ console.log(coordinatorData,'');
           <div className="ml-2 mt-4 text-center">
                   <span className="font-medium  font-roboto">Task completion</span>
               </div>
-          <ReactApexChart options={options} series={series}   type="radialBar" width={200} height={200}  />
+          <ReactApexChart options={options} series={series}   type="radialBar" width={260} height={200}  />
           <div className="text-center ">
-              <span className="text-4xl font-roboto ">{Math.floor((coordinatorData?.weeklyTask/coordinatorData?.todaysReview)*100)}%</span>
+              <span className="text-4xl font-roboto ">0%</span>
           </div>
   
           </div>
