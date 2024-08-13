@@ -20,11 +20,12 @@ const Account=()=>{
   <div className="">
     <div className="ml-4 mt-2 mb-0">
     <span className="font-bold text-">Your Details</span>
+    
     </div>
 
  
 
- 
+
  
   <div className="flex ml-4  gap-20">
     <div >
