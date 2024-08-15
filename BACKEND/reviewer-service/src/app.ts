@@ -17,6 +17,7 @@ const server = http.createServer(app);
 
 // Connect to the database using the configuration from "config.js"
 getDb(config);
+
 dotenv.config()
 // Configure Express settings and middleware
 expressConfig(app);
