@@ -19,7 +19,7 @@ const corsOptions = {
   credentials: true // Make sure to enable credentials
 }
 app.use(cors(corsOptions))
-app.use(bodyParser.json())
+app.use(bodyParser.json())  
 
 
 app.use('/coordinators',coordinatorRouter)

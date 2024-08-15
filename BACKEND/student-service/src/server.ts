@@ -16,3 +16,4 @@ const serverConfig = (server: any, config: any) => {
 };
 
 export default serverConfig;
+  

@@ -33,7 +33,7 @@ console.log(process.env.PORT,'rwrwrew' );
 app.use('/admin-service',courseRouter)
 app.use('/admin-service',branchRouter)
 app.use('/admin-service',enquiryRouter)
-app.use('/admin-service',counsellorRouter)
+app.use('/admin-service',counsellorRouter)  
 app.use('/admin-service',contentRouter)
 app.use('/admin-service',companyRouter)
 
