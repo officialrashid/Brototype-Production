@@ -58,6 +58,6 @@ jobs:
         with:
           token: ${{ secrets.DIGITALOCEAN_TOKEN }}
 
-      - run: doctl kubernetes cluster kubeconfig save 8d3da5f4-2210-4caf-9cfc-28eaf8f83d4d
+      - run: doctl kubernetes cluster kubeconfig save e0fc6e9b-4857-4017-a874-db7359838fc9
 
       - run: kubectl rollout restart deployment reviewer-deployment
