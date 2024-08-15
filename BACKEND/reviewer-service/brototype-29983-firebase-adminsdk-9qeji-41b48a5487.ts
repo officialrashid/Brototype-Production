@@ -19,5 +19,6 @@ const firebaseConfig = {
   client_x509_cert_url: "https://www.googleapis.com/robot/v1/metadata/x509/firebase-adminsdk-9qeji%40brototype-29983.iam.gserviceaccount.com",
   universe_domain: "googleapis.com"
 };
+
 export default firebaseConfig
 
