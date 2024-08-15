@@ -17,7 +17,7 @@ const corsOptions = {
   origin: 'http://localhost:5173',
   credentials: true // Make sure to enable credentials
 }
-app.use(cors(corsOptions))
+app.use(cors(corsOptions)) 
 app.use(bodyParser.json())
 
 const reviewRepository= new ReviewRepository()
