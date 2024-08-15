@@ -22,6 +22,8 @@ app.use(cors(corsOptions))
 app.use(bodyParser.json())  
 
 
+
+
 app.use('/coordinators',coordinatorRouter)
 //app.use('/coordinators',router)
 app.use('/coordinators/event',eventRouter)
