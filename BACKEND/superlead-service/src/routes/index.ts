@@ -7,3 +7,4 @@ export const routes  =(dependencies:any)=>{
     routes.use('/superlead',superleadRoutes(dependencies));
     return routes;
 }
+

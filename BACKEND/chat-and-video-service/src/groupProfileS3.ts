@@ -22,6 +22,7 @@ interface ChatData {
   groupProfile?: string; // Make imageUrl optional
 }
 
+
 export const uploadToS3 = async ({ file, createrId }: ChatData): Promise<ChatData> => {
   const key = `${createrId}/${uuid()}`;
   const command = new PutObjectCommand({
