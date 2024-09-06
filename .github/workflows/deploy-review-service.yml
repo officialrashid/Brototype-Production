@@ -18,7 +18,7 @@ jobs:
         env:
           REVIEW_MONGO_URL: ${{ secrets.REVIEW_MONGO_URL }}
           REVIEW_SERVER_PORT: ${{ secrets.REVIEW_SERVER_PORT }}
-  
+
         run: |
           echo "REVIEW_MONGO_URL=${REVIEW_MONGO_URL}" >> BACKEND/review-service/.env
           echo "REVIEW_SERVER_PORT=${REVIEW_SERVER_PORT}" >> BACKEND/review-service/.env
@@ -36,6 +36,6 @@ jobs:
         with:
           token: ${{ secrets.DIGITALOCEAN_TOKEN }}
 
-      - run: doctl kubernetes cluster kubeconfig save e0fc6e9b-4857-4017-a874-db7359838fc9
+      - run: doctl kubernetes cluster kubeconfig save b64ee98f-b675-4bdd-abe7-3f8dca752b14
 
       - run: kubectl rollout restart deployment review-deployment

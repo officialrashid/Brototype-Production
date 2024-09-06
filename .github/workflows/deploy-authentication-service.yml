@@ -28,7 +28,7 @@ jobs:
           FIREBASE_CLIENT_ID: ${{ secrets.FIREBASE_CLIENT_ID }}
           FIREBASE_AUTH_URI: ${{ secrets.FIREBASE_AUTH_URI }}
           FIREBASE_TOKEN_URI: ${{ secrets.FIREBASE_TOKEN_URI }}
-          
+
         run: |
           echo "ACCESS_TOKEN_SECRET=${{ secrets.ACCESS_TOKEN_SECRET }}" >> BACKEND/authentication-service/.env
           echo "AUTH_MONGO_URL=${{ secrets.AUTH_MONGO_URL }}" >> BACKEND/authentication-service/.env
@@ -56,6 +56,6 @@ jobs:
         with:
           token: ${{ secrets.DIGITALOCEAN_TOKEN }}
 
-      - run: doctl kubernetes cluster kubeconfig save e0fc6e9b-4857-4017-a874-db7359838fc9
-      
+      - run: doctl kubernetes cluster kubeconfig save b64ee98f-b675-4bdd-abe7-3f8dca752b14
+
       - run: kubectl rollout restart deployment authentication-deployment

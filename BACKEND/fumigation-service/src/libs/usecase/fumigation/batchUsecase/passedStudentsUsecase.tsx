@@ -1,6 +1,6 @@
 
 
-export const passedStudents_Usecase = (dependencies: any) => {
+ export const passedStudents_Usecase = (dependencies: any) => {
     const {
        repository: { batchRepository }
     } = dependencies;
