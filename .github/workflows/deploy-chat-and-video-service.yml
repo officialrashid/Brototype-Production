@@ -62,4 +62,4 @@ jobs:
 
       - run: doctl kubernetes cluster kubeconfig save brot-to-type-2
 
-      - run: kubectl rollout restart deployment chat-and-video-deployment
+      - run: doctl kubernetes cluster kubeconfig save c4587a70-8120-4519-94e0-5c7aa5da0df5
