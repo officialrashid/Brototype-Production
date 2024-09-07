@@ -8,7 +8,7 @@ import config from "./config/config";
 import expressConfig from "./express";
 import { S3Client } from "@aws-sdk/client-s3";
 import { consumeStudent } from "../src/events/studentConsumer";
-//import expressValidator from 'express-validator';
+import expressValidator from "express-validator";
 import dependencies from "./config/dependencies";
 import dotenv from "dotenv";
 // Create an Express app instance
