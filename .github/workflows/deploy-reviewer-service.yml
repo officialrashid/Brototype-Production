@@ -58,6 +58,6 @@ jobs:
         with:
           token: ${{ secrets.DIGITALOCEAN_TOKEN }}
 
-      - run: doctl kubernetes cluster kubeconfig save brot-to-type-2
+      - run: doctl kubernetes cluster kubeconfig save c4587a70-8120-4519-94e0-5c7aa5da0df5
 
       - run: kubectl rollout restart deployment reviewer-deployment
