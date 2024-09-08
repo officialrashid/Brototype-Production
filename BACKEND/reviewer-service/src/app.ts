@@ -5,20 +5,20 @@ import getDb from "./config/db";
 import { routes } from "./routes/index";
 import config from "./config/config";
 import expressConfig from "./express";
-import express from 'express';
+import express from "express";
 import dependencies from "./config/dependencies";
-import {consumeReviewer} from "./events/reviewerConsumer"
-import dotenv from "dotenv"
+import { consumeReviewer } from "./events/reviewerConsumer";
+import dotenv from "dotenv";
 // Create an Express app instance
 const app = express();
-const router = express.Router()
+const router = express.Router();
 // Create an HTTP server instance using the Express app
 const server = http.createServer(app);
 
 // Connect to the database using the configuration from "config.js"
 getDb(config);
 
-dotenv.config()
+dotenv.config();
 // Configure Express settings and middleware
 expressConfig(app);
 
@@ -28,4 +28,4 @@ app.use("/api", routes(dependencies));
 // Start the server
 serverConfig(server, config).startServer();
 
-consumeReviewer()
+consumeReviewer();
