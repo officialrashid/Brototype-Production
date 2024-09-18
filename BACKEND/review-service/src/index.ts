@@ -2,7 +2,7 @@ import express, { Application, Express, Request, Response } from "express";
 import dotenv from "dotenv";
 import cors from "cors";
 import { config, connectDB } from "./config/dbConfig";
-//import nodecron, { schedule } from "node-cron";
+import nodecron, { schedule } from "node-cron";
 import { ReviewController } from "./controllers/reviewController";
 import { consumerConnect } from "./infrastructure/consumers/consumer";
 import { ReviewRepository } from "./repositories/ReviewRepository";
