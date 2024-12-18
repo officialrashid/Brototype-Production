@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from "react-redux"
 import SearchBar from "../components/SearchBar"
-import ReviewSearchBar from "../schedule /RevieSearchBar"
+import ReviewSearchBar from "../schedules/RevieSearchBar"
 import ExtHead from "./ExtHead"
 import ExtRow from "./ExtRow"
 import { useEffect, useState } from "react"
