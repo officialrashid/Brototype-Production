@@ -1,6 +1,6 @@
 import ReviewRow from "./ReviewRow"
 import ReviewHead from "./ReviewHead"
-import ReviewSearchBar from "../schedule /RevieSearchBar"
+import ReviewSearchBar from "../schedule/RevieSearchBar"
 import { useEffect, useState } from "react"
 import { getScheduledReviewData } from "../../../redux-toolkit/reviewSlice"
 import { useDispatch, useSelector } from "react-redux"
